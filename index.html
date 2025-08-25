@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RSVP — Nighthawks Luxury Concierge</title>
+
+  <!-- Root-absolute paths so they work from /rsvp/ too -->
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Unified top nav (matches all landing pages) */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 30px;
+      background: linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,0));
+    }
+    .nav a { color:#fff; text-decoration:none; opacity:.75; font-family:'Inter',sans-serif; font-weight:400; }
+    .nav a:hover, .nav a.active { opacity:1; }
+    .nav-links { display:flex; gap:22px; }
+    /* Clear the fixed nav */
+    .hero { padding-top: 120px; }
+  </style>
+</head>
+<body class="home-landing">
+  <!-- Background overlay (uses your existing CSS) -->
+  <div class="hero-overlay"></div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a href="/" aria-label="Nighthawks home">
+      <img src="/assets/logo-white.jpg" alt="Nighthawks" height="75">
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/request.html">Request</a>
+      <a href="/membership.html">Membership</a>
+      <a href="/about.html">About</a>
+      <a href="/press.html">Press</a>
+      <a href="/login.html" class="nav-cta">Login</a>
+    </div>
+  </nav>
+
+  <!-- Your RSVP content goes here -->
+  <main class="hero">
+    <!-- TODO: paste your RSVP section/hero/form content -->
+  </main>
+
+  <!-- Root-absolute script path -->
+  <script src="/script.js"></script>
+  <script>
+    // Highlight the current nav link
+    const here = location.pathname.replace(/\/+$/, '');
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      const target = a.getAttribute('href').replace(/\/+$/, '');
+      if (target && target === here) a.classList.add('active');
+    });
+  </script>
+</body>
+</html>

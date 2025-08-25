@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Membership Agreement</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --panel:#111;
+      --ink:#e8e6e3;
+      --muted:#a6a39f;
+      --line:rgba(255,255,255,.08);
+      --gold:#c8a66a;
+      --soft:#171717;
+    }
+    /* Page */
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 500px at 50% -10%, rgba(255,255,255,.05), transparent 60%) , var(--bg);
+      color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      display:flex; align-items:flex-start; justify-content:center;
+    }
+    .wrap{
+      width:min(1000px, 92vw);
+      margin:6rem auto 8rem;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)) , var(--panel);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    /* Header */
+    .head{
+      padding:36px 36px 24px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .brand{
+      font-family:"DM Serif Display", serif;
+      font-size:28px;
+      letter-spacing:.06em;
+    }
+    .tag{
+      float:right;
+      font-size:12px;
+      letter-spacing:.18em;
+      color:var(--muted);
+      text-transform:uppercase;
+      padding-top:8px;
+    }
+    .sub{
+      margin:.35rem 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Content */
+    .content{ padding:30px 36px 18px; }
+    h2{
+      font-family:"DM Serif Display", serif;
+      font-weight:400;
+      font-size:22px;
+      margin:28px 0 10px;
+      letter-spacing:.02em;
+    }
+    p, li{
+      color:#d7d5d1;
+      line-height:1.6;
+      font-size:15px;
+    }
+    .muted{ color:var(--muted); }
+    .rule{ height:1px; background:var(--line); margin:22px 0; }
+    .list{ margin:0; padding-left:18px; }
+    .kicker{
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+    a{ color:var(--ink); text-decoration:underline dotted; text-underline-offset:2px; }
+    a:hover{ color:#fff; }
+
+    /* Accept block */
+    .accept{
+      padding:22px 36px 36px;
+      border-top:1px solid var(--line);
+      background:linear-gradient(0deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    .flex{ display:flex; gap:16px; flex-wrap:wrap; }
+    .field{
+      flex:1 1 240px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+    label{
+      font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+    }
+    input[type="text"]{
+      background:var(--soft);
+      color:var(--ink);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px 14px;
+      outline:none;
+    }
+    input[type="text"]::placeholder{ color:#8f8c88; }
+    .agree{
+      display:flex; align-items:flex-start; gap:10px; margin:14px 0 6px;
+      font-size:14px; color:#d7d5d1;
+    }
+    .agree input{ margin-top:2px; }
+
+    .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+    .btn{
+      appearance:none;
+      background:transparent;
+      color:var(--ink);
+      border:1px solid var(--line);
+      padding:12px 18px;
+      border-radius:999px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:12px; font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .btn:hover{ border-color:#3a3a3a; transform:translateY(-1px); }
+    .btn--gold{
+      border-color:rgba(200,166,106,.45);
+      background:linear-gradient(180deg, rgba(200,166,106,.18), rgba(200,166,106,.08));
+    }
+    .btn[disabled]{ opacity:.45; cursor:not-allowed; transform:none; }
+
+    /* Footer */
+    .foot{
+      padding:16px 36px 30px; color:var(--muted);
+      font-size:12px; letter-spacing:.02em;
+      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+      border-top:1px solid var(--line);
+    }
+
+    /* Print */
+    @media print{
+      body{ background:#fff; color:#000; }
+      .wrap{ box-shadow:none; border-color:#ddd; }
+      .tag{ display:none; }
+      a{ color:#000; text-decoration:none; }
+      .btns,.agree input{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="head">
+      <div class="tag">Membership Agreement</div>
+      <div class="brand">NIGHTHAWKS</div>
+      <p class="sub">A private circle for curated experiences. Effective date: <span id="effDate"></span></p>
+    </header>
+
+    <section class="content">
+      <div class="kicker">1. Membership</div>
+      <h2>Access & Eligibility</h2>
+      <p>Membership is by invitation and at the discretion of Nighthawks (“we,” “us”). Access may be paused, modified, or revoked at any time to protect the experience and our community standards.</p>
+
+      <div class="rule"></div>
+
+      <div class="kicker">2. Conduct</div>
+      <h2>Confidentiality & Etiquette</h2>
+      <ul class="list">
+        <li><strong>Discretion first.</strong> All event information, guest identities, and any materials shared are private and confidential.</li>
+        <li><strong>Respect the room.</strong> No recording, public posting, or press without prior written approval.</li>
+        <li><strong>Arrive prepared.</strong> Punctuality and considerate behavior are expected; we may refuse entry if standards aren’t met.</li>
+      </ul>
+
+      <div class="rule"></div>
+
+      <div class="kicker">3. Reservations</div>
+      <h2>RSVPs, Timing & Attendance</h2>
+      <ul class="list">
+        <li>RSVPs are required and do not guarantee admission; capacity and curation apply.</li>
+        <li>Plans may shift; venue, timing, or guest list may change with little notice.</li>
+        <li>For select experiences, a non-refundable commitment or fee may apply and will be disclosed in the invitation.</li>
+      </ul>
+
+      <div class="rule"></div>
+
+      <div class="kicker">4. Privacy</div>
+      <h2>Data & Communications</h2>
+      <p>We collect minimal information necessary to operate invitations, confirmations, and guest management. See our <a href="/privacy.html">Privacy Policy</a>. By joining, you consent to receive event communications and logistical updates.</p>
+
+      <div class="rule"></div>
+
+      <div class="kicker">5. Liability</div>
+      <h2>Assumption of Risk & Release</h2>
+      <p>You understand events may include third-party venues, vendors, and services. You agree to participate at your own risk and release Nighthawks and its founders, partners, and affiliates from claims arising from attendance, except to the extent not permitted by law.</p>
+
+      <div class="rule"></div>
+
+      <div class="kicker">6. Terms</div>
+      <h2>Changes, Termination & Governing Law</h2>
+      <ul class="list">
+        <li>We may update these Terms; continued participation constitutes acceptance.</li>
+        <li>We may suspend or terminate access for conduct we determine harmful to the experience or community.</li>
+        <li>These Terms are governed by the laws of New York, without regard to conflicts of law.</li>
+      </ul>
+
+      <p class="muted" style="margin-top:18px">By proceeding, you confirm you are 21+ (where applicable) and agree to these Terms, our <a href="/privacy.html">Privacy Policy</a>, and <a href="/terms.html">Website Terms</a>.</p>
+    </section>
+
+    <section class="accept">
+      <div class="kicker">Acceptance</div>
+      <div class="flex" style="margin-bottom:8px;">
+        <div class="field">
+          <label for="fullName">Full Name (signature)</label>
+          <input id="fullName" type="text" placeholder="Type your full name" />
+        </div>
+        <div class="field" style="max-width:220px;">
+          <label for="sigDate">Date</label>
+          <input id="sigDate" type="text" placeholder="MM/DD/YYYY" />
+        </div>
+      </div>
+
+      <label class="agree">
+        <input id="agree" type="checkbox" />
+        <span>I have read and agree to the Nighthawks Membership Agreement.</span>
+      </label>
+
+      <div class="btns">
+        <button id="acceptBtn" class="btn btn--gold" disabled>Accept & Continue</button>
+        <button id="printBtn" class="btn" type="button">Print / Save PDF</button>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <span>© Nighthawks. All rights reserved.</span>
+      <span class="muted">Questions? <a href="/contact.html">Contact concierge</a></span>
+    </footer>
+  </main>
+
+  <script>
+    // Fill dates
+    const effDate = document.getElementById('effDate');
+    const sigDate = document.getElementById('sigDate');
+    const today = new Date();
+    const toMDY = d => [d.getMonth()+1, d.getDate(), d.getFullYear()].map(n => String(n).padStart(2, '0')).join('/');
+    effDate.textContent = toMDY(today);
+    sigDate.value = toMDY(today);
+
+    // Enable accept when both fields complete + checkbox ticked
+    const fullName = document.getElementById('fullName');
+    const agree = document.getElementById('agree');
+    const acceptBtn = document.getElementById('acceptBtn');
+    function gate(){
+      acceptBtn.disabled = !(fullName.value.trim().length >= 2 && agree.checked);
+    }
+    fullName.addEventListener('input', gate);
+    agree.addEventListener('change', gate);
+
+    // Print
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    // Accept → redirect (adjust target if needed)
+    acceptBtn.addEventListener('click', async () => {
+      // If you later add an API to record acceptance, POST it here.
+      // await fetch('/api/agreement/accept', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: fullName.value, date: sigDate.value }) });
+
+      window.location.href = '/signup-success.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inner Circle — RSVP</title>
+  <meta name="color-scheme" content="dark"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@7..96,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#eae7df; --paper:#0b0b0b; --line:rgba(234,231,223,.18); --gold:#bda874; --err:#ffbcbc }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',system-ui,Arial,sans-serif; }
+    .wrap{min-height:100%; display:grid; place-items:center; padding:6vh 16px 10vh}
+    .card{ width:min(720px,92vw); background:rgba(255,255,255,.03);
+           border:1px solid var(--line); border-radius:20px; padding:32px 34px;
+           backdrop-filter: blur(8px) saturate(120%); box-shadow:0 18px 60px rgba(0,0,0,.45); }
+    .mast{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
+    .wordmark{ font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:.08em; }
+    .smallcaps{ text-transform:uppercase; font-size:.72rem; letter-spacing:.22em; opacity:.75 }
+    h1{font-family:'Bodoni Moda',serif; font-size:1.25rem; margin:6px 0 6px}
+    .lede{opacity:.82; margin:0 0 10px; font-size:.95rem}
+    .summary{margin:6px 0 16px; font-size:.95rem; opacity:.9}
+    .code{font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--gold); letter-spacing:.12em}
+
+    form{display:grid; gap:14px}
+    label{font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; opacity:.75}
+    input,select,textarea{
+      width:100%; background:transparent; color:var(--ink); font-size:1rem;
+      border:none; border-bottom:1px solid var(--line); padding:12px 2px 8px 2px; outline:none;
+    }
+    input:focus,select:focus,textarea:focus{ border-bottom-color:var(--gold) }
+    textarea{min-height:84px; resize:vertical}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width:720px){ .row{grid-template-columns:1fr} }
+
+    .radios{display:flex; gap:12px; flex-wrap:wrap}
+    .radio{display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--line); border-radius:12px}
+    .radio input{border:0; padding:0; width:auto}
+
+    .btn{ margin-top:6px; padding:12px 16px; border-radius:12px;
+          border:1px solid var(--ink); background:transparent; color:var(--ink);
+          text-transform:uppercase; letter-spacing:.12em; font-weight:600; cursor:pointer; transition:opacity .15s ease }
+    .btn:hover{ background:var(--ink); color:#111 }
+    .btn[disabled]{opacity:.6; cursor:not-allowed}
+
+    .err{color:var(--err); min-height:1.2em; margin-top:6px}
+    .hint{opacity:.7; font-size:.9rem}
+    .hr{height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent); margin:10px 0}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" role="main">
+      <div class="mast">
+        <div class="wordmark">Inner Circle</div>
+        <div class="smallcaps">Private RSVP</div>
+      </div>
+
+      <h1>Confirm your attendance</h1>
+      <p class="lede">Final details are shared privately upon confirmation.</p>
+
+      <div class="summary">
+        <span id="summaryName">Guest</span> — Access code <span id="summaryCode" class="code">—</span>
+      </div>
+
+      <form id="rsvpForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="firstName">First name</label>
+            <input id="firstName" name="firstName" autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="lastName">Last name</label>
+            <input id="lastName" name="lastName" autocomplete="family-name" required />
+          </div>
+        </div>
+
+        <div>
+          <label>How should we notify you?</label>
+          <div class="radios" role="radiogroup" aria-label="Notify">
+            <label class="radio"><input type="radio" name="notify" value="email"> Email</label>
+            <label class="radio"><input type="radio" name="notify" value="text"> Text</label>
+            <label class="radio"><input type="radio" name="notify" value="both"> Both</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" />
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+1 555 123 4567"/>
+          </div>
+        </div>
+
+        <div>
+          <label>Plus one</label>
+          <div class="radios" role="radiogroup" aria-label="Plus one">
+            <label class="radio"><input type="radio" name="plusOne" value="no" checked> No</label>
+            <label class="radio"><input type="radio" name="plusOne" value="yes"> Yes</label>
+          </div>
+        </div>
+
+        <div id="plusOneWrap" style="display:none">
+          <label for="guestName">Guest name</label>
+          <input id="guestName" name="guestName" placeholder="Full name" />
+        </div>
+
+        <div class="hr"></div>
+
+        <div>
+          <label for="diet">Dietary notes</label>
+          <textarea id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
+        </div>
+
+        <div>
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" placeholder="Anything else we should know? (optional)"></textarea>
+        </div>
+
+        <input type="hidden" id="code" name="code"/>
+        <button class="btn" id="submitBtn" type="submit">Confirm RSVP</button>
+        <div id="err" class="err" role="alert" aria-live="polite"></div>
+        <p class="hint">This invitation is strictly personal and non-transferable.</p>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // read query for name/code
+    const qs = new URLSearchParams(location.search);
+    const code = (qs.get('code') || '').replace(/[–—−]/g,'-').replace(/\s+/g,'').toUpperCase();
+    const prefillName = (qs.get('name') || '').trim();
+
+    document.getElementById('summaryCode').textContent = code || '—';
+    if (prefillName) document.getElementById('summaryName').textContent = prefillName;
+    document.getElementById('code').value = code;
+
+    // plus-one toggle
+    const plusRadios = Array.from(document.querySelectorAll('input[name="plusOne"]'));
+    const plusWrap = document.getElementById('plusOneWrap');
+    plusRadios.forEach(r => r.addEventListener('change', () => {
+      plusWrap.style.display = (document.querySelector('input[name="plusOne"]:checked').value === 'yes') ? 'block' : 'none';
+    }));
+
+    const form = document.getElementById('rsvpForm');
+    const btn  = document.getElementById('submitBtn');
+    const err  = document.getElementById('err');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.textContent = '';
+      btn.disabled = true;
+
+      const data = Object.fromEntries(new FormData(form).entries());
+
+      // front-end guardrails
+      if (!data.firstName || !data.lastName) { err.textContent = 'Please add your first and last name.'; btn.disabled = false; return; }
+      if (!data.notify) { err.textContent = 'Choose how we should notify you.'; btn.disabled = false; return; }
+      if ((data.notify === 'email' || data.notify === 'both') && !data.email) { err.textContent = 'Please provide an email.'; btn.disabled = false; return; }
+      if ((data.notify === 'text'  || data.notify === 'both') && !data.phone) { err.textContent = 'Please provide a phone number.'; btn.disabled = false; return; }
+      if (!data.code) { err.textContent = 'Missing access code. Return to your invite link.'; btn.disabled = false; return; }
+
+      try {
+        const res = await fetch('/api/rsvp', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            code: data.code,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            plusOne: data.plusOne,            // "yes" | "no"
+            guestName: data.guestName || '',
+            notify: data.notify,              // "email" | "text" | "both"
+            email: data.email || '',
+            phone: data.phone || '',
+            diet: data.diet || '',
+            notes: data.notes || ''
+          })
+        });
+        const json = await res.json();
+        if (!res.ok || !json.ok) throw new Error(json.error || 'RSVP failed');
+
+        // success → send to your existing confirm page with context (for a richer summary)
+        const u = new URL('/rsvp-confirm.html', location.origin);
+        const fullName = `${data.firstName} ${data.lastName}`.trim();
+        if (fullName) u.searchParams.set('name', fullName);
+        u.searchParams.set('code', data.code);
+        const contact = data.notify === 'email' ? data.email
+                      : data.notify === 'text'  ? data.phone
+                      : `${data.email || ''} ${data.phone ? ' / ' + data.phone : ''}`.trim();
+        if (contact) u.searchParams.set('ct', contact);
+        if (data.plusOne === 'yes' && data.guestName) u.searchParams.set('plus', data.guestName);
+        const noteBlob = [data.diet, data.notes].filter(Boolean).join(' — ');
+        if (noteBlob) u.searchParams.set('notes', noteBlob);
+
+        location.href = u.toString();
+
+      } catch (e2) {
+        err.textContent = 'We couldn’t save your RSVP. Pleyoutubrase try again in a moment.';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

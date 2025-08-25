@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Apply for Membership</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nhx-bg:#000; --nhx-text:#fff; --nhx-muted:#bdbdbd;
+      --nhx-soft:rgba(255,255,255,.06); --nhx-soft-2:rgba(255,255,255,.1);
+    }
+    body {
+      margin:0;
+      background: var(--nhx-bg) url('assets/bg-membership.jpg') center/cover no-repeat fixed;
+      color: var(--nhx-text);
+      font-family: 'Inter', sans-serif;
+    }
+    h1 { font-family: 'DM Serif Display', serif; font-weight: 400; margin: 0 0 10px; }
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; gap:28px; padding:24px 30px;
+      background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,0));
+    }
+    .nav a { color:#fff; text-decoration:none; opacity:.75; }
+    .nav a:hover, .nav a.active { opacity:1; }
+
+    .form-container {
+      max-width: 700px; margin: 140px auto; background: var(--nhx-soft);
+      padding: 40px; border-radius: 16px; backdrop-filter: blur(8px);
+    }
+    label { display:block; margin-bottom:6px; font-size:0.95rem; font-weight:500; }
+    input, select, textarea {
+      width:100%; padding:12px; border-radius:8px; border:1px solid var(--nhx-soft-2);
+      background:rgba(0,0,0,0.5); color:#fff; font-size:0.95rem;
+    }
+    input[type="file"] { padding:6px; background:transparent; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .form-grid-full { grid-column:1/-1; }
+    .headshot-preview {
+      width:120px; height:120px; border-radius:50%; overflow:hidden;
+      background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; color:var(--nhx-muted); margin-top:10px;
+    }
+    .btn { display:inline-flex; align-items:center; justify-content:center; padding:14px 20px;
+      border-radius:999px; border:none; font-size:0.96rem; cursor:pointer; transition:0.2s ease; }
+    .btn.primary { background:#fff; color:#000; }
+    .btn.primary:hover { background:#eaeaea; }
+    .form-buttons { margin-top:20px; display:flex; gap:12px; align-items:center; }
+    .foot-note { font-size:0.85rem; color:var(--nhx-muted); text-align:center; margin-top:14px; }
+    .hint { font-size:.85rem; color:var(--nhx-muted); margin:8px 0 0; }
+    .success { color:#a7f3d0; }
+    .error { color:#fecaca; }
+    @media (max-width: 720px){ .form-grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html"><img src="assets/logo-white.jpg" alt="Nighthawks" height="22"></a>
+    <div style="display:flex;gap:22px;">
+      <a href="index.html">Home</a>
+      <a href="request.html">Request</a>
+      <a class="active" href="membership.html">Membership</a>
+      <a href="about.html">About</a>
+      <a href="press.html">Press</a>
+    </div>
+  </nav>
+
+  <div class="form-container">
+    <h1>Apply for Membership</h1>
+    <p class="hint">Fields marked * are required.</p>
+
+    <form id="membershipForm" novalidate>
+      <div class="form-grid">
+        <div>
+          <label for="fullName">Full Name*</label>
+          <input id="fullName" name="fullName" type="text" required>
+        </div>
+
+        <div>
+          <label for="birthDate">Date of Birth*</label>
+          <input id="birthDate" name="birthDate" type="date" required>
+        </div>
+
+        <div>
+          <label for="email">Email*</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+
+        <div>
+          <label for="phone">Mobile*</label>
+          <input id="phone" name="phone" type="tel" required>
+        </div>
+
+        <div>
+          <label for="streetAddress">Street Address*</label>
+          <input id="streetAddress" name="streetAddress" type="text" required>
+        </div>
+
+        <div>
+          <label for="city">City*</label>
+          <input id="city" name="city" type="text" required>
+        </div>
+
+        <div>
+          <label for="state">State / Province*</label>
+          <input id="state" name="state" type="text" required>
+        </div>
+
+        <div>
+          <label for="country">Country*</label>
+          <select id="country" name="country" required>
+            <option value="" selected disabled>Select…</option>
+            <option>United States</option>
+            <option>Canada</option>
+            <option>United Kingdom</option>
+            <option>France</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="headshot">Headshot*</label>
+          <input id="headshot" name="headshot" type="file" accept="image/*">
+          <div class="headshot-preview" id="headshotPreview">Preview</div>
+          <p class="hint">Your image is uploaded securely with a one-time link.</p>
+        </div>
+
+        <div>
+          <label for="companyName">Company Name*</label>
+          <input id="companyName" name="companyName" type="text" required>
+        </div>
+
+        <div>
+          <label for="industry">Industry*</label>
+          <input id="industry" name="industry" type="text" required>
+        </div>
+
+        <div class="form-grid-full">
+          <label for="role">Your Role / Function*</label>
+          <input id="role" name="role" type="text" required>
+        </div>
+
+        <div class="form-grid-full">
+          <label for="bio">Your Bio*</label>
+          <textarea id="bio" name="bio" rows="4" required></textarea>
+        </div>
+
+        <div class="form-grid-full">
+          <label for="social">Social Networks</label>
+          <input id="social" name="social" type="text" placeholder="Instagram, LinkedIn, website…">
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn primary">Submit Application</button>
+        <span id="formStatus" class="hint"></span>
+      </div>
+
+      <p class="foot-note">By submitting, you agree we may contact you regarding your application.</p>
+    </form>
+  </div>
+
+  <script>
+    // Preview
+    document.getElementById('headshot').addEventListener('change', (event) => {
+      const preview = document.getElementById('headshotPreview');
+      preview.innerHTML = '';
+      const file = event.target.files[0];
+      if (file) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        preview.appendChild(img);
+      } else {
+        preview.textContent = 'Preview';
+      }
+    });
+
+    // S3 presigned upload
+    async function uploadHeadshot(file) {
+      if (!file) return '';
+      const presignRes = await fetch('/api/uploads/presign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName: file.name, fileType: file.type, folder: 'headshots' })
+      });
+      const { ok, uploadUrl, key, error } = await presignRes.json();
+      if (!ok) throw new Error(error || 'Failed to prepare upload');
+
+      await fetch(uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+      return key; // store this in the application
+    }
+
+    // Submit to API
+    (function () {
+      const form = document.getElementById('membershipForm');
+      const statusEl = document.getElementById('formStatus');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        statusEl.textContent = 'Submitting…';
+        statusEl.className = 'hint';
+
+        try {
+          const fd = new FormData(form);
+
+          // upload headshot first (optional)
+          let headshotKey = '';
+          const headshotFile = fd.get('headshot');
+          if (headshotFile && headshotFile.size) {
+            headshotKey = await uploadHeadshot(headshotFile);
+          }
+
+          const payload = {
+            fullName: fd.get('fullName')?.trim(),
+            birthDate: fd.get('birthDate'),
+            email: fd.get('email')?.trim(),
+            phone: fd.get('phone')?.trim(),
+            streetAddress: fd.get('streetAddress')?.trim(),
+            city: fd.get('city')?.trim(),
+            state: fd.get('state')?.trim(),
+            country: fd.get('country'),
+            companyName: fd.get('companyName')?.trim(),
+            industry: fd.get('industry')?.trim(),
+            role: fd.get('role')?.trim(),
+            bio: fd.get('bio')?.trim(),
+            social: fd.get('social')?.trim() || '',
+            headshotKey
+          };
+
+          const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+
+          if (res.ok && json.ok) {
+            statusEl.textContent = 'Application received.';
+            statusEl.className = 'hint success';
+            window.location.href = 'signup-success.html';
+          } else {
+            statusEl.textContent = json.error || 'Something went wrong.';
+            statusEl.className = 'hint error';
+          }
+        } catch (err) {
+          statusEl.textContent = err.message || 'Network error. Please try again.';
+          statusEl.className = 'hint error';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

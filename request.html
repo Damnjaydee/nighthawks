@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Concierge Request</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --nhx-bg:#000; --nhx-text:#fff; --nhx-muted:#bdbdbd;
+      --nhx-soft:rgba(255,255,255,.06); --nhx-soft-2:rgba(255,255,255,.12);
+    }
+    *{ box-sizing:border-box }
+    body{
+      margin:0;
+      background: var(--nhx-bg) url('assets/bg-membership.jpg') center/cover no-repeat fixed;
+      color: var(--nhx-text);
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    }
+    h1,h2,h3{ font-family:'DM Serif Display',serif; font-weight:400; margin:0 }
+
+    /* Nav (unified) */
+    .nav{
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:24px 30px;
+      background:linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,0));
+      backdrop-filter: blur(10px);
+    }
+    .nav a{ color:#fff; text-decoration:none; opacity:.85; margin-left:22px }
+    .nav a:hover,.nav a.active{ opacity:1 }
+    .nav .left{ display:flex; align-items:center; gap:22px }
+    .nav .links{ display:flex; align-items:center }
+
+    /* Page layout */
+    .wrap{ max-width: 1100px; margin: 140px auto 80px; padding: 0 20px; position:relative; z-index:1 }
+    .grid{ display:grid; grid-template-columns: 1.35fr .9fr; gap:24px }
+    .card{
+      background: var(--nhx-soft);
+      border: 1px solid var(--nhx-soft-2);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      padding: 26px;
+    }
+    .lede{ color: var(--nhx-muted); margin: 6px 0 16px }
+
+    /* Form */
+    form{ display:grid; grid-template-columns:1fr 1fr; gap:16px }
+    label{ font-size:.92rem; color:#e9e9e9; margin-bottom:6px; display:block }
+    input, select, textarea{
+      width:100%; padding:12px 12px;
+      border-radius:10px; border:1px solid var(--nhx-soft-2);
+      background:rgba(0,0,0,.55); color:#fff; font-size:.96rem;
+    }
+    textarea{ min-height:120px; resize:vertical }
+    .row-2{ grid-column:1 / -1 }
+
+    .actions{ display:flex; gap:12px; align-items:center; margin-top:6px }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
+      padding:12px 18px; border-radius:999px; border:1px solid var(--nhx-soft-2);
+      background:#fff; color:#000; font-weight:600; text-decoration:none; cursor:pointer;
+      transition: background .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    .btn:hover{ background:#eaeaea; transform: translateY(-1px) }
+    .btn.ghost{ background:transparent; color:#fff }
+    .btn.ghost:hover{ background:rgba(255,255,255,.12) }
+
+    .status{ font-size:.9rem; color:var(--nhx-muted); margin-left:4px }
+    .status.ok{ color:#a7f3d0 }
+    .status.err{ color:#fecaca }
+
+    /* Upsell */
+    .upsell h3{ margin:0 0 6px }
+    .upsell p{ color:var(--nhx-muted); margin:6px 0 14px }
+    .perk{ display:flex; gap:10px; align-items:flex-start; color:#ddd; margin:8px 0 }
+    .perk span{ font-size:18px; line-height:1 }
+
+    /* Mobile */
+    @media (max-width: 980px){ .grid{ grid-template-columns:1fr } form{ grid-template-columns:1fr } }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="left">
+      <a href="index.html" aria-label="Nighthawks home">
+        <img src="assets/logo-white.jpg" alt="Nighthawks" height="22">
+      </a>
+    </div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a class="active" href="request.html">Request</a>
+      <a href="membership.html">Membership</a>
+      <a href="about.html">About</a>
+      <a href="press.html">Press</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- Left: Non-member Request Form -->
+      <section class="card">
+        <h2>Concierge Request (Non-Member)</h2>
+        <p class="lede">Tell us what you need — we’ll get back to you shortly. Members receive priority handling.</p>
+
+        <form id="requestForm" novalidate>
+          <!-- honeypot -->
+          <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none" />
+
+          <div>
+            <label for="fullName">Full Name*</label>
+            <input id="fullName" name="fullName" required placeholder="First & Last Name">
+          </div>
+
+          <div>
+            <label for="phone">Phone Number*</label>
+            <input id="phone" name="phone" required placeholder="(xxx) xxx-xxxx">
+          </div>
+
+          <div>
+            <label for="email">Email Address*</label>
+            <input id="email" name="email" type="email" required placeholder="you@email.com">
+          </div>
+
+          <div>
+            <label for="typeOfRequest">Type of Request*</label>
+            <select id="typeOfRequest" name="typeOfRequest" required>
+              <option value="">Select a category</option>
+              <option>Restaurant / Table</option>
+              <option>Nightlife / Table</option>
+              <option>Private Dining</option>
+              <option>Event Access</option>
+              <option>Itinerary / Planning</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="date">Preferred Date</label>
+            <input id="date" name="date" type="date">
+          </div>
+
+          <div>
+            <label for="time">Preferred Time</label>
+            <input id="time" name="time" type="time">
+          </div>
+
+          <div>
+            <label for="partySize">Party Size</label>
+            <input id="partySize" name="partySize" placeholder="2, 4, 6…">
+          </div>
+
+          <div class="row-2">
+            <label for="neighborhood">Neighborhood / Venue Preferences</label>
+            <input id="neighborhood" name="neighborhood" placeholder="Soho, West Village, rooftop, lounge…">
+          </div>
+
+          <div class="row-2">
+            <label for="budget">Budget (optional)</label>
+            <input id="budget" name="budget" placeholder="$350 dinner, $2k table, etc.">
+          </div>
+
+          <div class="row-2">
+            <label for="details">Details</label>
+            <textarea id="details" name="details" placeholder="Occasion, cuisine, vibe, timing, any constraints…"></textarea>
+          </div>
+
+          <div class="actions row-2">
+            <button class="btn" type="submit">Submit Request</button>
+            <a class="btn ghost" href="membership-info.html">Apply for Membership</a>
+            <span id="formStatus" class="status"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- Right: Upsell / Why Join -->
+      <aside class="card upsell">
+        <h3>Why Members Get Priority</h3>
+        <p>Membership unlocks guaranteed holds, last-minute tables, and invitation-only moments curated by Nighthawks.</p>
+        <div class="perk"><span>•</span><div>Priority queueing on high-demand reservations and events.</div></div>
+        <div class="perk"><span>•</span><div>On-call concierge with discreet handling.</div></div>
+        <div class="perk"><span>•</span><div>Access to limited-seat experiences across the city.</div></div>
+        <a class="btn" href="membership-info.html">Explore Membership</a>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById('requestForm');
+      const statusEl = document.getElementById('formStatus');
+
+      function setStatus(msg, cls=''){
+        statusEl.textContent = msg;
+        statusEl.className = 'status ' + (cls || '');
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setStatus('Submitting…');
+
+        const fd = new FormData(form);
+        // basic required fields guard (frontend)
+        if (!fd.get('fullName') || !fd.get('email') || !fd.get('typeOfRequest')) {
+          setStatus('Please fill required fields.', 'err');
+          return;
+        }
+
+        const payload = {
+          fullName:      fd.get('fullName')?.trim(),
+          email:         fd.get('email')?.trim(),
+          phone:         fd.get('phone')?.trim(),
+          typeOfRequest: fd.get('typeOfRequest'),
+          date:          fd.get('date') || '',
+          time:          fd.get('time') || '',
+          partySize:     fd.get('partySize') || '',
+          neighborhood:  fd.get('neighborhood') || '',
+          budget:        fd.get('budget') || '',
+          details:       fd.get('details') || ''
+        };
+
+        try {
+          const res = await fetch('/api/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+
+          if (res.ok && data.ok) {
+            setStatus('Request received. We’ll be in touch shortly.', 'ok');
+            // Optional redirect to a success page:
+            // window.location.href = 'request-success.html';
+            form.reset();
+          } else {
+            setStatus(data.error || 'Something went wrong. Please try again.', 'err');
+          }
+        } catch (err) {
+          setStatus('Network error. Please try again.', 'err');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

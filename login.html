@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Sign in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#000;--text:#fff;--muted:#bdbdbd;--soft:rgba(255,255,255,.08)}
+    *{box-sizing:border-box} body{margin:0;background:#000;color:var(--text);font-family:Inter,system-ui}
+    .nav{position:fixed;inset:0 0 auto 0;padding:22px 28px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0))}
+    .nav a{color:#fff;text-decoration:none;opacity:.85;margin-right:18px}
+    .wrap{min-height:100vh;background:url('assets/bg-night.jpg') center/cover fixed;display:grid;place-items:center;padding:90px 16px}
+    .card{width:min(420px,92vw);background:var(--soft);backdrop-filter:blur(8px);padding:26px;border-radius:16px;border:1px solid rgba(255,255,255,.12)}
+    h1{margin:0 0 12px;font-size:1.5rem} label{font-size:.9rem}
+    input{width:100%;margin-top:6px;margin-bottom:12px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.5);color:#fff}
+    .btn{width:100%;padding:12px;border-radius:999px;border:none;font-weight:600;cursor:pointer}
+    .primary{background:#fff;color:#000}.ghost{background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;margin-top:10px}
+    .hint{color:var(--muted);font-size:.9rem;margin-top:8px}
+    .err{color:#fecaca}.ok{color:#a7f3d0}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Home</a><a href="request.html">Request</a><a href="membership.html">Membership</a>
+  </nav>
+
+  <main class="wrap">
+    <div class="card">
+      <h1>Welcome back</h1>
+      <form id="loginForm">
+        <label>Email</label>
+        <input name="email" type="email" required />
+        <label>Password</label>
+        <input name="password" type="password" required />
+        <button class="btn primary" type="submit">Sign in</button>
+        <button id="registerBtn" class="btn ghost" type="button">Create account</button>
+        <div id="msg" class="hint"></div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const msg = document.getElementById('msg');
+    const form = document.getElementById('loginForm');
+    const registerBtn = document.getElementById('registerBtn');
+
+    async function call(path, body){
+      const res = await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      return { ok: res.ok, data: await res.json() };
+    }
+
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      msg.textContent = 'Signing in…'; msg.className='hint';
+      const fd = new FormData(form);
+      const { ok, data } = await call('/api/auth/login', { email: fd.get('email'), password: fd.get('password') });
+      if(ok && data.ok){ msg.textContent='Success. Redirecting…'; msg.className='hint ok'; location.href='dashboard.html'; }
+      else{ msg.textContent = (data && data.error) || 'Login failed'; msg.className='hint err'; }
+    });
+
+    registerBtn.addEventListener('click', async ()=>{
+      const fd = new FormData(form);
+      if(!fd.get('email') || !fd.get('password')){ msg.textContent='Enter email & password first.'; return; }
+      msg.textContent = 'Creating account…'; msg.className='hint';
+      const { ok, data } = await call('/api/auth/register', { email: fd.get('email'), password: fd.get('password') });
+      if(ok && data.ok){ location.href='dashboard.html'; }
+      else{ msg.textContent = (data && data.error) || 'Register failed'; msg.className='hint err'; }
+    });
+  </script>
+</body>
+</html>

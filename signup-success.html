@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Request Submitted</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--muted:#bdbdbd}
+    *{box-sizing:border-box}
+    body{margin:0;background:#000;color:#fff;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:clamp(2.2rem,4vw,3.2rem)}
+    a{color:#fff;text-decoration:none}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:28px;padding:24px 30px;
+      background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,0))}
+    .hero{min-height:100vh;display:grid;place-items:center;padding:120px 24px 80px;background:#000;position:relative}
+    .card{width:min(760px,92vw);text-align:center;border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+      padding:34px 28px;border-radius:18px;backdrop-filter:blur(6px)}
+    p.lede{color:var(--muted);margin:10px auto 22px;max-width:640px}
+    .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.55rem;padding:12px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.12)}
+    .primary{background:#fff;color:#000;border-color:#fff}
+    .ghost{background:transparent;color:#fff}
+    .primary:hover{background:#eaeaea}
+    .ghost:hover{background:rgba(255,255,255,.12)}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html"><img src="assets/logo-white.jpg" alt="Nighthawks" height="22"></a>
+  </nav>
+
+  <main class="hero">
+    <section class="card">
+      <h1>Request Submitted</h1>
+      <p class="lede">Thank you. We’ve received your information and will be in touch shortly.</p>
+      <p class="lede">Prefer priority access and on-call support? Members receive first placement on high-demand requests.</p>
+      <div class="cta">
+        <a class="btn ghost" href="index.html">Return Home</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
