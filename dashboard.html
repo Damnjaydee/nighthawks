@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks — Member Dashboard</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Your unified site stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ------- Dashboard refinements (build on your style.css) ------- */
+    .dashboard-top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .dashboard-top h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: .2px;
+    }
+    .muted { color: #bdbdbd; font-size: 14px; }
+
+    .quick-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .qa-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: .5rem; padding: 12px 14px; border-radius: 12px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      color: #fff; text-decoration: none; transition: transform .15s ease, background .2s ease;
+    }
+    .qa-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.12); }
+
+    .list { display: grid; gap: 12px; }
+    .row {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px;
+      padding: 12px 14px; border: 1px solid rgba(255,255,255,.12); border-radius: 12px;
+      background: rgba(255,255,255,.04);
+    }
+    .row .title { font-weight: 600; }
+    .pill {
+      padding: 6px 10px; border-radius: 999px; font-size: 12px; letter-spacing: .2px;
+      border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06);
+      color: #fff;
+    }
+    .pill.success { border-color: rgba(65,255,185,.35); background: rgba(65,255,185,.14); }
+    .pill.warn    { border-color: rgba(255,225,95,.35); background: rgba(255,225,95,.14); }
+    .pill.info    { border-color: rgba(120,170,255,.35); background: rgba(120,170,255,.14); }
+
+    .membership-card {
+      display: grid; gap: 10px;
+      border-radius: 16px;
+      background:
+        radial-gradient(120% 160% at 80% -30%, rgba(255,255,255,.08), rgba(255,255,255,0)),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 18px;
+    }
+    .membership-card .label { color:#bdbdbd; font-size: 12px; letter-spacing:.2em; text-transform: uppercase; }
+    .membership-card .number { font-size: 18px; letter-spacing: .12em; }
+
+    .two-col {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 24px;
+    }
+    @media (max-width: 980px){ .two-col{ grid-template-columns: 1fr; } .quick-actions{ grid-template-columns: 1fr; } }
+
+    /* Concierge FAB + Drawer */
+    .fab {
+      position: fixed; right: 22px; bottom: 22px; z-index: 15;
+      display:inline-flex; align-items:center; gap:.6rem;
+      padding: 12px 14px; border-radius: 999px;
+      background:#fff; color:#000; border:1px solid #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,.35);
+      cursor:pointer; font-weight:600;
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .fab:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,.45); }
+
+    .drawer {
+      position: fixed; inset: 0 0 0 auto; width: 380px; max-width: 92vw;
+      background: rgba(10,10,12,.88); backdrop-filter: blur(10px);
+      border-left: 1px solid rgba(255,255,255,.12);
+      transform: translateX(100%); transition: transform .25s ease; z-index: 20;
+      display: grid; grid-template-rows: auto 1fr auto;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer header { padding: 16px 16px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .drawer header h3 { margin: 0; font-weight: 500; }
+    .drawer .messages { padding: 14px; display: grid; gap: 10px; overflow:auto; }
+    .msg { padding: 10px 12px; border-radius: 12px; max-width: 90%; }
+    .msg.bot  { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); }
+    .msg.user { background: #fff; color:#000; justify-self: end; }
+    .drawer form { display:flex; gap:8px; padding: 12px; border-top: 1px solid rgba(255,255,255,.1); }
+    .drawer input {
+      flex:1; padding: 12px; border-radius: 12px; border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06); color:#fff;
+    }
+    .drawer button {
+      padding: 12px 14px; border-radius: 12px; border:1px solid #fff; background:#fff; color:#000; font-weight:600;
+    }
+  </style>
+</head>
+<body class="login-page"><!-- reuse skyline background; switch if you prefer -->
+
+  <!-- Unified nav -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <a href="index.html" aria-label="Nighthawks home">
+        <img src="assets/logo-white.jpg" alt="Nighthawks">
+      </a>
+    </div>
+  </nav>
+
+  <main class="dashboard-container">
+    <div class="dashboard-top">
+      <h1>Welcome back, <span id="memberName">Member</span></h1>
+      <span class="muted">Status: Founder · NYC</span>
+    </div>
+
+    <div class="two-col">
+      <!-- Left Column -->
+      <section class="dashboard-card">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions" style="margin-top:10px;">
+          <a class="qa-btn" href="request.html">Make a concierge request</a>
+          <a class="qa-btn" href="reservations.html">View reservations</a>
+          <a class="qa-btn" href="#" id="openConcierge">Contact concierge</a>
+        </div>
+      </section>
+
+      <aside class="dashboard-card">
+        <h3>Membership</h3>
+        <div class="membership-card" style="margin-top:10px;">
+          <div class="label">Nighthawks ID</div>
+          <div class="number" id="memberId">NHX-7234-A</div>
+          <div class="label" style="margin-top:8px;">Tier</div>
+          <div>Founder</div>
+          <div class="label" style="margin-top:8px;">Renewal</div>
+          <div>Jun 30, 2026</div>
+        </div>
+        <div class="list" style="margin-top:14px;">
+          <div class="row">
+            <div><span class="title">Billing</span><div class="muted">Card on file • **** 4421</div></div>
+            <a class="pill info" href="billing.html">Manage</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="two-col" style="margin-top:24px;">
+      <!-- Upcoming -->
+      <section class="dashboard-card">
+        <h3>Upcoming</h3>
+        <div id="upcomingList" class="list" style="margin-top:10px;"></div>
+      </section>
+
+      <!-- Requests -->
+      <section class="dashboard-card">
+        <h3>Open Requests</h3>
+        <div id="requestsList" class="list" style="margin-top:10px;"></div>
+      </section>
+    </div>
+
+    <section class="dashboard-card" style="margin-top:24px;">
+      <h3>Invitations & Moments</h3>
+      <div id="eventsList" class="list" style="margin-top:10px;"></div>
+    </section>
+  </main>
+
+  <!-- Concierge floating action button -->
+  <button class="fab" id="fab">Concierge</button>
+
+  <!-- Concierge drawer -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <header>
+      <h3>Concierge</h3>
+      <div class="muted">Typical reply under 10 minutes.</div>
+    </header>
+    <div class="messages" id="messages">
+      <div class="msg bot">Hi! What can I arrange for you tonight?</div>
+    </div>
+    <form id="chatForm">
+      <input type="text" id="chatInput" placeholder="Type your message…" autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </aside>
+
+  <script>
+    // ---- Demo data (replace with real API later) ----
+    const member = {
+      name: "JD",
+      id: "NHX-7234-A",
+      upcoming: [
+        { title: "4-top · L’Atelier", when: "Fri, 8:30 PM", tag: "Confirmed" },
+        { title: "Rooftop table · The Nines", when: "Sat, 10:45 PM", tag: "On hold" }
+      ],
+      requests: [
+        { title: "Private room · Downtown", note: "Anniversary dinner", status: "Working", pill: "info" },
+        { title: "Last-minute bar seats · West Village", note: "Tonight", status: "Secured", pill: "success" }
+      ],
+      events: [
+        { title: "Chef’s Counter · Lower East Side", note: "10 seats · Fri 9 PM", cta: "Request Seat" },
+        { title: "Paris Weekend Preview", note: "Members only · RSVP by Thu", cta: "RSVP" }
+      ]
+    };
+
+    // ---- Populate UI ----
+    document.getElementById('memberName').textContent = member.name;
+    document.getElementById('memberId').textContent = member.id;
+
+    const upcomingList = document.getElementById('upcomingList');
+    member.upcoming.forEach(u => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div><div class="title">${u.title}</div><div class="muted">${u.when}</div></div>
+        <span class="pill success">${u.tag}</span>
+      `;
+      upcomingList.appendChild(row);
+    });
+
+    const requestsList = document.getElementById('requestsList');
+    member.requests.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div><div class="title">${r.title}</div><div class="muted">${r.note}</div></div>
+        <span class="pill ${r.pill}">${r.status}</span>
+      `;
+      requestsList.appendChild(row);
+    });
+
+    const eventsList = document.getElementById('eventsList');
+    member.events.forEach(e => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <div><div class="title">${e.title}</div><div class="muted">${e.note}</div></div>
+        <a class="pill info" href="request.html">${e.cta}</a>
+      `;
+      eventsList.appendChild(row);
+    });
+
+    // ---- Concierge drawer interactions ----
+    const drawer = document.getElementById('drawer');
+    const fab = document.getElementById('fab');
+    const openConcierge = document.getElementById('openConcierge');
+
+    function toggleDrawer(open) {
+      drawer.classList.toggle('open', open);
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    fab.addEventListener('click', () => toggleDrawer(!drawer.classList.contains('open')));
+    if (openConcierge) openConcierge.addEventListener('click', (e)=>{ e.preventDefault(); toggleDrawer(true); });
+
+    // Basic demo chat (no backend)
+    const form = document.getElementById('chatForm');
+    const input = document.getElementById('chatInput');
+    const msgs  = document.getElementById('messages');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if(!text) return;
+      const mine = document.createElement('div');
+      mine.className = 'msg user';
+      mine.textContent = text;
+      msgs.appendChild(mine);
+      input.value = '';
+      msgs.scrollTop = msgs.scrollHeight;
+
+      // Fake concierge reply
+      setTimeout(()=>{
+        const reply = document.createElement('div');
+        reply.className = 'msg bot';
+        reply.textContent = "Noted. I’ll circle back with holds shortly.";
+        msgs.appendChild(reply);
+        msgs.scrollTop = msgs.scrollHeight;
+      }, 900);
+    });
+  </script>
+</body>
+</html>

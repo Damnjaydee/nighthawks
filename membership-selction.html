@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <header class="membership-header">
+  <img src="assets/logo-white.jpg" alt="Nighthawks Logo" class="membership-logo" />
+</header>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nighthawks – Membership Selection</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="membership-page" style="background-image: url('assets/bg-sunset.jpg'); background-size: cover; background-position: center;">
+  
+  <div class="membership-container">
+
+    <main class="membership-options">
+      <section class="tiers">
+        <div class="tier-card">
+          <h2>Velvet Tier</h2>
+          <p>Access to all events and concierge benefits in NYC and Paris.</p>
+          <button class="select-btn">Choose Velvet</button>
+        </div>
+        <div class="tier-card selected">
+          <h2>Onyx Tier</h2>
+          <p>Premium NYC access, priority bookings, and monthly credits.</p>
+          <button class="select-btn">Choose Onyx</button>
+        </div>
+      </section>
+
+      <aside class="payment-summary">
+        <h3>Choose your payment term</h3>
+        <label>
+          <input type="radio" name="payment-term" checked> Quarterly
+        </label>
+        <label>
+          <input type="radio" name="payment-term"> Annually
+        </label>
+        
+        <div class="fee-details">
+          <p><strong>Intro Fee:</strong> $1,000.00</p>
+          <p class="note">Converted to member credit usable for bookings</p>
+          <p class="total"><strong>Total:</strong> $4,500.00</p>
+        </div>
+
+        <button class="continue-btn">Continue</button>
+      </aside>
+    </main>
+  </div>
+
+</body>
+</html>

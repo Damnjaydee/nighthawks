@@ -1,0 +1,262 @@
+/* ================================
+   GLOBAL / RESET
+================================== */
+:root {
+  /* Theme tokens */
+  --nhx-bg: #000;
+  --nhx-text: #fff;
+  --nhx-muted: #bdbdbd;
+  --nhx-soft: rgba(255,255,255,.06);
+  --nhx-soft-2: rgba(255,255,255,.12);
+  --nhx-glass: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  --nhx-border: 1px solid rgba(255,255,255,.14);
+  --nhx-radius: 18px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--nhx-text);
+  background: var(--nhx-bg); /* default; override per page */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, .form-title {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  color: var(--nhx-text);
+}
+
+/* Utility spacing for pages below nav */
+.nav-offset { padding-top: 120px; }
+
+/* ================================
+   NAVIGATION (Unified)
+================================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  background: linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,0));
+  backdrop-filter: blur(10px);
+}
+
+.nav-logo img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+.nav-links { display: flex; gap: 28px; }
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: .85;
+  transition: opacity .2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active { opacity: 1; }
+
+/* ================================
+   PAGE BACKGROUNDS
+================================== */
+body.home-landing {
+  background: url("assets/bg-morning.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+body.membership-landing {
+  background: url("assets/membership-bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1;
+}
+
+/* ================================
+   CENTERED HERO LAYOUT
+================================== */
+.hero-center {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+  max-width: 90%;
+}
+
+.hero-logo {
+  width: 240px;
+  max-width: 80vw;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 10px rgba(0,0,0,.5));
+}
+
+.tagline {
+  font-size: 18px;
+  font-weight: 300;
+  color: #eaeaea;
+  margin-bottom: 30px;
+  letter-spacing: .4px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cta-buttons a,
+.cta-buttons button {
+  padding: .75rem 1.5rem;
+  font-size: .95rem;
+  border: none;
+  border-radius: 50px;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color .3s ease, transform .15s ease;
+}
+.cta-buttons a:hover,
+.cta-buttons button:hover {
+  background-color: #e4e4e4;
+  transform: translateY(-1px);
+}
+
+/* Secondary glass button variant (optional) */
+.btn-glass {
+  background: var(--nhx-soft);
+  border: var(--nhx-border);
+  color: #fff;
+}
+.btn-glass:hover { background: rgba(255,255,255,.12); }
+
+/* ================================
+   MEMBERSHIP SECTION (centered)
+================================== */
+.membership-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 60px 20px;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+}
+
+.membership-container h1 {
+  font-family: 'DM Serif Display', serif;
+  margin-bottom: 20px;
+}
+
+.membership-button {
+  background: #fff; color: #000;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color .3s ease;
+  display: inline-block;
+}
+.membership-button:hover { background-color: #f0f0f0; }
+
+/* ================================
+   FORMS / APPLICATION
+================================== */
+.application-form-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 40px 20px;
+  background: rgba(255,255,255,.05);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.application-form-container label {
+  font-size: 14px; color: #ccc;
+}
+
+.application-form-container input,
+.application-form-container select,
+.application-form-container textarea {
+  margin-bottom: 20px;
+  padding: 12px; font-size: 14px;
+  border-radius: 5px; border: 1px solid #333;
+  background: #1a1a1a; color: #fff;
+}
+
+.application-form-container button {
+  background: #fff; color: #000;
+  padding: 14px; font-size: 15px;
+  border: none; border-radius: 5px;
+  cursor: pointer;
+}
+.application-form-container button:hover { background: #ccc; }
+
+/* ================================
+   DASHBOARD POLISH (optional re-use)
+================================== */
+body.dashboard-page{
+  background: url("assets/bg-membership.jpg") center 30% / cover no-repeat fixed;
+  position: relative;
+}
+body.dashboard-page::before{
+  content:"";
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,.55), rgba(0,0,0,0) 28%),
+    radial-gradient(120% 120% at 50% 60%, rgba(0,0,0,0) 0%, rgba(0,0,0,.35) 70%, rgba(0,0,0,.55) 100%);
+  pointer-events: none;
+}
+
+.dashboard-container{
+  width: min(1100px, 92vw);
+  margin: 140px auto 60px;
+  position: relative; z-index: 1;
+}
+.dashboard-card{
+  background: var(--nhx-glass);
+  border: var(--nhx-border);
+  border-radius: var(--nhx-radius);
+  padding: 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.28);
+}
+.dashboard-card h3{
+  margin: 0 0 8px;
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+}
+
+/* ================================
+   RESPONSIVE
+================================== */
+@media (max-width: 900px) {
+  .nav { padding: 14px 18px; }
+  .nav-logo img { height: 34px; }
+  .nav-links { gap: 18px; }
+}
+
+@media (max-width: 768px) {
+  .cta-buttons { flex-direction: column; }
+}

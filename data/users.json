@@ -1,0 +1,10 @@
+[
+  {
+    "id": "a522e030-6647-4fc9-af3c-9a68d952ef85",
+    "email": "founder@yourdomain.com",
+    "name": "Founder",
+    "role": "admin",
+    "passwordHash": "$2a$12$g8lQLyZlTKJQahAOS7cLeunGuYDkxgMKro3ggP76HAv8kF9hx.vza",
+    "createdAt": "2025-08-16T21:34:21.177Z"
+  }
+]

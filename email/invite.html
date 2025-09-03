@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>INNER CIRCLE — Private Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg:#0b0b0b; --card:#101010; --ink:#f1f1f1; --muted:#a7a7a7;
+      --gold:#d4af37; --line:rgba(212,175,55,.35); --radius:18px;
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0; color:var(--ink); font-family:Inter,ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:
+        radial-gradient(900px 520px at 50% -10%, rgba(212,175,55,.06), transparent 60%),
+        radial-gradient(700px 360px at 110% 110%, rgba(255,255,255,.04), transparent 60%),
+        var(--bg);
+      letter-spacing:.01em;
+    }
+    .wrap{min-height:100%; display:grid; place-items:center; padding:6vh 16px}
+    .card{
+      width:min(880px,92vw); background:var(--card); border-radius:var(--radius);
+      padding:32px 36px 28px; border:1px solid rgba(255,255,255,.06);
+    }
+    .header{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px}
+    .brand{font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(26px,3vw,32px); letter-spacing:.08em}
+    .badge{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
+      padding:6px 10px; border:1px solid var(--line); border-radius:999px}
+    h1{font-family:"Playfair Display",serif; font-weight:700; margin:12px 0 8px; font-size:clamp(22px,2.4vw,28px)}
+    .lede{color:var(--muted); font-size:15.5px; line-height:1.55; max-width:64ch; margin-bottom:16px}
+    .code-label{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted)}
+    .code-text{margin:4px 0 12px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:16px; letter-spacing:.16em; color:var(--gold)}
+    .btn{appearance:none; border:1px solid var(--line); cursor:pointer; padding:12px 22px; border-radius:999px; color:var(--ink);
+      font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:12.5px; background:
+      radial-gradient(120% 140% at 50% -40%, rgba(255,255,255,.18), rgba(255,255,255,0)),
+      linear-gradient(180deg, rgba(212,175,55,.28), rgba(212,175,55,.16));}
+    .btn:hover{filter:saturate(1.05)}
+    hr{margin:18px 0 10px; border:none; height:1px; background:linear-gradient(90deg,transparent, rgba(255,255,255,.12), transparent)}
+    .meta{color:var(--muted); font-size:13px; letter-spacing:.03em; display:flex; justify-content:space-between}
+    .err{color:#ffbcbc; margin-top:6px; min-height:1.2em}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="card" role="region" aria-labelledby="title">
+      <header class="header">
+        <div class="brand">INNER CIRCLE</div>
+        <div class="badge" aria-label="Private Access">Private Access</div>
+      </header>
+
+      <h1 id="title">An evening above the city.</h1>
+      <p class="lede">
+        Hi <span id="guestName">Guest</span>, you’re invited to a Mediterranean-inspired dinner on the 50th floor of a private residence overlooking New York. 
+        Capacity is strictly limited — confirm below using your private access.
+      </p>
+
+      <div class="code-label">Access Code</div>
+      <div id="guestCode" class="code-text">—</div>
+      <button class="btn" id="goRsvp">RSVP</button>
+      <div id="err" class="err" role="alert" aria-live="polite"></div>
+
+      <hr/>
+      <div class="meta">
+        <div>Date</div>
+        <div>{{DATE}}</div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const name = (qs.get('name')||'').trim();
+    const codeRaw = (qs.get('code')||'').trim();
+    const normalize = s => String(s).replace(/[–—−]/g,'-').replace(/\s+/g,'').toUpperCase();
+
+    const code = normalize(codeRaw);
+    if (name) document.getElementById('guestName').textContent = name;
+    document.getElementById('guestCode').textContent = code || '—';
+
+    const btn = document.getElementById('goRsvp');
+    const err = document.getElementById('err');
+
+    btn.addEventListener('click', () => {
+      err.textContent = '';
+      if (!code) {
+        err.textContent = 'This link is missing a code.';
+        return;
+      }
+      const url = new URL('/rsvp.html', location.origin);
+      if (name) url.searchParams.set('name', name);
+      url.searchParams.set('code', code);
+      location.href = url.toString();
+    });
+  </script>
+</body>
+</html>

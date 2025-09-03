@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nighthawks — RSVP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{ --ink:#eae7df; --paper:#0b0b0b; --line:rgba(234,231,223,.18); --gold:#bda874; --error:#ffbcbc }
+    *{ box-sizing:border-box }
+    body{ margin:0; background:var(--paper); color:var(--ink); font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif }
+    .wrap{ max-width:720px; margin:72px auto; padding:0 20px }
+    h1,h2{ font-family:"Bodoni Moda","DM Serif Display",serif; letter-spacing:.2px; margin:0 0 12px }
+    form{ border:1px solid var(--line); border-radius:16px; padding:24px; background:rgba(255,255,255,.02); backdrop-filter:saturate(130%) blur(4px) }
+    fieldset{ border:0; padding:0; margin:0 0 16px }
+    label{ display:block; font-size:14px; opacity:.9; margin:0 0 6px }
+    input,textarea,select{ width:100%; padding:12px 14px; background:#0e0e0e; border:1px solid var(--line); border-radius:12px; color:var(--ink) }
+    .row{ display:grid; gap:12px; grid-template-columns:1fr 1fr }
+    .muted{ opacity:.8; font-size:14px }
+    .pill{ display:inline-block; padding:10px 16px; border:1px solid var(--line); border-radius:999px; cursor:pointer }
+    .choices{ display:flex; gap:10px; flex-wrap:wrap }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border-radius:12px; background:var(--gold); color:#0b0b0b; font-weight:600; border:0; cursor:pointer }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed }
+    .msg{ margin-top:14px; min-height:20px; font-size:14px }
+    .msg.error{ color:var(--error) }
+    .card{ border:1px solid var(--line); border-radius:16px; padding:28px; background:rgba(255,255,255,.03); text-align:center }
+    .check{ font-size:42px; line-height:1; }
+    .hr{ height:1px; background:var(--line); margin:18px 0 }
+  </style>
+</head>
+<body>
+  <main class="wrap" id="app">
+    <h1>RSVP</h1>
+
+    <!-- Replace IDs/field names if your form differs -->
+    <form id="rsvpForm" novalidate>
+      <fieldset class="row">
+        <div>
+          <label for="firstname">First name</label>
+          <input id="firstname" name="firstname" autocomplete="given-name" required />
+        </div>
+        <div>
+          <label for="lastname">Last name</label>
+          <input id="lastname" name="lastname" autocomplete="family-name" required />
+        </div>
+      </fieldset>
+
+      <fieldset class="row">
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" />
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label>How should we notify you?</label>
+        <div class="choices">
+          <label class="pill"><input type="radio" name="notify" value="email"> &nbsp;Email</label>
+          <label class="pill"><input type="radio" name="notify" value="text"> &nbsp;Text</label>
+          <label class="pill"><input type="radio" name="notify" value="both"> &nbsp;Both</label>
+        </div>
+        <div class="muted" style="margin-top:6px">If you pick email/text, please provide that contact above.</div>
+      </fieldset>
+
+      <fieldset class="row">
+        <div>
+          <label for="plus">Plus One?</label>
+          <select id="plus" name="plus">
+            <option value="no" selected>No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div>
+          <label for="guestsName">Guest name (optional)</label>
+          <input id="guestsName" name="guestsName" />
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <label for="notes">Notes (allergies, arrival window, etc.)</label>
+        <textarea id="notes" name="notes" rows="4"></textarea>
+      </fieldset>
+
+      <button id="submitBtn" class="btn" type="submit">Confirm RSVP</button>
+      <div id="rsvpMessage" class="msg" role="status" aria-live="polite"></div>
+    </form>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById('rsvpForm');
+      const btn  = document.getElementById('submitBtn');
+      const msg  = document.getElementById('rsvpMessage');
+      const app  = document.getElementById('app');
+
+      const setMsg = (text, isError=false) => {
+        msg.textContent = text || '';
+        msg.classList.toggle('error', !!isError);
+      };
+
+      const getNotify = () => {
+        const el = form.querySelector('input[name="notify"]:checked');
+        return el ? el.value : '';
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setMsg('');
+        btn.disabled = true;
+
+        // Gather values
+        const data = Object.fromEntries(new FormData(form).entries());
+        data.notify = getNotify(); // radios aren’t included by FormData if none is checked
+
+        // Basic validation mirroring your original code
+        if (!data.notify) {
+          setMsg('Choose how we should notify you.', true);
+          btn.disabled = false; return;
+        }
+        if ((data.notify === 'email' || data.notify === 'both') && !data.email) {
+          setMsg('Please provide an email.', true);
+          btn.disabled = false; return;
+        }
+        if ((data.notify === 'text' || data.notify === 'both') && !data.phone) {
+          setMsg('Please provide a phone number.', true);
+          btn.disabled = false; return;
+        }
+
+        // Build payload expected by your API (adjust keys to match your backend)
+        const payload = {
+          code:           data.code || '',          // keep if you use access codes
+          firstname:      (data.firstname || '').trim(),
+          lastname:       (data.lastname  || '').trim(),
+          guestname:      (data.guestsName || '').trim(),
+          plus:           data.plus || 'no',
+          notify:         data.notify,              // "email" | "text" | "both"
+          email:          (data.email || '').trim(),
+          phone:          (data.phone || '').trim(),
+          notes:          (data.notes || '').trim(),
+          date:           new Date().toISOString()
+        };
+
+        try {
+          setMsg('Saving your RSVP…');
+          const res = await fetch('/api/rsvp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          // You can return { ok: true, eventTitle, eventWhen, eventWhere } from your API if desired
+          const out = await res.json().catch(() => ({}));
+          if (!res.ok || out.error) throw new Error(out.error || 'RSVP failed');
+
+          // Success → swap the form for a confirmation card
+          const eventTitle = out.eventTitle || 'Your RSVP';
+          const eventWhen  = out.eventWhen  || '';
+          const eventWhere = out.eventWhere || '';
+
+          app.innerHTML = `
+            <div class="card" role="status" aria-live="polite">
+              <div class="check">✔</div>
+              <h2>RSVP confirmed</h2>
+              <p>We’ll send you the event details${payload.notify === 'email' ? ' via email' : payload.notify === 'text' ? ' via text' : ' via email and text'}.</p>
+              <div class="hr"></div>
+              <p class="muted"><strong>${eventTitle}</strong><br>${[eventWhen, eventWhere].filter(Boolean).join(' • ')}</p>
+            </div>
+          `;
+        } catch (err) {
+          console.error(err);
+          setMsg('We couldn’t save your RSVP. Please try again in a moment.', true);
+          btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

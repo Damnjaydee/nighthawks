@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nighthawks — Apply for Membership</title>
+  <meta name="description" content="Apply to join Nighthawks, a private members society and concierge in New York City." />
+  <meta name="theme-color" content="#0b0b0b" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
+      --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+
+    /* Backdrop image (no 'fixed' for better mobile perf) */
+    .backdrop{position:fixed; inset:0; z-index:-2; background:url("assets/bg-membership.jpg") center/cover no-repeat}
+    .backdrop::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.78) 40%, rgba(0,0,0,.92))}
+
+    /* NAV */
+    .nav{position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)}
+    .nav-inner{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
+    .brand img{height:24px; width:auto}
+    .brand span{letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85}
+    .links{display:none; gap:24px; align-items:center}
+    .links a{color:rgba(255,255,255,.85); text-decoration:none; font-size:14px}
+    .links a:hover{color:#fff}
+    .cta{background:#fff; color:#000; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; white-space:nowrap}
+
+    /* Burger */
+    .burger{display:flex; flex-direction:column; gap:4px; background:transparent; border:0}
+    .burger span{display:block; width:22px; height:2px; background:#fff; transition:.25s}
+    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile{display:none; position:fixed; top:52px; left:0; right:0; background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50}
+    .mobile a{display:block; padding:12px 16px; color:#fff; text-decoration:none}
+    .mobile .cta{margin:8px 16px 12px; display:inline-block}
+    .mobile.open{display:block}
+
+    /* Page */
+    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 64px}
+    .container{max-width:760px; margin:28px auto; background:var(--soft); border:1px solid var(--line); border-radius:16px; backdrop-filter:blur(8px); padding:22px}
+    h1{font-family:"DM Serif Display",serif; font-weight:400; margin:6px 0 2px; font-size:28px}
+    .hint{font-size:.92rem; color:var(--muted); margin:8px 0 0}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px}
+    .row-2{grid-column:1 / -1}
+
+    label{display:block; margin-bottom:6px; font-size:.95rem; color:#f3f3f3}
+    input, select, textarea{
+      width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--line);
+      background:rgba(0,0,0,.55); color:#fff; font-size:16px; -webkit-appearance:none; appearance:none;
+    }
+    input::placeholder, textarea::placeholder{color:rgba(255,255,255,.55)}
+    textarea{min-height:120px; resize:vertical}
+
+    /* Headshot preview */
+    .headshot-preview{width:120px; height:120px; border-radius:50%; overflow:hidden; background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:var(--muted); margin-top:10px}
+
+    /* Buttons & status */
+    .actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:8px}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:12px 18px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#000; font-weight:600; text-decoration:none; cursor:pointer; transition:background .2s ease, transform .2s ease, border-color .2s ease}
+    .btn:hover{background:#eaeaea; transform:translateY(-1px)}
+    .btn:disabled{opacity:.6; cursor:not-allowed; transform:none}
+    .status{font-size:.92rem; color:var(--muted)}
+    .status.ok{color:#a7f3d0}
+    .status.err{color:#fecaca}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .links{display:none}
+      .burger{display:flex}
+      .grid{grid-template-columns:1fr}
+      h1{font-size:26px}
+    }
+    @media (min-width: 901px){
+      .burger{display:none}
+      .links{display:flex}
+      .mobile{display:none!important}
+      h1{font-size:32px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .burger span{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html" aria-label="Nighthawks home">
+        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <span>NIGHTHAWKS</span>
+      </a>
+
+      <nav class="links" aria-label="Primary">
+        <!-- Home intentionally removed -->
+        <a href="request.html">Request</a>
+        <a href="membership.html" aria-current="page">Membership</a>
+        <a href="about.html">About</a>
+        <a href="login.html">Login</a>
+      </nav>
+
+      <a class="cta" href="signup.html">Apply</a>
+
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <nav class="mobile" id="mobile-nav" aria-label="Mobile">
+      <a href="request.html">Request</a>
+      <a href="membership.html" aria-current="page">Membership</a>
+      <a href="about.html">About</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html" class="cta">Apply</a>
+    </nav>
+  </header>
+
+  <!-- FORM -->
+  <main class="wrap">
+    <div class="container">
+      <h1>Apply for Membership</h1>
+      <p class="hint">Fields marked * are required.</p>
+
+      <form id="membershipForm" novalidate>
+        <div class="grid">
+          <div>
+            <label for="fullName">Full Name*</label>
+            <input id="fullName" name="fullName" type="text" required autocomplete="name" placeholder="First & Last Name" />
+          </div>
+
+          <div>
+            <label for="birthDate">Date of Birth*</label>
+            <input id="birthDate" name="birthDate" type="date" required />
+          </div>
+
+          <div>
+            <label for="email">Email*</label>
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
+          </div>
+
+          <div>
+            <label for="phone">Mobile*</label>
+            <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(xxx) xxx-xxxx" />
+          </div>
+
+          <div>
+            <label for="streetAddress">Street Address*</label>
+            <input id="streetAddress" name="streetAddress" type="text" required autocomplete="street-address" />
+          </div>
+
+          <div>
+            <label for="city">City*</label>
+            <input id="city" name="city" type="text" required autocomplete="address-level2" />
+          </div>
+
+          <div>
+            <label for="state">State / Province*</label>
+            <input id="state" name="state" type="text" required autocomplete="address-level1" />
+          </div>
+
+          <div>
+            <label for="country">Country*</label>
+            <select id="country" name="country" required>
+              <option value="" selected disabled>Select…</option>
+              <option>United States</option>
+              <option>Canada</option>
+              <option>United Kingdom</option>
+              <option>France</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="row-2">
+            <label for="headshot">Headshot*</label>
+            <input id="headshot" name="headshot" type="file" accept="image/*" required />
+            <div class="headshot-preview" id="headshotPreview">Preview</div>
+            <p class="hint">Your image is uploaded securely with a one-time link.</p>
+          </div>
+
+          <div>
+            <label for="companyName">Company Name*</label>
+            <input id="companyName" name="companyName" type="text" required />
+          </div>
+
+          <div>
+            <label for="industry">Industry*</label>
+            <input id="industry" name="industry" type="text" required />
+          </div>
+
+          <div class="row-2">
+            <label for="role">Your Role / Function*</label>
+            <input id="role" name="role" type="text" required />
+          </div>
+
+          <div class="row-2">
+            <label for="bio">Your Bio*</label>
+            <textarea id="bio" name="bio" rows="4" required placeholder="Short paragraph on background and interests…"></textarea>
+          </div>
+
+          <div class="row-2">
+            <label for="social">Social Networks</label>
+            <input id="social" name="social" type="text" placeholder="Instagram, LinkedIn, website…" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn" id="submitBtn">Submit Application</button>
+          <span id="formStatus" class="status" role="status" aria-live="polite"></span>
+        </div>
+
+        <p class="hint" style="text-align:center;margin-top:10px;">By submitting, you agree we may contact you regarding your application.</p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="wrap" style="padding: 12px 16px 32px; text-align:center; color:rgba(255,255,255,.7);">
+    © <span id="year"></span> Nighthawks. All rights reserved.
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const mobile = document.getElementById('mobile-nav');
+    burger.addEventListener('click', () => {
+      const open = mobile.classList.toggle('open');
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Headshot preview
+    document.getElementById('headshot').addEventListener('change', (event) => {
+      const preview = document.getElementById('headshotPreview');
+      preview.innerHTML = '';
+      const file = event.target.files && event.target.files[0];
+      if (file) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        img.onload = () => URL.revokeObjectURL(img.src);
+        preview.appendChild(img);
+      } else {
+        preview.textContent = 'Preview';
+      }
+    });
+
+    // S3 presigned upload
+    async function uploadHeadshot(file) {
+      if (!file) return '';
+      const presignRes = await fetch('/api/uploads/presign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName: file.name, fileType: file.type, folder: 'headshots' })
+      });
+      const { ok, uploadUrl, key, error } = await presignRes.json();
+      if (!ok) throw new Error(error || 'Failed to prepare upload');
+      await fetch(uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+      return key; // store this in the application
+    }
+
+    // Submit to API
+    (function () {
+      const form = document.getElementById('membershipForm');
+      const statusEl = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+
+      function setStatus(msg, cls=''){ statusEl.textContent = msg; statusEl.className = 'status ' + (cls || ''); }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setStatus('Submitting…'); submitBtn.disabled = true;
+
+        try {
+          const fd = new FormData(form);
+
+          // simple client-side required checks
+          const required = ['fullName','birthDate','email','phone','streetAddress','city','state','country','companyName','industry','role','bio','headshot'];
+          for (const k of required) {
+            if (!fd.get(k) || (fd.get(k) instanceof File && !fd.get(k).size)) {
+              setStatus('Please complete all required fields.', 'err'); submitBtn.disabled = false; return;
+            }
+          }
+
+          // Upload headshot first
+          const headshotFile = fd.get('headshot');
+          const headshotKey = await uploadHeadshot(headshotFile);
+
+          const payload = {
+            fullName: (fd.get('fullName')||'').toString().trim(),
+            birthDate: fd.get('birthDate'),
+            email: (fd.get('email')||'').toString().trim(),
+            phone: (fd.get('phone')||'').toString().trim(),
+            streetAddress: (fd.get('streetAddress')||'').toString().trim(),
+            city: (fd.get('city')||'').toString().trim(),
+            state: (fd.get('state')||'').toString().trim(),
+            country: fd.get('country'),
+            companyName: (fd.get('companyName')||'').toString().trim(),
+            industry: (fd.get('industry')||'').toString().trim(),
+            role: (fd.get('role')||'').toString().trim(),
+            bio: (fd.get('bio')||'').toString().trim(),
+            social: (fd.get('social')||'').toString().trim(),
+            headshotKey
+          };
+
+          const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+
+          if (res.ok && (json.ok || json.status === 'ok')) {
+            setStatus('Application received. Redirecting…', 'ok');
+            window.location.href = 'signup-success.html';
+          } else {
+            setStatus(json.error || 'Something went wrong.', 'err');
+          }
+        } catch (err) {
+          setStatus(err?.message || 'Network error. Please try again.', 'err');
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

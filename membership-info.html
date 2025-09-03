@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nighthawks House — Apply to Join</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#000;--text:#fff;--muted:#bdbdbd;--soft:rgba(255,255,255,.06);--soft2:rgba(255,255,255,.12)}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#000;
+      color:#fff;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+    }
+    /* Match form font */
+    h1,h2,h3{
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      font-weight:600;
+    }
+    a{color:#fff;text-decoration:none}
+
+    /* Nav */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;gap:28px;padding:24px 30px;background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,0))}
+
+    /* Hero */
+    .hero{
+      min-height:54vh;display:flex;align-items:center;justify-content:center;
+      padding:120px 20px 40px;
+      background:url('assets/bg-membership.jpg') center 30% / cover no-repeat fixed;
+      position:relative;
+    }
+    .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,0) 28%)}
+    .hero-inner{position:relative;z-index:1;text-align:center;max-width:900px}
+    .eyebrow{letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-size:.82rem}
+    .lede{color:var(--muted);max-width:760px;margin:8px auto 0}
+
+    /* Cards grid */
+    .wrap{
+      width:min(1100px,92vw);
+      margin:-120px auto 80px;
+      display:grid;grid-template-columns:1.35fr .9fr;gap:28px
+    }
+    .card{
+      border:1px solid var(--soft2);border-radius:18px;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+      backdrop-filter:blur(6px);padding:26px
+    }
+    .card h3{margin:0 0 8px}
+    .copy{color:#ddd;line-height:1.65}
+    .list{display:grid;gap:10px;color:#ddd;margin:10px 0}
+    .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.55rem;padding:12px 18px;border-radius:999px;border:1px solid var(--soft2)}
+    .primary{background:#fff;color:#000;border-color:#fff}.primary:hover{background:#eaeaea}
+    .ghost{background:transparent;color:#fff}.ghost:hover{background:rgba(255,255,255,.12)}
+
+    @media (max-width: 960px){.wrap{grid-template-columns:1fr}}
+
+    /* Raise the info cards into the hero (SAA-style overlap) */
+    .hero { padding: 96px 0 0; }
+    .hero-inner { padding-bottom: 24px; }
+    @media (min-width: 1100px){ .wrap{ margin-top: -140px; } }
+    @media (max-width: 900px){
+      .hero { padding: 88px 0 16px; }
+      .wrap { margin: -60px auto 60px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" aria-label="Nighthawks home"><img src="assets/logo-white.jpg" alt="Nighthawks" height="22"></a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <h1 style="margin:6px 0 4px;">Apply to Join</h1>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Left: ethos & what you receive -->
+    <section class="card">
+      <h3>What you receive</h3>
+      <div class="copy">
+        <p>Membership is limited and invitation-first. We prioritize members with a taste for exceptional evenings and discretion. Benefits include:</p>
+        <ul class="list">
+          <li>Priority holds and tables across select restaurants, lounges, and private rooms.</li>
+          <li>Discreet, on-call concierge for nights out and last-minute plans.</li>
+          <li>Access to invitation-only moments curated by the Nighthawks team.</li>
+        </ul>
+        <div class="cta">
+          <a class="btn primary" href="signup.html" aria-label="Proceed to application">Proceed to Application</a>
+          <a class="btn ghost" href="login.html">Member Login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: at a glance / notes -->
+    <aside class="card">
+      <h3>At a glance</h3>
+      <ul class="list">
+        <li>Invitation-only, limited membership.</li>
+        <li>Application review: rolling basis.</li>
+        <li>City focus: New York.</li>
+        <li>Discretion is standard.</li>
+      </ul>
+      <p class="copy" style="color:#bdbdbd;margin-top:6px;">
+        We review each submission individually. If accepted, we’ll contact you with next steps.
+      </p>
+    </aside>
+  </main>
+</body>
+</html>

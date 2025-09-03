@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inner Circle — RSVP Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@7..96,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{ --ink:#eae7df; --paper:#0b0b0b; --line:rgba(234,231,223,.18); --gold:#bda874; --error:#ffbcbc }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:'Inter',system-ui,Arial,sans-serif; display:grid; place-items:center;
+    }
+    .card{ width:min(520px,92vw); background:rgba(255,255,255,.03);
+           border:1px solid var(--line); border-radius:20px; padding:32px 34px;
+           backdrop-filter: blur(8px) saturate(120%); box-shadow:0 18px 60px rgba(0,0,0,.45); }
+    .mast{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+    .wordmark{ font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:.08em; }
+    .smallcaps{ text-transform:uppercase; font-size:.72rem; letter-spacing:.22em; opacity:.75 }
+    h1{font-family:'Bodoni Moda',serif; font-size:1.25rem; margin:6px 0 12px}
+    .lede{opacity:.8; margin:0 0 16px; font-size:.95rem; line-height:1.55}
+    .prefill{margin-bottom:10px; font-size:.9rem; opacity:.9}
+    .code-view{font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--gold); letter-spacing:.14em}
+
+    label{font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; opacity:.75}
+    input{
+      width:100%; background:transparent; color:var(--ink); font-size:1rem;
+      border:none; border-bottom:1px solid var(--line); padding:12px 2px 8px 2px; outline:none;
+    }
+    input:focus{ border-bottom-color:var(--gold) }
+
+    .btn{ margin-top:16px; width:100%; padding:12px 14px; border-radius:12px;
+          border:1px solid var(--ink); background:transparent; color:var(--ink);
+          text-transform:uppercase; letter-spacing:.12em; font-weight:600; cursor:pointer; }
+    .btn:hover{ background:var(--ink); color:#111 }
+    .err{ min-height:1.2em; margin-top:8px; color:var(--error) }
+    .note{ margin-top:12px; opacity:.75; font-size:.9rem }
+  </style>
+</head>
+<body>
+  <section class="card" role="main">
+    <div class="mast">
+      <div class="wordmark">Inner Circle</div>
+      <div class="smallcaps">Private Access</div>
+    </div>
+
+    <h1>Enter your access code</h1>
+    <p class="lede">
+      This page verifies your invitation. Once accepted, you’ll be guided to confirm your RSVP.
+    </p>
+
+    <div id="prefill" class="prefill" style="display:none">
+      For <span id="guestName" class="code-view"></span> — code <span id="codeView" class="code-view"></span>
+    </div>
+
+    <label for="code">Access Code</label>
+    <input id="code" placeholder="IC-XXXXX" autocomplete="one-time-code" autofocus />
+    <button id="go" class="btn">Continue</button>
+    <div id="err" class="err" role="alert" aria-live="polite"></div>
+    <div class="note"><em>Invitation only. Do not forward.</em></div>
+  </section>
+
+  <script>
+    // --- Prefill from URL ---
+    const qs = new URLSearchParams(location.search);
+    const name = (qs.get('name') || '').trim();
+    const codeParam = (qs.get('code') || '').trim().toUpperCase();
+
+    if (name || codeParam) {
+      document.getElementById('prefill').style.display = 'block';
+      if (name) document.getElementById('guestName').textContent = name;
+      document.getElementById('codeView').textContent = codeParam || '—';
+    }
+    if (codeParam) document.getElementById('code').value = codeParam;
+
+    // --- Codes (simplified for now, adjust as needed) ---
+    const VALID = new Set([
+      'IC-7GQ9A','IC-J2P6M','IC-X8L4T','IC-M3Z2Q','IC-R9V7B',
+      'IC-Q6N8D','IC-A5K9Y','IC-H4S3C','IC-U2E5J','IC-P7B1W',
+      'IC-T6C8R','IC-L9D2F','IC-E3H7N','IC-V5Q1K','IC-N8M4Z',
+      'IC-K2W6X','IC-Z1Y8G','IC-D4R7P','IC-S3F9L','IC-B6J2T',
+      'IC-Y8Q5A','IC-G7H1M','IC-C5V9E','IC-W2K7U','IC-F9N3D',
+      'IC-O4P6H','IC-R1S8C','IC-T3L5V','IC-M7A2Q','IC-Q9X4J'
+    ].map(c => c.toLowerCase()));
+
+    const input = document.getElementById('code');
+    const err = document.getElementById('err');
+
+    document.getElementById('go').addEventListener('click', handle);
+    input.addEventListener('keyup', e => { if (e.key === 'Enter') handle(); });
+
+    function handle(){
+      err.textContent = '';
+      const c = input.value.trim().toUpperCase();
+      if (!c) { err.textContent = 'Please enter your code.'; return; }
+      const formatOK = /^[A-Za-z]{2}-[A-Za-z0-9]{5}$/.test(c);
+      const inList = VALID.has(c.toLowerCase());
+      if (!formatOK || !inList) { err.textContent = 'Invalid code.'; return; }
+
+      const next = new URL('/rsvp-form.html', location.origin);
+      next.searchParams.set('code', c);
+      if (name) next.searchParams.set('name', name);
+      location.href = next.toString();
+    }
+  </script>
+</body>
+</html>

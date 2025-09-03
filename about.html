@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>About — Nighthawks Concierge</title>
+  <meta name="description" content="Nighthawks — a private members society and concierge in New York City." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.12); }
+    *{box-sizing:border-box} html,body{margin:0;padding:0}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+
+    /* Layout */
+    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+    /* Nav (sticky, luxe, mobile-first) */
+    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(12px);
+         background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
+    .nav-inner{height:56px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+    .brand img{width:32px;height:32px;object-fit:contain}
+    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.8}
+    .links{display:none;gap:28px;align-items:center}
+    .links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:14px}
+    .links a:hover{color:#fff}
+    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-size:14px;white-space:nowrap}
+
+    /* Burger (mobile) */
+    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
+    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
+    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile{display:none;position:fixed;top:56px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
+    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
+    .mobile .cta{margin:8px 16px 12px;display:inline-block}
+    .mobile.open{display:block}
+
+    /* Full-screen hero (centered + mobile-safe) */
+    .hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;
+          overflow:hidden;text-align:center;padding:calc(24px + env(safe-area-inset-top)) 0 56px}
+    .hero-bg{position:absolute;inset:0;z-index:-1}
+    .hero-bg img{width:100%;height:100%;object-fit:cover}
+    .hero-bg::after{content:"";position:absolute;inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.40), rgba(0,0,0,.62) 55%, rgba(0,0,0,.85));}
+    .hero .inner{max-width:720px;margin:0 auto;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+    .kicker{font-size:11px;letter-spacing:.35em;text-transform:uppercase;opacity:.78}
+    h1{margin:.55rem 0 0;font-weight:300;font-size:32px;line-height:1.15}
+    .sub{margin:14px auto 0;max-width:720px;color:var(--muted);font-size:15px;line-height:1.55}
+
+    /* Footer (copyright only) */
+    .foot{border-top:1px solid var(--line)}
+    .copyright{padding:22px 0;text-align:center;color:rgba(255,255,255,.72);font-size:14px}
+
+    /* Desktop */
+    @media(min-width:768px){
+      .nav-inner{height:64px}
+      .links{display:flex}
+      .burger{display:none}
+      .mobile{display:none!important}
+      h1{font-size:48px}
+      .sub{font-size:17px}
+      .hero{padding:calc(32px + env(safe-area-inset-top)) 0 72px}
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .burger span{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <span>Nighthawks</span>
+      </a>
+
+      <nav class="links" aria-label="Primary">
+        <a href="request.html">Request</a>
+        <a href="membership.html">Membership</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="press.html">Press</a>
+        <a href="login.html">Login</a>
+      </nav>
+
+      <a href="signup.html" class="cta">Apply</a>
+
+      <!-- Mobile burger -->
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile" id="mobile-nav">
+      <a href="request.html">Request</a>
+      <a href="membership.html">Membership</a>
+      <a href="about.html" aria-current="page">About</a>
+      <a href="press.html">Press</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html" class="cta">Apply</a>
+    </div>
+  </header>
+
+  <!-- FULL-SCREEN ABOUT HERO -->
+  <section class="hero" role="region" aria-labelledby="about-heading">
+    <div class="hero-bg" aria-hidden="true">
+      <!-- Use your existing asset; swap if you prefer bg-night.jpg/bg-sunrise.jpg -->
+      <img src="assets/bg-sunset.jpg" alt="" />
+    </div>
+    <div class="wrap inner">
+      <h1 id="about-heading">Who We Are</h1>
+      <p class="sub">
+        Nighthawks is a private members society and concierge rooted in discretion and taste.
+        We curate invite-only dinners, one-off cultural activations, and tailored nights out — delivered
+        with seamless planning and white-glove execution.
+      </p>
+    </div>
+  </section>
+
+  <!-- COPYRIGHT ONLY -->
+  <footer class="foot">
+    <div class="wrap">
+      <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const panel  = document.getElementById('mobile-nav');
+    burger.addEventListener('click', () => {
+      const open = panel.classList.toggle('open');
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  </script>
+</body>
+</html>

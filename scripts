@@ -1,0 +1,106 @@
+// scripts/make-invite.js
+// Usage:
+//   node scripts/make-invite.js guest@email.com
+//   node scripts/make-invite.js guest@email.com 7          // custom days
+//   node scripts/make-invite.js --file guests.txt          // one email per line
+//   node scripts/make-invite.js --csv guests.csv email     // CSV + column name
+
+require('dotenv').config();
+const fs = require('fs');
+const crypto = require('crypto');
+const path = require('path');
+
+const SECRET = process.env.INVITE_SIGNING_SECRET || '';
+const BASE   = process.env.INVITE_BASE_URL || 'http://localhost:5000';
+const DAYS   = Number(process.env.INVITE_DAYS || 14);
+
+if (!SECRET) {
+  console.error('ERROR: INVITE_SIGNING_SECRET missing in .env');
+  process.exit(1);
+}
+
+function sign(payloadObj) {
+  const p64 = Buffer.from(JSON.stringify(payloadObj)).toString('base64url');
+  const sig = crypto.createHmac('sha256', SECRET).update(p64).digest('base64url');
+  return `${p64}.${sig}`;
+}
+
+function makeInvite(email, days = DAYS) {
+  const exp = Math.floor(Date.now() / 1000) + days * 86400;
+  const token = sign({ email, exp });
+  return `${BASE.replace(/\/+$/, '')}/invite?t=${token}`;
+}
+
+function isEmail(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s).trim());
+}
+
+// ---------- CLI ----------
+const args = process.argv.slice(2);
+
+async function main() {
+  if (args[0] === '--file' && args[1]) {
+    const file = path.resolve(args[1]);
+    if (!fs.existsSync(file)) {
+      console.error(`File not found: ${file}`);
+      process.exit(1);
+    }
+    const lines = fs.readFileSync(file, 'utf-8').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    console.log(`# Invites from file (${lines.length})`);
+    for (const email of lines) {
+      if (!isEmail(email)) { console.warn(`- skipped (not an email): ${email}`); continue; }
+      console.log(`${email},${makeInvite(email)}`);
+    }
+    return;
+  }
+
+  if (args[0] === '--csv' && args[1] && args[2]) {
+    const csvPath = path.resolve(args[1]);
+    const col = args[2];
+    if (!fs.existsSync(csvPath)) {
+      console.error(`CSV not found: ${csvPath}`);
+      process.exit(1);
+    }
+    const raw = fs.readFileSync(csvPath, 'utf-8');
+    const rows = raw.split(/\r?\n/).filter(Boolean);
+    const header = rows.shift().split(',').map(s => s.trim());
+    const idx = header.indexOf(col);
+    if (idx === -1) {
+      console.error(`Column "${col}" not found. Available: ${header.join(', ')}`);
+      process.exit(1);
+    }
+    console.log(`# Invites from CSV (${rows.length}) using column "${col}"`);
+    for (const r of rows) {
+      const parts = r.split(',').map(s => s.trim());
+      const email = parts[idx] || '';
+      if (!isEmail(email)) { console.warn(`- skipped (not an email): ${email}`); continue; }
+      console.log(`${email},${makeInvite(email)}`);
+    }
+    return;
+  }
+
+  // Single email mode
+  const email = args[0];
+  const days  = args[1] ? Number(args[1]) : DAYS;
+
+  if (!email || !isEmail(email)) {
+    console.log(`Usage:
+  node scripts/make-invite.js guest@email.com [days]
+  node scripts/make-invite.js --file guests.txt
+  node scripts/make-invite.js --csv guests.csv email
+
+Env needed:
+  INVITE_SIGNING_SECRET, INVITE_BASE_URL, INVITE_DAYS
+
+Example:
+  node scripts/make-invite.js vip@domain.com 10`);
+    process.exit(0);
+  }
+
+  console.log(makeInvite(email, days));
+}
+
+main().catch((e) => {
+  console.error('Failed:', e);
+  process.exit(1);
+});
