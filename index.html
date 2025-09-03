@@ -8,70 +8,61 @@
   <title>Nighthawks — Private Concierge</title>
   <meta name="description" content="Nighthawks is a private, invite-only concierge for elite clients in NYC." />
 
-  <!-- Preload the actual hero you have -->
-  <link rel="preload" as="image" href="assets/bg-night.jpg" imagesizes="100vw" />
-
-  <!-- Fonts (optional) -->
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
+  <!-- Preload hero -->
+  <link rel="preload" as="image" href="assets/bg-night.jpg" imagesizes="100vw" />
+
   <style>
-    :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06); }
-    *{box-sizing:border-box} html,body{margin:0;height:100%}
+    :root{
+      --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
+      --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
     body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 
-    /* ===== Unified Header (same as other pages) ===== */
-    .nav{position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)}
-    .nav-inner{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between}
-    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
-    .brand img{height:24px; width:auto}
-    .brand span{letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85}
-    .links{display:none; gap:24px; align-items:center}
-    .links a{color:rgba(255,255,255,.85); text-decoration:none; font-size:14px}
+    /* Header */
+    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(10px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
+    .nav-inner{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+    .brand img{height:24px;width:auto}
+    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
+    .links{display:none;gap:24px;align-items:center}
+    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
     .links a:hover{color:#fff}
-    .cta{background:#fff; color:#000; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; white-space:nowrap}
+    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600;white-space:nowrap}
 
-    /* Burger */
-    .burger{display:flex; flex-direction:column; gap:4px; background:transparent; border:0}
-    .burger span{display:block; width:22px; height:2px; background:#fff; transition:.25s}
+    /* Burger + mobile */
+    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
+    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
     .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
     .burger.open span:nth-child(2){opacity:0}
     .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{display:none; position:fixed; top:52px; left:0; right:0; background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50}
-    .mobile a{display:block; padding:12px 16px; color:#fff; text-decoration:none}
-    .mobile .cta{margin:8px 16px 12px; display:inline-block}
+    .mobile{display:none;position:fixed;top:52px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
+    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
+    .mobile .cta{margin:8px 16px 12px;display:inline-block}
     .mobile.open{display:block}
+    @media (min-width:901px){.burger{display:none}.links{display:flex}.mobile{display:none!important}}
 
-    /* ===== Hero ===== */
-    .hero{position:relative; min-height:100svh; display:grid; place-items:center; overflow:hidden}
-    .hero img.bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-    .hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.75))}
-    .hero-content{position:relative; z-index:1; text-align:center; padding:64px 16px 56px; max-width:780px; filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
-    .hero h1{margin:0 0 10px; font-size:clamp(28px,5vw,56px); font-weight:300; letter-spacing:.01em}
-    .hero p{margin:0 0 16px; color:var(--muted); font-size:clamp(15px,2.6vw,20px); line-height:1.55}
-    .btn-primary{display:inline-block; background:#fff; color:#000; text-decoration:none; padding:12px 18px; border-radius:999px; font-weight:600}
-
-    /* ===== Highlights ===== */
-    .cards{display:grid; gap:14px; grid-template-columns:1fr; padding:28px 16px; max-width:1120px; margin:0 auto}
-    @media (min-width: 740px){ .cards{grid-template-columns:repeat(3,1fr)} }
-    .card{background:var(--soft); border:1px solid var(--line); border-radius:16px; padding:18px; backdrop-filter:blur(6px)}
-    .card h2{margin:0 0 6px; font-weight:500; font-size:1.1rem}
-    .card p{margin:0; color:var(--muted)}
-
-    /* ===== Gallery (uses your assets so nothing 404s) ===== */
-    .gallery{display:grid; gap:10px; padding:10px 16px 32px; max-width:1120px; margin:0 auto}
-    @media (min-width: 740px){ .gallery{grid-template-columns:repeat(3,1fr)} }
-    .gallery img{width:100%; height:auto; border-radius:12px; border:1px solid var(--line); display:block}
+    /* Hero */
+    .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
+    .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.75))}
+    .hero-content{position:relative;z-index:1;text-align:center;padding:64px 16px 56px;max-width:780px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+    .hero h1{margin:0 0 10px;font-size:clamp(28px,5vw,56px);font-weight:300;letter-spacing:.01em}
+    .hero p{margin:0 0 16px;color:var(--muted);font-size:clamp(15px,2.6vw,20px);line-height:1.55}
+    .btn-primary{display:inline-block;background:#fff;color:#000;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:600}
 
     /* Footer */
-    .site-footer{padding:16px; text-align:center; color:rgba(255,255,255,.7); border-top:1px solid var(--line); margin-top:10px}
+    .site-footer{padding:16px;text-align:center;color:rgba(255,255,255,.7);border-top:1px solid var(--line)}
 
-    /* Focus styles */
-    :where(a,button){outline:none}
-    :where(a,button):focus-visible{outline:2px solid #fff; outline-offset:2px; border-radius:10px}
-
-    /* Header breakpoints */
-    @media (max-width: 900px){ .links{display:none} .burger{display:flex} }
-    @media (min-width: 901px){ .burger{display:none} .links{display:flex} .mobile{display:none!important} }
+    /* Focus */
+    :where(a,button){outline:0}
+    :where(a,button):focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:10px}
   </style>
 </head>
 <body>
@@ -84,11 +75,10 @@
       </a>
 
       <nav class="links" aria-label="Primary">
-        <!-- No 'Home' for consistency -->
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
         <a href="about.html">About</a>
-        <a href="press.html">Press</a>
+        <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html">Login</a>
       </nav>
 
@@ -103,20 +93,16 @@
       <a href="request.html">Request</a>
       <a href="membership.html">Membership</a>
       <a href="about.html">About</a>
-      <a href="press.html">Press</a>
+      <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
       <a href="signup.html" class="cta">Apply</a>
     </nav>
   </header>
 
   <main>
-    <!-- Hero with your working background -->
+    <!-- Hero -->
     <section class="hero" aria-label="Intro">
-      <img class="bg"
-           src="assets/bg-night.jpg"
-           alt="NYC night skyline"
-           width="1920" height="1080"
-           loading="eager" decoding="async" fetchpriority="high" />
+      <img class="bg" src="assets/bg-night.jpg" alt="NYC night skyline" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high" />
       <div class="hero-content">
         <h1>Private. Precise. NYC.</h1>
         <p>Invite-only concierge & lifestyle management for athletes and creators.</p>
@@ -141,8 +127,8 @@
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && mobile.classList.contains('open')){
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobile.classList.contains('open')) {
         mobile.classList.remove('open');
         burger.classList.remove('open');
         burger.setAttribute('aria-expanded','false');

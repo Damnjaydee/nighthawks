@@ -127,10 +127,10 @@
       </a>
 
       <nav class="links" aria-label="Primary">
-        <!-- Home removed for consistency -->
         <a href="request.html" aria-current="page">Request</a>
         <a href="membership.html">Membership</a>
         <a href="about.html">About</a>
+        <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html">Login</a>
       </nav>
 
@@ -145,6 +145,7 @@
       <a href="request.html" aria-current="page">Request</a>
       <a href="membership.html">Membership</a>
       <a href="about.html">About</a>
+      <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
       <a href="signup.html" class="cta">Apply</a>
     </nav>
@@ -278,7 +279,6 @@
         submitBtn.disabled = true;
 
         const fd = new FormData(form);
-        // Basic required fields guard (frontend)
         if (!fd.get('fullName') || !fd.get('email') || !fd.get('typeOfRequest')) {
           setStatus('Please fill required fields.', 'err');
           submitBtn.disabled = false;

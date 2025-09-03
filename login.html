@@ -85,10 +85,10 @@
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
         <a href="about.html">About</a>
-        <a href="press.html">Press</a>
-        <a href="login.html" aria-current="page">Login</a>
+        <a href="inner-circle.html">Inner Circle</a>
       </nav>
 
+      <a class="cta" href="signup.html">Apply</a>
 
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
@@ -99,8 +99,8 @@
       <a href="request.html">Request</a>
       <a href="membership.html">Membership</a>
       <a href="about.html">About</a>
-      <a href="press.html">Press</a>
-      <a href="login.html" aria-current="page">Login</a>
+      <a href="inner-circle.html">Inner Circle</a>
+      <a href="signup.html" class="cta">Apply</a>
     </nav>
   </header>
 
@@ -176,7 +176,11 @@
     const signinBtn = document.getElementById('signinBtn');
 
     async function call(path, body){
-      const res = await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const res = await fetch(path,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
       let data={}; try{data=await res.json();}catch(_){}
       return { ok:res.ok, data };
     }

@@ -22,11 +22,11 @@
     .nav-inner{height:56px;display:flex;align-items:center;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
     .brand img{width:32px;height:32px;object-fit:contain}
-    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.8}
+    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
     .links{display:none;gap:28px;align-items:center}
-    .links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:14px}
+    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
     .links a:hover{color:#fff}
-    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-size:14px;white-space:nowrap}
+    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
 
     /* Burger (mobile) */
     .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
@@ -76,16 +76,16 @@
   <!-- NAV -->
   <header class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="index.html">
+      <a class="brand" href="index.html" aria-label="Nighthawks home">
         <img src="assets/logo-white.jpg" alt="Nighthawks" />
-        <span>Nighthawks</span>
+        <span>NIGHTHAWKS</span>
       </a>
 
       <nav class="links" aria-label="Primary">
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
         <a href="about.html" aria-current="page">About</a>
-        <a href="press.html">Press</a>
+        <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html">Login</a>
       </nav>
 
@@ -96,23 +96,24 @@
         <span></span><span></span><span></span>
       </button>
     </div>
-    <div class="mobile" id="mobile-nav">
+    <nav class="mobile" id="mobile-nav" aria-label="Mobile">
       <a href="request.html">Request</a>
       <a href="membership.html">Membership</a>
       <a href="about.html" aria-current="page">About</a>
-      <a href="press.html">Press</a>
+      <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
       <a href="signup.html" class="cta">Apply</a>
-    </div>
+    </nav>
   </header>
 
   <!-- FULL-SCREEN ABOUT HERO -->
   <section class="hero" role="region" aria-labelledby="about-heading">
     <div class="hero-bg" aria-hidden="true">
-      <!-- Use your existing asset; swap if you prefer bg-night.jpg/bg-sunrise.jpg -->
+      <!-- Swap to your preferred asset if needed -->
       <img src="assets/bg-sunset.jpg" alt="" />
     </div>
     <div class="wrap inner">
+      <div class="kicker">ABOUT</div>
       <h1 id="about-heading">Who We Are</h1>
       <p class="sub">
         Nighthawks is a private members society and concierge rooted in discretion and taste.
@@ -140,6 +141,13 @@
       const open = panel.classList.toggle('open');
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+      }
     });
   </script>
 </body>
