@@ -1,0 +1,118 @@
+/* Google Fonts (must be first) */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant:wght@500;600&display=swap");
+
+/* -------------------------------------------
+   Nighthawks Dashboard — Global Styles
+   Tailwind + luxury editorial base
+-------------------------------------------- */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----- CSS Variables (theme) ----- */
+:root {
+  --bg: #0b0b0b;            /* deep charcoal */
+  --ink: #ffffff;           /* primary text */
+  --muted: rgba(255,255,255,.72);
+  --line: rgba(255,255,255,.14);
+  --soft: rgba(255,255,255,.06);
+  --gold: #c4a15a;          /* subtle accent if needed */
+}
+
+/* ----- Base Reset / Aesthetic ----- */
+@layer base {
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI",
+      Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  }
+
+  /* Headings use a refined serif accent for editorial feel */
+  h1, h2, h3 {
+    font-family: "Cormorant", Georgia, "Times New Roman", serif;
+    letter-spacing: 0.01em;
+  }
+
+  /* Links are understated; brighten on hover */
+  a {
+    @apply text-white/80 underline-offset-4 decoration-white/20 hover:text-white hover:decoration-white/60;
+  }
+
+  /* Smooth scrolling for anchored sections */
+  html { scroll-behavior: smooth; }
+
+  /* Selection color (soft white) */
+  ::selection {
+    background: rgba(255,255,255,.14);
+    color: #fff;
+  }
+
+  /* Focus ring – subtle but visible */
+  :focus-visible {
+    outline: 2px solid rgba(255,255,255,.22);
+    outline-offset: 2px;
+    border-radius: .5rem;
+  }
+
+  /* Scrollbar (WebKit) – low contrast, minimal */
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.12);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+}
+
+/* ----- Reusable Components ----- */
+@layer components {
+  /* Soft glass card with hairline border */
+  .nhx-glass {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md;
+  }
+
+  /* Elevated variant (slightly brighter, good for key panels) */
+  .nhx-glass-strong {
+    @apply rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md shadow-lg;
+  }
+
+  /* Pill buttons/labels (neutral) */
+  .nhx-pill {
+    @apply rounded-full border border-white/15 bg-white/5 text-white/80 px-4 py-2;
+  }
+
+  /* Status chips */
+  .nhx-chip {
+    @apply rounded-full px-3 py-1 text-xs border;
+  }
+  .nhx-chip--ok     { @apply border-emerald-400/30 bg-emerald-400/10 text-emerald-300; }
+  .nhx-chip--hold   { @apply border-yellow-400/30 bg-yellow-400/10 text-yellow-200; }
+  .nhx-chip--muted  { @apply border-white/15 bg-white/5 text-white/70; }
+
+  /* Editorial section heading row */
+  .nhx-section {
+    @apply flex items-baseline justify-between mb-4;
+  }
+
+  /* Max-width wrapper for pages */
+  .nhx-container {
+    @apply mx-auto max-w-6xl px-6;
+  }
+}
+
+/* ----- Handy Utilities (small helpers) ----- */
+@layer utilities {
+  /* Better line breaks for headlines */
+  .text-balance { text-wrap: balance; }
+
+  /* Thin hairline divider color */
+  .hairline { border-color: var(--line); }
+
+  /* Soft surface background */
+  .surface-soft { background: var(--soft); }
+}

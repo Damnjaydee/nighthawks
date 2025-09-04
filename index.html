@@ -2,77 +2,187 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
   <meta name="theme-color" content="#0b0b0b" />
   <meta name="color-scheme" content="dark light" />
   <title>Nighthawks — Private Concierge</title>
-  <meta name="description" content="Nighthawks is a private, invite-only concierge for elite clients in NYC." />
+  <meta
+    name="description"
+    content="Nighthawks is a private, invite-only concierge for elite clients in NYC."
+  />
 
-  <!-- Font -->
+  <!-- Basic SEO / Sharing -->
+<link rel="canonical" href="https://your-domain.com/" />
+<meta property="og:image" content="https://your-domain.com/assets/bg-night.jpg" />
+  <meta property="og:description" content="Invite-only concierge & lifestyle management for athletes and creators." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://your-domain.com/assets/bg-night.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Favicon (swap paths if you have custom icons) -->
+  <link rel="icon" href="assets/logo-white.jpg" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- Preload hero -->
+  <!-- Preload hero (helps Largest Contentful Paint) -->
   <link rel="preload" as="image" href="assets/bg-night.jpg" imagesizes="100vw" />
 
   <style>
     :root{
-      --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
-      --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
+      --bg:#0b0b0b;
+      --ink:#fff;
+      --muted:rgba(255,255,255,.78);
+      --line:rgba(255,255,255,.14);
+      --soft:rgba(255,255,255,.06);
+      --ring:rgba(255,255,255,.9);
     }
+
+    /* Reset / Base */
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
-    body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
-    /* Header */
-    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(10px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
-    .nav-inner{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+    /* ---- Header ---- */
+    .nav{
+      position:sticky;top:0;z-index:60;
+      background:rgba(0,0,0,.35);
+      border-bottom:1px solid var(--line);
+      /* graceful fallback if backdrop-filter unsupported */
+      -webkit-backdrop-filter:saturate(140%) blur(10px);
+      backdrop-filter:saturate(140%) blur(10px);
+    }
+    .nav-inner{
+      max-width:1120px;margin:0 auto;
+      padding:10px 16px;
+      display:flex;align-items:center;gap:12px;
+    }
     .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-    .brand img{height:24px;width:auto}
-    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
+    .brand img{height:24px;width:auto;border-radius:4px}
+    .brand span{letter-spacing:.22em;text-transform:uppercase;font-size:12px;opacity:.9}
+
+    .spacer{flex:1}
+
     .links{display:none;gap:24px;align-items:center}
-    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
+    .links a{
+      color:rgba(255,255,255,.78);
+      text-decoration:none;
+      font-size:14px;
+      transition:color .2s ease;
+    }
     .links a:hover{color:#fff}
-    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600;white-space:nowrap}
+
+    .cta{
+      background:#fff;color:#000;
+      padding:10px 16px;border-radius:999px;
+      text-decoration:none;font-weight:600;white-space:nowrap;
+      box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 2px 10px rgba(0,0,0,.3);
+    }
 
     /* Burger + mobile */
-    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
+    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0;margin-left:auto}
     .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
     .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
     .burger.open span:nth-child(2){opacity:0}
     .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{display:none;position:fixed;top:52px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
-    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
+
+    .mobile{
+      display:none;position:fixed;top:52px;left:0;right:0;
+      background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50
+    }
+    .mobile a{
+      display:block;padding:12px 16px;color:#fff;text-decoration:none
+    }
+    .mobile a:hover{background:rgba(255,255,255,.06)}
     .mobile .cta{margin:8px 16px 12px;display:inline-block}
     .mobile.open{display:block}
-    @media (min-width:901px){.burger{display:none}.links{display:flex}.mobile{display:none!important}}
 
-    /* Hero */
-    .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden}
+    @media (min-width:901px){
+      .burger{display:none}
+      .links{display:flex}
+      .mobile{display:none!important}
+    }
+
+    /* ---- Hero ---- */
+    /* Mobile viewport fix: we'll set --vh in JS */
+    .hero{
+      position:relative;
+      min-height:calc(var(--vh, 1vh) * 100);
+      display:grid;place-items:center;overflow:hidden
+    }
     .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.75))}
-    .hero-content{position:relative;z-index:1;text-align:center;padding:64px 16px 56px;max-width:780px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
-    .hero h1{margin:0 0 10px;font-size:clamp(28px,5vw,56px);font-weight:300;letter-spacing:.01em}
-    .hero p{margin:0 0 16px;color:var(--muted);font-size:clamp(15px,2.6vw,20px);line-height:1.55}
-    .btn-primary{display:inline-block;background:#fff;color:#000;text-decoration:none;padding:12px 18px;border-radius:999px;font-weight:600}
+    .hero::after{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.75))
+    }
+    .hero-content{
+      position:relative;z-index:1;text-align:center;
+      padding:64px 16px 56px;max-width:780px;
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))
+    }
+    .hero h1{
+      margin:0 0 10px;
+      font-size:clamp(28px,5vw,56px);
+      font-weight:300;letter-spacing:.01em
+    }
+    .hero p{
+      margin:0 0 16px;color:var(--muted);
+      font-size:clamp(15px,2.6vw,20px);line-height:1.55
+    }
+    .btn-primary{
+      display:inline-block;background:#fff;color:#000;text-decoration:none;
+      padding:12px 18px;border-radius:999px;font-weight:600
+    }
 
-    /* Footer */
-    .site-footer{padding:16px;text-align:center;color:rgba(255,255,255,.7);border-top:1px solid var(--line)}
+    /* ---- Footer ---- */
+    .site-footer{
+      padding:16px;text-align:center;
+      color:rgba(255,255,255,.72);
+      border-top:1px solid var(--line)
+    }
 
-    /* Focus */
+    /* Focus & a11y */
     :where(a,button){outline:0}
-    :where(a,button):focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:10px}
+    :where(a,button):focus-visible{
+      outline:2px solid var(--ring);
+      outline-offset:2px;border-radius:10px
+    }
+    .sr-only{
+      position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+      clip:rect(0,0,0,0);white-space:nowrap;border:0
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+    }
   </style>
 </head>
 <body>
   <!-- Header -->
-  <header class="nav">
+  <header class="nav" role="banner">
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <img src="assets/logo-white.jpg" alt="" />
         <span>NIGHTHAWKS</span>
       </a>
+
+      <div class="spacer" aria-hidden="true"></div>
 
       <nav class="links" aria-label="Primary">
         <a href="request.html">Request</a>
@@ -80,10 +190,13 @@
         <a href="about.html">About</a>
         <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html">Login</a>
+        <!-- Dashboard (React app at /dashboard/) -->
+        <a href="/dashboard/">Dashboard</a>
+        <a class="cta" href="signup.html">Apply</a>
       </nav>
 
-      <a class="cta" href="signup.html">Apply</a>
-
+      <!-- Mobile controls -->
+      <a class="cta" href="signup.html" aria-label="Apply for membership">Apply</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -95,14 +208,21 @@
       <a href="about.html">About</a>
       <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
+      <a href="/dashboard/">Dashboard</a>
       <a href="signup.html" class="cta">Apply</a>
     </nav>
   </header>
 
-  <main>
+  <main id="main">
     <!-- Hero -->
     <section class="hero" aria-label="Intro">
-      <img class="bg" src="assets/bg-night.jpg" alt="NYC night skyline" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high" />
+      <img
+        class="bg"
+        src="assets/bg-night.jpg"
+        alt="NYC night skyline"
+        width="1920" height="1080"
+        loading="eager" decoding="async" fetchpriority="high"
+      />
       <div class="hero-content">
         <h1>Private. Precise. NYC.</h1>
         <p>Invite-only concierge & lifestyle management for athletes and creators.</p>
@@ -116,25 +236,36 @@
   </footer>
 
   <script>
-    // Year
+    // Current year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Mobile menu toggle
+    // Mobile menu toggle + close on Escape and link click
     const burger = document.getElementById('burger');
     const mobile = document.getElementById('mobile-nav');
-    burger.addEventListener('click', () => {
-      const open = mobile.classList.toggle('open');
+
+    function setMenu(open){
+      mobile.classList.toggle('open', open);
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
+    }
+
+    burger.addEventListener('click', () => setMenu(!mobile.classList.contains('open')));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && mobile.classList.contains('open')) {
-        mobile.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
-        burger.focus();
+        setMenu(false); burger.focus();
       }
     });
+    mobile.addEventListener('click', (e) => {
+      const target = e.target.closest('a');
+      if (target) setMenu(false);
+    });
+
+    // Viewport height fix for mobile browsers (address bar)
+    function setVh(){
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setVh(); window.addEventListener('resize', setVh);
   </script>
 </body>
 </html>
