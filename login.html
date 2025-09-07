@@ -4,69 +4,68 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Nighthawks — Sign in</title>
+  <meta name="description" content="Sign in to your Nighthawks member account." />
   <meta name="theme-color" content="#0b0b0b" />
+  <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
   <style>
-    :root{--bg:#0b0b0b;--ink:#fff;--muted:rgba(255,255,255,.78);--line:rgba(255,255,255,.14);--soft:rgba(255,255,255,.08)}
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.08); --ring:rgba(255,255,255,.9) }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; height:100% }
+    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
 
-    /* Backdrop image (no 'fixed' for mobile perf) */
-    .backdrop{position:fixed; inset:0; z-index:-2; background:url("assets/bg-night.jpg") center/cover no-repeat}
-    .backdrop::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85))}
+    /* Backdrop */
+    .backdrop{ position:fixed; inset:0; z-index:-2; background:url("assets/bg-night.jpg") center/cover no-repeat }
+    .backdrop::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85)) }
 
-    /* ===== Unified Header (matches other pages) ===== */
-    .nav{position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)}
-    .nav-inner{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between}
-    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
-    .brand img{height:24px; width:auto}
-    .brand span{letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85}
-    .links{display:none; gap:24px; align-items:center}
-    .links a{color:rgba(255,255,255,.85); text-decoration:none; font-size:14px}
-    .links a:hover{color:#fff}
-    .cta{background:#fff; color:#000; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; white-space:nowrap}
+    /* Header */
+    .nav{ position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line) }
+    .nav-inner{ max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between }
+    .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff }
+    .brand img{ height:24px; width:auto }
+    .brand span{ letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85 }
+    .links{ display:none; gap:24px; align-items:center }
+    .links a{ color:rgba(255,255,255,.85); text-decoration:none; font-size:14px }
+    .links a[aria-current="page"]{ color:#fff; font-weight:600 }
+    .links a:hover{ color:#fff }
+    .cta{ background:#fff; color:#000; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; white-space:nowrap }
 
     /* Burger */
-    .burger{display:flex; flex-direction:column; gap:4px; background:transparent; border:0}
-    .burger span{display:block; width:22px; height:2px; background:#fff; transition:.25s}
-    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .burger.open span:nth-child(2){opacity:0}
-    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{display:none; position:fixed; top:52px; left:0; right:0; background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50}
-    .mobile a{display:block; padding:12px 16px; color:#fff; text-decoration:none}
-    .mobile .cta{margin:8px 16px 12px; display:inline-block}
-    .mobile.open{display:block}
+    .burger{ display:flex; flex-direction:column; gap:4px; background:transparent; border:0 }
+    .burger span{ display:block; width:22px; height:2px; background:#fff; transition:.25s }
+    .burger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg) }
+    .burger.open span:nth-child(2){ opacity:0 }
+    .burger.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg) }
+    .mobile{ display:none; position:fixed; top:52px; left:0; right:0; background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50 }
+    .mobile a{ display:block; padding:12px 16px; color:#fff; text-decoration:none }
+    .mobile .cta{ margin:8px 16px 12px; display:inline-block }
+    .mobile.open{ display:block }
 
-    /* PAGE */
-    .main{min-height:calc(100svh - 52px); display:grid; place-items:center; padding:24px 16px}
-    .card{width:min(440px,92vw); background:var(--soft); backdrop-filter:blur(8px); padding:22px; border-radius:16px; border:1px solid var(--line)}
-    h1{margin:0 0 12px; font-size:1.6rem}
-    .field{margin-bottom:12px}
-    label{font-size:.92rem; color:#f3f3f3}
-    .input-wrap{position:relative}
-    input{width:100%; margin-top:6px; padding:12px 44px 12px 12px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.5); color:#fff; font-size:16px}
-    .toggle{position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; color:#fff; opacity:.8; cursor:pointer; padding:6px 8px; border-radius:8px}
-    .toggle:hover{opacity:1; background:rgba(255,255,255,.08)}
-    .btn{width:100%; padding:12px; border-radius:999px; border:1px solid var(--line); font-weight:600; cursor:pointer; transition:background .2s ease, transform .2s ease}
-    .btn.primary{background:#fff; color:#000}
-    .btn.primary:hover{background:#eaeaea; transform:translateY(-1px)}
-    .hint{color:var(--muted); font-size:.95rem; margin-top:10px}
-    .err{color:#fecaca}.ok{color:#a7f3d0}
+    /* Page */
+    .main{ min-height:calc(100svh - 52px); display:grid; place-items:center; padding:24px 16px }
+    .card{ width:min(440px,92vw); background:var(--soft); backdrop-filter:blur(8px); padding:22px; border-radius:16px; border:1px solid var(--line) }
+    h1{ margin:0 0 12px; font-size:1.6rem; font-weight:600 }
+    .field{ margin-bottom:12px }
+    label{ font-size:.92rem; color:#f3f3f3 }
+    .input-wrap{ position:relative }
+    input{ width:100%; margin-top:6px; padding:12px 44px 12px 12px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.5); color:#fff; font-size:16px }
+    input[aria-invalid="true"]{ border-color:#fda4a4; box-shadow:0 0 0 3px rgba(253,164,164,.15) }
+    .toggle{ position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; color:#fff; opacity:.85; cursor:pointer; padding:6px 8px; border-radius:8px }
+    .toggle:hover{ opacity:1; background:rgba(255,255,255,.08) }
+    .btn{ width:100%; padding:12px; border-radius:999px; border:1px solid var(--line); font-weight:600; cursor:pointer; transition:background .2s ease, transform .2s ease }
+    .btn.primary{ background:#fff; color:#000 }
+    .btn.primary:hover{ background:#eaeaea; transform:translateY(-1px) }
+    .hint{ color:var(--muted); font-size:.95rem; margin-top:10px }
+    .err{ color:#fecaca } .ok{ color:#a7f3d0 }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px){
-      .links{display:none}
-      .burger{display:flex}
-    }
-    @media (min-width: 901px){
-      .burger{display:none}
-      .links{display:flex}
-      .mobile{display:none!important}
-    }
-    @media (prefers-reduced-motion: reduce){
-      .burger span{transition:none}
-    }
+    /* a11y focus */
+    :where(a,button,input){ outline:0 }
+    :where(a,button,input):focus-visible{ outline:2px solid var(--ring); outline-offset:2px; border-radius:10px }
+
+    @media (max-width: 900px){ .links{display:none} .burger{display:flex} }
+    @media (min-width: 901px){ .burger{display:none} .links{display:flex} .mobile{display:none!important} }
+    @media (prefers-reduced-motion: reduce){ .burger span{transition:none} }
   </style>
 </head>
 <body>
@@ -76,19 +75,19 @@
   <header class="nav">
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
       </a>
 
       <nav class="links" aria-label="Primary">
-        <!-- No 'Home' for consistency -->
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
         <a href="about.html">About</a>
         <a href="inner-circle.html">Inner Circle</a>
+        <a href="login.html" aria-current="page">Login</a>
       </nav>
 
-      <a class="cta" href="signup.html">Apply</a>
+      <a class="cta" href="membership.html">Apply</a>
 
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
@@ -100,7 +99,8 @@
       <a href="membership.html">Membership</a>
       <a href="about.html">About</a>
       <a href="inner-circle.html">Inner Circle</a>
-      <a href="signup.html" class="cta">Apply</a>
+      <a href="login.html" aria-current="page">Login</a>
+      <a href="membership.html" class="cta">Apply</a>
     </nav>
   </header>
 
@@ -114,7 +114,7 @@
         <div class="field">
           <label for="email">Email</label>
           <div class="input-wrap">
-            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" autofocus />
           </div>
         </div>
 
@@ -122,13 +122,12 @@
         <div class="field">
           <label for="password">Password</label>
           <div class="input-wrap">
-            <input id="password" name="password" type="password" required autocomplete="current-password" minlength="6" />
-            <button type="button" class="toggle" id="togglePwd" aria-controls="password" aria-label="Show password">Show</button>
+            <input id="password" name="password" type="password" required minlength="6" autocomplete="current-password" />
+            <button type="button" class="toggle" id="togglePwd" aria-controls="password" aria-label="Show password" aria-pressed="false">Show</button>
           </div>
         </div>
 
         <button class="btn primary" id="signinBtn" type="submit">Sign in</button>
-
         <div id="msg" class="hint" role="status" aria-live="polite"></div>
       </form>
     </section>
@@ -150,12 +149,11 @@
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    // Close on Escape
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && mobile.classList.contains('open')){
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobile.classList.contains('open')) {
         mobile.classList.remove('open');
         burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
+        burger.setAttribute('aria-expanded', 'false');
         burger.focus();
       }
     });
@@ -164,47 +162,70 @@
     const pwd = document.getElementById('password');
     const togglePwd = document.getElementById('togglePwd');
     togglePwd.addEventListener('click', () => {
-      const isHidden = pwd.type === 'password';
-      pwd.type = isHidden ? 'text' : 'password';
-      togglePwd.textContent = isHidden ? 'Hide' : 'Show';
-      togglePwd.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+      const show = pwd.type === 'password';
+      pwd.type = show ? 'text' : 'password';
+      togglePwd.textContent = show ? 'Hide' : 'Show';
+      togglePwd.setAttribute('aria-pressed', String(show));
+      togglePwd.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
     });
 
-    // Auth
-    const msg = document.getElementById('msg');
-    const form = document.getElementById('loginForm');
-    const signinBtn = document.getElementById('signinBtn');
+    // ===== Helpers =====
+    const emailEl  = document.getElementById('email');
+    const msg      = document.getElementById('msg');
+    const form     = document.getElementById('loginForm');
+    const signinBtn= document.getElementById('signinBtn');
+
+    function setMsg(text, cls=''){ msg.textContent = text; msg.className = 'hint ' + (cls || ''); }
+    function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || ''); }
+    function setInvalid(el, invalid){ el.setAttribute('aria-invalid', invalid ? 'true' : 'false'); }
+
+    // === API base: same-origin in prod, :5009 when serving static locally ===
+    const API_BASE = (() => {
+      const h = window.location;
+      const isLocal = (h.hostname === 'localhost' || h.hostname === '127.0.0.1');
+      // If you're previewing static files (e.g., VS Code Live Server on 5500), call the Node API on 5009.
+      if (isLocal && h.port !== '5009') return 'http://localhost:5009';
+      return '';
+    })();
 
     async function call(path, body){
-      const res = await fetch(path,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(body)
+      const url = API_BASE + path;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(body)
       });
-      let data={}; try{data=await res.json();}catch(_){}
-      return { ok:res.ok, data };
+      let data = {};
+      try { data = await res.json(); } catch(_) {}
+      return { ok: res.ok, data };
     }
-    function setMsg(text, cls=''){ msg.textContent=text; msg.className='hint '+(cls||''); }
 
-    form.addEventListener('submit', async (e)=>{
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      setMsg('Signing in…'); signinBtn.disabled=true;
+      const email = emailEl.value.trim();
+      const password = pwd.value;
 
-      const email=document.getElementById('email').value.trim();
-      const password=pwd.value;
+      let hasErr = false;
+      if (!isValidEmail(email)) { setInvalid(emailEl, true); hasErr = true; } else setInvalid(emailEl, false);
+      if ((password || '').length < 6) { setInvalid(pwd, true); hasErr = true; } else setInvalid(pwd, false);
+      if (hasErr) { setMsg('Please correct the highlighted fields.', 'err'); return; }
 
-      try{
-        const {ok,data}=await call('/api/auth/login',{email,password});
-        if(ok && (data.ok||data.status==='ok')){
-          setMsg('Success. Redirecting…','ok');
-          window.location.href='dashboard.html';
-        }else{
-          setMsg((data&&data.error)||'Login failed','err');
+      setMsg('Signing in…'); signinBtn.disabled = true;
+
+      try {
+        const { ok, data } = await call('/api/auth/login', { email, password });
+        if (ok && (data.ok || data.status === 'ok')) {
+          setMsg('Success. Redirecting…', 'ok');
+          // IMPORTANT: this exists in your project; avoid 404 JSON.
+          window.location.href = '/dashboard/index.html';
+        } else {
+          const reason = (data && (data.error || data.message)) || 'Login failed';
+          setMsg(reason, 'err');
         }
-      }catch(err){
-        setMsg('Network error. Please try again.','err');
-      }finally{
-        signinBtn.disabled=false;
+      } catch(_) {
+        setMsg('Network error. Please try again.', 'err');
+      } finally {
+        signinBtn.disabled = false;
       }
     });
   </script>

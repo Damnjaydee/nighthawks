@@ -2,39 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0b0b0b" />
   <meta name="color-scheme" content="dark light" />
   <title>Nighthawks — Private Concierge</title>
-  <meta
-    name="description"
-    content="Nighthawks is a private, invite-only concierge for elite clients in NYC."
-  />
+  <meta name="description" content="Nighthawks is a private, invite-only concierge for elite clients in NYC." />
 
-  <!-- Basic SEO / Sharing -->
-<link rel="canonical" href="https://your-domain.com/" />
-<meta property="og:image" content="https://your-domain.com/assets/bg-night.jpg" />
+  <!-- Canonical / Social -->
+  <link rel="canonical" href="https://www.nhconcerige.com/" />
+  <meta property="og:title" content="Nighthawks — Private Concierge" />
   <meta property="og:description" content="Invite-only concierge & lifestyle management for athletes and creators." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://your-domain.com/assets/bg-night.jpg" />
+  <meta property="og:url" content="https://www.nhconcerige.com/" />
+  <meta property="og:image" content="https://www.nhconcerige.com/assets/bg-night.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Favicon (swap paths if you have custom icons) -->
+  <!-- Favicon -->
   <link rel="icon" href="assets/logo-white.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Preload hero (helps Largest Contentful Paint) -->
-  <link rel="preload" as="image" href="assets/bg-night.jpg" imagesizes="100vw" />
+  <!-- Preload hero (for LCP) -->
+  <link rel="preload" as="image" href="assets/bg-night.jpg" />
 
   <style>
     :root{
@@ -46,70 +38,63 @@
       --ring:rgba(255,255,255,.9);
     }
 
-    /* Reset / Base */
+    /* Base */
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
     html{scroll-behavior:smooth}
     body{
-      background:var(--bg);
-      color:var(--ink);
+      background:var(--bg); color:var(--ink);
       font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ---- Header ---- */
+    /* Header */
     .nav{
-      position:sticky;top:0;z-index:60;
+      position:sticky; top:0; z-index:60;
       background:rgba(0,0,0,.35);
       border-bottom:1px solid var(--line);
-      /* graceful fallback if backdrop-filter unsupported */
       -webkit-backdrop-filter:saturate(140%) blur(10px);
       backdrop-filter:saturate(140%) blur(10px);
     }
     .nav-inner{
-      max-width:1120px;margin:0 auto;
+      max-width:1120px; margin:0 auto;
       padding:10px 16px;
-      display:flex;align-items:center;gap:12px;
+      display:flex; align-items:center; gap:12px;
     }
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-    .brand img{height:24px;width:auto;border-radius:4px}
-    .brand span{letter-spacing:.22em;text-transform:uppercase;font-size:12px;opacity:.9}
+    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
+    .brand img{height:24px; width:auto; border-radius:4px}
+    .brand span{letter-spacing:.22em; text-transform:uppercase; font-size:12px; opacity:.9}
 
     .spacer{flex:1}
 
-    .links{display:none;gap:24px;align-items:center}
+    .links{display:none; gap:24px; align-items:center}
     .links a{
-      color:rgba(255,255,255,.78);
-      text-decoration:none;
-      font-size:14px;
-      transition:color .2s ease;
+      color:rgba(255,255,255,.78); text-decoration:none; font-size:14px; transition:color .2s ease;
     }
     .links a:hover{color:#fff}
 
     .cta{
-      background:#fff;color:#000;
-      padding:10px 16px;border-radius:999px;
-      text-decoration:none;font-weight:600;white-space:nowrap;
+      background:#fff; color:#000; padding:10px 16px; border-radius:999px;
+      text-decoration:none; font-weight:600; white-space:nowrap;
       box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 2px 10px rgba(0,0,0,.3);
     }
 
-    /* Burger + mobile */
-    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0;margin-left:auto}
-    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
+    /* Burger + Mobile */
+    .burger{display:flex; flex-direction:column; gap:4px; background:transparent; border:0; margin-left:auto}
+    .burger span{display:block; width:22px; height:2px; background:#fff; transition:.25s}
     .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
     .burger.open span:nth-child(2){opacity:0}
     .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
     .mobile{
-      display:none;position:fixed;top:52px;left:0;right:0;
-      background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50
+      display:none; position:fixed; top:52px; left:0; right:0;
+      background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50
     }
     .mobile a{
-      display:block;padding:12px 16px;color:#fff;text-decoration:none
+      display:block; padding:12px 16px; color:#fff; text-decoration:none
     }
     .mobile a:hover{background:rgba(255,255,255,.06)}
-    .mobile .cta{margin:8px 16px 12px;display:inline-block}
+    .mobile .cta{margin:8px 16px 12px; display:inline-block}
     .mobile.open{display:block}
 
     @media (min-width:901px){
@@ -118,58 +103,51 @@
       .mobile{display:none!important}
     }
 
-    /* ---- Hero ---- */
-    /* Mobile viewport fix: we'll set --vh in JS */
+    /* Hero */
     .hero{
       position:relative;
       min-height:calc(var(--vh, 1vh) * 100);
-      display:grid;place-items:center;overflow:hidden
+      display:grid; place-items:center; overflow:hidden;
     }
-    .hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .hero img.bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
     .hero::after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.75))
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.75));
     }
     .hero-content{
-      position:relative;z-index:1;text-align:center;
-      padding:64px 16px 56px;max-width:780px;
-      filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))
+      position:relative; z-index:1; text-align:center;
+      padding:64px 16px 56px; max-width:780px;
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,.6));
     }
     .hero h1{
       margin:0 0 10px;
       font-size:clamp(28px,5vw,56px);
-      font-weight:300;letter-spacing:.01em
+      font-weight:300; letter-spacing:.01em;
     }
     .hero p{
-      margin:0 0 16px;color:var(--muted);
-      font-size:clamp(15px,2.6vw,20px);line-height:1.55
+      margin:0 0 16px; color:var(--muted);
+      font-size:clamp(15px,2.6vw,20px); line-height:1.55;
     }
     .btn-primary{
-      display:inline-block;background:#fff;color:#000;text-decoration:none;
-      padding:12px 18px;border-radius:999px;font-weight:600
+      display:inline-block; background:#fff; color:#000; text-decoration:none;
+      padding:12px 18px; border-radius:999px; font-weight:600;
     }
 
-    /* ---- Footer ---- */
+    /* Footer */
     .site-footer{
-      padding:16px;text-align:center;
+      padding:16px; text-align:center;
       color:rgba(255,255,255,.72);
-      border-top:1px solid var(--line)
+      border-top:1px solid var(--line);
     }
 
-    /* Focus & a11y */
+    /* A11y */
     :where(a,button){outline:0}
-    :where(a,button):focus-visible{
-      outline:2px solid var(--ring);
-      outline-offset:2px;border-radius:10px
-    }
-    .sr-only{
-      position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-      clip:rect(0,0,0,0);white-space:nowrap;border:0
-    }
+    :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
 
     /* Reduced motion */
     @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+      *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important}
     }
   </style>
 </head>
@@ -177,8 +155,8 @@
   <!-- Header -->
   <header class="nav" role="banner">
     <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="" />
+      <a class="brand" href="index.html" aria-label="Nighthawks — Home">
+        <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
       </a>
 
@@ -190,12 +168,10 @@
         <a href="about.html">About</a>
         <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html">Login</a>
-        <!-- Dashboard (React app at /dashboard/) -->
-        <a href="/dashboard/">Dashboard</a>
       </nav>
 
       <!-- Mobile controls -->
-      <a class="cta" href="signup.html" aria-label="Apply for membership">Apply</a>
+      <a class="cta" href="membership.html" aria-label="Apply for membership">Apply</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -207,7 +183,7 @@
       <a href="about.html">About</a>
       <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
-      <a href="/dashboard/">Dashboard</a>
+      <a class="cta" href="membership.html" aria-label="Apply for membership">Apply</a>
     </nav>
   </header>
 
@@ -224,7 +200,7 @@
       <div class="hero-content">
         <h1>Private. Precise. NYC.</h1>
         <p>Invite-only concierge & lifestyle management for athletes and creators.</p>
-        <a class="btn-primary" href="signup.html">Apply for Membership</a>
+        <a class="btn-primary" href="membership.html">Apply for Membership</a>
       </div>
     </section>
   </main>

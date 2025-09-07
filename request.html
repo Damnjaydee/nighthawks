@@ -11,12 +11,14 @@
     :root{
       --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
       --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
+      --ring:rgba(255,255,255,.9);
     }
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
     body{
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--ink); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
     /* Backdrop image (no 'fixed' for better mobile perf) */
@@ -89,6 +91,10 @@
     .status.ok{color:#a7f3d0}
     .status.err{color:#fecaca}
 
+    /* A11y focus */
+    :where(a,button,input,select,textarea){outline:0}
+    :where(a,button,input,select,textarea):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
+
     /* Upsell */
     .upsell p{color:var(--muted); margin:6px 0 14px}
     .perk{display:flex; gap:10px; align-items:flex-start; color:#ddd; margin:8px 0; line-height:1.4}
@@ -122,7 +128,7 @@
   <header class="nav">
     <div class="nav-inner">
       <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
       </a>
 
@@ -134,7 +140,7 @@
         <a href="login.html">Login</a>
       </nav>
 
-      <a class="cta" href="signup.html">Apply</a>
+      <a class="cta" href="membership.html">Apply</a>
 
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
@@ -147,7 +153,7 @@
       <a href="about.html">About</a>
       <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
-      <a href="signup.html" class="cta">Apply</a>
+      <a href="membership.html" class="cta">Apply</a>
     </nav>
   </header>
 
@@ -186,12 +192,12 @@
             <label for="typeOfRequest">Type of Request*</label>
             <select id="typeOfRequest" name="typeOfRequest" required>
               <option value="">Select a category</option>
-              <option>Restaurant / Table</option>
-              <option>Nightlife / Table</option>
-              <option>Private Dining</option>
-              <option>Event Access</option>
-              <option>Itinerary / Planning</option>
-              <option>Other</option>
+              <option value="Restaurant / Table">Restaurant / Table</option>
+              <option value="Nightlife / Table">Nightlife / Table</option>
+              <option value="Private Dining">Private Dining</option>
+              <option value="Event Access">Event Access</option>
+              <option value="Itinerary / Planning">Itinerary / Planning</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
@@ -202,12 +208,12 @@
 
           <div>
             <label for="time">Preferred Time</label>
-            <input id="time" name="time" type="time" autocomplete="off" />
+            <input id="time" name="time" type="time" step="900" autocomplete="off" />
           </div>
 
           <div>
             <label for="partySize">Party Size</label>
-            <input id="partySize" name="partySize" placeholder="2, 4, 6…" inputmode="numeric" />
+            <input id="partySize" name="partySize" type="number" min="1" inputmode="numeric" placeholder="2, 4, 6…" />
           </div>
 
           <div class="row-2">
@@ -227,7 +233,7 @@
 
           <div class="actions row-2">
             <button class="btn" id="submitBtn" type="submit">Submit Request</button>
-            <a class="btn ghost" href="membership-info.html">Apply for Membership</a>
+            <a class="btn ghost" href="membership.html">Apply for Membership</a>
             <span id="formStatus" class="status" role="status" aria-live="polite"></span>
           </div>
         </form>
@@ -240,7 +246,7 @@
         <div class="perk"><span>•</span><div>Priority queueing on high-demand reservations and events.</div></div>
         <div class="perk"><span>•</span><div>On-call concierge with discreet handling.</div></div>
         <div class="perk"><span>•</span><div>Access to limited-seat experiences across the city.</div></div>
-        <a class="btn" href="membership-info.html">Explore Membership</a>
+        <a class="btn" href="membership.html">Explore Membership</a>
       </aside>
     </div>
   </main>
@@ -262,6 +268,17 @@
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
+    // Helper: today's date (YYYY-MM-DD)
+    function todayStr() {
+      const d = new Date();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return `${d.getFullYear()}-${m}-${day}`;
+    }
+    // Set min date to today
+    const dateEl = document.getElementById('date');
+    if (dateEl) dateEl.min = todayStr();
+
     // Form
     (function () {
       const form = document.getElementById('requestForm');
@@ -272,24 +289,55 @@
         statusEl.textContent = msg;
         statusEl.className = 'status ' + (cls || '');
       }
+      function setInvalid(id, invalid){
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+      }
+      function normalizePhone(v){
+        return v.replace(/[^\d+]/g,'').slice(0,16);
+      }
+      function isValidEmail(v){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // honeypot
+        const honey = form.querySelector('input[name="company"]');
+        if (honey && honey.value) {
+          setStatus('Blocked (bot detected).', 'err');
+          return;
+        }
+
         setStatus('Submitting…');
-        submitBtn.disabled = true;
+        submitBtn.disabled = true; submitBtn.textContent = 'Submitting…';
 
         const fd = new FormData(form);
-        if (!fd.get('fullName') || !fd.get('email') || !fd.get('typeOfRequest')) {
-          setStatus('Please fill required fields.', 'err');
-          submitBtn.disabled = false;
+        const fullName = (fd.get('fullName') || '').toString().trim();
+        const email = (fd.get('email') || '').toString().trim();
+        const phone = normalizePhone((fd.get('phone') || '').toString());
+        const typeOfRequest = (fd.get('typeOfRequest') || '').toString();
+
+        // client checks
+        let hasErr = false;
+        if (!fullName){ setInvalid('fullName', true); hasErr = true; } else setInvalid('fullName', false);
+        if (!isValidEmail(email)){ setInvalid('email', true); hasErr = true; } else setInvalid('email', false);
+        if (!phone || phone.length < 10){ setInvalid('phone', true); hasErr = true; } else setInvalid('phone', false);
+        if (!typeOfRequest){ setInvalid('typeOfRequest', true); hasErr = true; } else setInvalid('typeOfRequest', false);
+
+        if (hasErr){
+          setStatus('Please correct the highlighted fields.', 'err');
+          submitBtn.disabled = false; submitBtn.textContent = 'Submit Request';
           return;
         }
 
         const payload = {
-          fullName:      (fd.get('fullName') || '').toString().trim(),
-          email:         (fd.get('email') || '').toString().trim(),
-          phone:         (fd.get('phone') || '').toString().trim(),
-          typeOfRequest: fd.get('typeOfRequest'),
+          fullName,
+          email,
+          phone,
+          typeOfRequest,
           date:          fd.get('date') || '',
           time:          fd.get('time') || '',
           partySize:     fd.get('partySize') || '',
@@ -304,17 +352,21 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
-          const data = await res.json();
-          if (res.ok && (data.ok || data.status === 'ok')) {
+
+          // Try to parse JSON, but handle plain text fallback
+          let data = {};
+          try { data = await res.json(); } catch (_) { data = {}; }
+
+          if (res.ok && ((data && (data.ok || data.status === 'ok')) || !Object.keys(data).length)) {
             setStatus('Request received. We’ll be in touch shortly.', 'ok');
             form.reset();
           } else {
-            setStatus(data.error || 'Something went wrong. Please try again.', 'err');
+            setStatus((data && (data.error || data.message)) || 'Something went wrong. Please try again.', 'err');
           }
         } catch (err) {
           setStatus('Network error. Please try again.', 'err');
         } finally {
-          submitBtn.disabled = false;
+          submitBtn.disabled = false; submitBtn.textContent = 'Submit Request';
         }
       });
     })();
