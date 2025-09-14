@@ -1,216 +1,58 @@
-/* ================================
-   NIGHTHAWKS — Global Styles
-   One stylesheet to unify all pages
-================================== */
+/* ========= Nighthawks — Type Scale Upgrade (SAA-size) ========= */
+/* Paste AFTER your existing styles so these win. */
 
-/* ---------- Design tokens ---------- */
-:root{
-  /* Colors */
-  --ink:#fff;
-  --bg:#000;
-  --muted:#bdbdbd;
-  --soft:rgba(255,255,255,.06);
-  --line:rgba(255,255,255,.14);
-  --glass:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+/* 1) Global base: nudge site-wide text up */
+html { font-size: 17px; }                 /* mobile-first */
+@media (min-width: 981px){ html { font-size: 18px; } }       /* tablets/desktop */
+@media (min-width: 1440px){ html { font-size: 19px; } }      /* big screens */
 
-  /* Radius / shadows */
-  --radius:18px;
-
-  /* Focus ring */
-  --ring:rgba(255,255,255,.9);
-
-  /* Typography scale */
-  --h1-min:28px; --h1-fluid:5.6vw; --h1-max:48px;
-  --h2-min:22px; --h2-fluid:3.6vw; --h2-max:32px;
-  --h3-min:18px; --h3-fluid:2.6vw; --h3-max:24px;
-  --sub-min:14px; --sub-fluid:1.8vw; --sub-max:17px;
+/* 2) Hero / section intros */
+.intro h1,
+.hero h1 {                                /* request/about hero titles */
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.15;
+}
+.intro p,
+.hero .sub {
+  font-size: 1rem;                         /* scales with html above */
+  line-height: 1.6;
 }
 
-/* ---------- Reset-ish ---------- */
-*,
-*::before,
-*::after{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; }
-img{ max-width:100%; display:block; }
-a{ color:inherit; }
-:where(a,button,input,select,textarea){ outline:0; }
-:where(a,button,input,select,textarea):focus-visible{
-  outline:2px solid var(--ring); outline-offset:2px; border-radius:10px;
+/* 3) Nav links just a bit bigger on desktop */
+@media (min-width: 981px){
+  .links a { font-size: 15.5px; }
+  .brand span { font-size: 12.5px; }
 }
 
-body{
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:var(--ink); background:var(--bg);
-  min-height:100vh; display:flex; flex-direction:column;
-  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+/* 4) Form typography + touch targets (request/membership/login) */
+label { font-size: 1rem; }                 /* was ~.93rem */
+input, select, textarea {
+  font-size: 1rem;                         /* was 16px */
+  padding: 14px 14px;                      /* was 12px 12px */
+  line-height: 1.35;
+  min-height: 46px;                        /* better tap target */
+}
+select { min-height: 46px; }               /* keep selects aligned */
+
+/* “hint” & status copy a touch larger */
+.hint, .status { font-size: 1rem; }
+
+/* 5) Buttons */
+.btn {
+  padding: 14px 20px;                      /* was 12px 18px */
+  font-size: 1rem;                         /* was ~.95rem */
+}
+.btn.ghost { padding: 14px 20px; }
+
+/* 6) Card headings (request/membership sidebars) */
+.card h2, .card h3 {
+  font-size: clamp(22px, 2.2vw, 26px);
+  line-height: 1.25;
 }
 
-h1,h2,h3{ font-family:"DM Serif Display",serif; font-weight:400; color:var(--ink); margin:0 0 .25rem; }
-h1,.page-title,.hero-title,.membership-container h1{
-  font-size:clamp(var(--h1-min), var(--h1-fluid), var(--h1-max));
-  line-height:1.1; letter-spacing:.01em;
-}
-h2{ font-size:clamp(var(--h2-min), var(--h2-fluid), var(--h2-max)); line-height:1.16; }
-h3{ font-size:clamp(var(--h3-min), var(--h3-fluid), var(--h3-max)); line-height:1.2; }
+/* 7) Inner Circle grid labels slightly larger too */
+.tag { font-size: 13px; }
+.tag.title { font-size: 13.5px; }
 
-.sub,.tagline,.subhead{ font-size:clamp(var(--sub-min), var(--sub-fluid), var(--sub-max)); line-height:1.55; color:rgba(255,255,255,.82); }
-
-.wrap{ max-width:1120px; margin:0 auto; padding:0 16px; }
-.nav-offset{ padding-top:120px; }
-
-/* ================================
-   Header / Nav (unified)
-================================== */
-.nav{
-  position:sticky; top:0; z-index:60;
-  backdrop-filter:saturate(140%) blur(10px);
-  background:rgba(0,0,0,.35);
-  border-bottom:1px solid var(--line);
-}
-.nav-inner{ height:56px; display:flex; align-items:center; justify-content:space-between; }
-.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
-.brand img{ width:32px; height:32px; object-fit:contain; }
-.brand span{ letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85; }
-
-.links{ display:none; gap:24px; align-items:center; }
-.links a{ color:rgba(255,255,255,.85); text-decoration:none; font-size:14px; }
-.links a[aria-current="page"]{ color:#fff; font-weight:600; }
-.links a:hover{ color:#fff; }
-
-.cta{
-  background:#fff; color:#000; padding:10px 16px; border-radius:999px;
-  text-decoration:none; font-weight:600; white-space:nowrap; font-size:14px;
-}
-
-/* Burger + mobile panel */
-.burger{ display:flex; flex-direction:column; gap:4px; background:transparent; border:0; }
-.burger span{ display:block; width:22px; height:2px; background:#fff; transition:.25s; }
-.burger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
-.burger.open span:nth-child(2){ opacity:0; }
-.burger.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
-
-.mobile{
-  display:none; position:fixed; top:56px; left:0; right:0;
-  background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50;
-}
-.mobile a{ display:block; padding:12px 16px; color:#fff; text-decoration:none; }
-.mobile .cta{ margin:8px 16px 12px; display:inline-block; }
-.mobile.open{ display:block; }
-
-/* Desktop switch */
-@media(min-width:768px){
-  .nav-inner{ height:64px; }
-  .links{ display:flex; }
-  .burger{ display:none; }
-  .mobile{ display:none!important; }
-}
-
-/* ================================
-   Hero patterns (home/about)
-================================== */
-.hero{ position:relative; min-height:100svh; display:flex; align-items:center; justify-content:center; overflow:hidden; text-align:center; padding:calc(24px + env(safe-area-inset-top)) 0 56px; }
-.hero-bg{ position:absolute; inset:0; z-index:-1; }
-.hero-bg img{ width:100%; height:100%; object-fit:cover; }
-.hero-bg::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,.40), rgba(0,0,0,.62) 55%, rgba(0,0,0,.85));
-}
-.hero .inner{ max-width:720px; margin:0 auto; filter:drop-shadow(0 2px 10px rgba(0,0,0,.6)); }
-.kicker{ font-size:11px; letter-spacing:.35em; text-transform:uppercase; opacity:.78; }
-
-/* ================================
-   Cards, grids, containers
-================================== */
-.card{
-  background:var(--soft);
-  border:1px solid var(--line);
-  border-radius:16px;
-  backdrop-filter:blur(8px);
-  padding:18px;
-}
-.grid{ display:grid; gap:20px; }
-.grid.two{ grid-template-columns:1.15fr .85fr; }
-.grid.equal{ grid-template-columns:1fr 1fr; }
-.row-2{ grid-column:1 / -1; }
-
-/* ================================
-   Buttons
-================================== */
-.btn{
-  display:inline-flex; align-items:center; justify-content:center; gap:.55rem;
-  padding:12px 18px; border-radius:999px; border:1px solid var(--line);
-  background:#fff; color:#000; font-weight:600; text-decoration:none; cursor:pointer;
-  transition:background .2s ease, transform .2s ease, border-color .2s ease;
-  user-select:none;
-}
-.btn:hover{ background:#eaeaea; transform:translateY(-1px); }
-.btn:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
-.btn.ghost{ background:transparent; color:#fff; }
-.btn.ghost:hover{ background:rgba(255,255,255,.12); }
-
-/* Status text */
-.status{ font-size:.92rem; color:var(--muted); }
-.status.ok{ color:#a7f3d0; }
-.status.err{ color:#fecaca; }
-
-/* ================================
-   Forms
-================================== */
-label{ font-size:.95rem; color:#e9e9e9; margin-bottom:6px; display:block; }
-input,select,textarea{
-  width:100%; padding:12px 12px; border-radius:12px;
-  border:1px solid var(--line); background:rgba(0,0,0,.55);
-  color:#fff; font-size:16px; -webkit-appearance:none; appearance:none; outline:none;
-}
-input::placeholder, textarea::placeholder{ color:rgba(255,255,255,.55); }
-textarea{ min-height:120px; resize:vertical; }
-
-/* ================================
-   Gallery (inner circle)
-================================== */
-.gallery{ display:grid; grid-template-columns:1fr; gap:28px; padding:22px 0 48px; }
-@media(min-width:640px){ .gallery{ grid-template-columns:repeat(2,1fr); } }
-@media(min-width:960px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
-@media(min-width:1200px){ .gallery{ grid-template-columns:repeat(4,1fr); } }
-
-.thumb{
-  position:relative; aspect-ratio:3/4; overflow:hidden;
-  border-radius:8px; border:1px solid var(--line); background:var(--soft);
-}
-.thumb img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
-.thumb:hover img,.thumb:focus-within img{ transform:scale(1.03); }
-.thumb a{ position:absolute; inset:0; outline:0; border:0; }
-.labels{ display:grid; gap:6px; }
-.label-row{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.tag{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:6px 8px; border:1px solid var(--line); border-radius:4px;
-  font-size:12px; color:#dcdcdc; background:rgba(255,255,255,.02);
-}
-.tag.title{ font-weight:500; grid-column:1/-1; text-align:center; }
-
-/* ================================
-   Headshot preview (membership)
-================================== */
-.headshot-preview{
-  width:120px; height:120px; border-radius:50%; overflow:hidden;
-  background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center;
-  font-size:.9rem; color:var(--muted); margin-top:10px;
-}
-
-/* ================================
-   Footer
-================================== */
-.foot{ border-top:1px solid var(--line); }
-.copyright{ padding:22px 0; text-align:center; color:rgba(255,255,255,.72); font-size:14px; }
-
-/* ================================
-   Responsive tweaks
-================================== */
-@media(max-width:980px){
-  .grid.two{ grid-template-columns:1fr; }
-  .grid.equal{ grid-template-columns:1fr; }
-}
-@media (prefers-reduced-motion:reduce){
-  .burger span, .thumb img, .btn{ transition:none!important; }
-}
+/* 8) Footer */
+footer, .copyright { font-size: 15px; }

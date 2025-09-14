@@ -10,15 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06); --ring:rgba(255,255,255,.9); }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-
-    /* Backdrop */
+    *{box-sizing:border-box} html,body{margin:0;height:100%}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .backdrop{position:fixed; inset:0; z-index:-2; background:url("assets/bg-night-sky.jpg") center/cover no-repeat}
     .backdrop::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.78) 40%, rgba(0,0,0,.92))}
-
-    /* Nav */
     .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
     .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(12px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
     .nav-inner{height:56px;display:flex;align-items:center;justify-content:space-between}
@@ -39,61 +34,39 @@
     .mobile .cta{margin:8px 16px 12px;display:inline-block}
     .mobile.open{display:block}
 
-    /* Page */
     .page{padding:32px 16px 64px}
     .card{max-width:440px;margin:48px auto;background:var(--soft);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(8px);padding:22px}
     h1{margin:6px 0 10px;font-weight:500;font-size:26px;text-align:center}
     .hint{text-align:center;color:var(--muted);margin-top:-4px}
-
     form{display:grid;gap:14px;margin-top:16px}
     label{font-size:.95rem;color:#e9e9e9}
-    input{
-      width:100%; padding:12px; border-radius:12px; border:1px solid var(--line);
-      background:rgba(0,0,0,.55); color:#fff; font-size:16px; outline:none;
-    }
+    input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.55);color:#fff;font-size:16px;outline:none}
     input:focus{outline:2px solid var(--ring); outline-offset:2px}
-    .row{display:flex; gap:8px; align-items:center; justify-content:space-between}
-    .toggle{background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:#fff;opacity:.85;cursor:pointer}
+    .row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+    .toggle{background:transparent;border:0;color:#fff;opacity:.85;cursor:pointer}
     .toggle:hover{opacity:1}
-
-    .caps{display:none;font-size:12px;color:#fecaca;margin-top:-6px}
-    .row-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
-    .small-link{font-size:13px;color:#ddd;text-decoration:none}
-    .small-link:hover{color:#fff}
-
     .actions{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:6px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#000;font-weight:600;text-decoration:none;cursor:pointer;transition:background .2s ease, transform .2s ease}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#000;font-weight:600;text-decoration:none;cursor:pointer;transition:background .2s, transform .2s}
     .btn:hover{background:#eaeaea;transform:translateY(-1px)}
     .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
     .status{font-size:.92rem;color:var(--muted);text-align:center;margin-top:6px}
-    .status.ok{color:#a7f3d0}
-    .status.err{color:#fecaca}
-
+    .status.ok{color:#a7f3d0}.status.err{color:#fecaca}
     .foot{border-top:1px solid var(--line)}
     .copyright{padding:22px 0;text-align:center;color:rgba(255,255,255,.72);font-size:14px}
-
-    @media(min-width:768px){
-      .nav-inner{height:64px}
-      .links{display:flex}
-      .burger{display:none}
-      .mobile{display:none!important}
-    }
+    @media(min-width:768px){.nav-inner{height:64px}.links{display:flex}.burger{display:none}.mobile{display:none!important}}
     :where(a,button){outline:0}
     :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
-    @media (prefers-reduced-motion: reduce){ .burger span{transition:none} }
   </style>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true"></div>
 
-  <!-- NAV -->
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="index.html" aria-label="Nighthawks home">
         <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
       </a>
-
       <nav class="links" aria-label="Primary">
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
@@ -101,12 +74,8 @@
         <a href="inner-circle.html">Inner Circle</a>
         <a href="login.html" aria-current="page">Login</a>
       </nav>
-
       <a href="membership.html" class="cta">Apply</a>
-
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button>
     </div>
     <nav class="mobile" id="mobile-nav" aria-label="Mobile">
       <a href="request.html">Request</a>
@@ -118,7 +87,6 @@
     </nav>
   </header>
 
-  <!-- LOGIN CARD -->
   <main class="wrap page">
     <div class="card" role="region" aria-labelledby="login-heading">
       <h1 id="login-heading">Member Login</h1>
@@ -127,24 +95,15 @@
       <form id="login-form" novalidate>
         <div>
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="username" inputmode="email" placeholder="you@email.com" />
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" />
         </div>
 
         <div>
           <label for="password">Password</label>
           <div class="row">
             <input id="password" name="password" type="password" required minlength="6" autocomplete="current-password" placeholder="••••••••" />
-            <button type="button" class="toggle" aria-label="Show password" aria-pressed="false" id="togglePw">Show</button>
+            <button type="button" class="toggle" aria-label="Show password" id="togglePw">Show</button>
           </div>
-          <div id="caps" class="caps" role="status" aria-live="polite">Caps Lock is on.</div>
-        </div>
-
-        <div class="row-meta">
-          <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:#ddd;">
-            <input type="checkbox" id="remember" name="remember" style="accent-color:#fff" />
-            Remember me
-          </label>
-          <a class="small-link" href="forgot.html">Forgot password?</a>
         </div>
 
         <div class="actions">
@@ -156,7 +115,6 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="foot">
     <div class="wrap">
       <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
@@ -164,10 +122,7 @@
   </footer>
 
   <script>
-    // Year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Mobile menu + close on Escape/outside
     const burger = document.getElementById('burger');
     const panel  = document.getElementById('mobile-nav');
     burger.addEventListener('click', () => {
@@ -175,51 +130,17 @@
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && panel.classList.contains('open')) {
-        panel.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
-      }
-    });
-    document.addEventListener('click', (e) => {
-      if (!panel.contains(e.target) && !burger.contains(e.target) && panel.classList.contains('open')) {
-        panel.classList.remove('open'); burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
-      }
+
+    document.getElementById('togglePw').addEventListener('click', () => {
+      const pw = document.getElementById('password');
+      const isText = pw.type === 'text';
+      pw.type = isText ? 'password' : 'text';
+      document.getElementById('togglePw').textContent = isText ? 'Show' : 'Hide';
     });
 
-    // Password toggle
-    const togglePw = document.getElementById('togglePw');
-    const pw = document.getElementById('password');
-    togglePw.addEventListener('click', () => {
-      const show = pw.type === 'password';
-      pw.type = show ? 'text' : 'password';
-      togglePw.textContent = show ? 'Hide' : 'Show';
-      togglePw.setAttribute('aria-pressed', show ? 'true' : 'false');
-      pw.focus();
-    });
+    const API_BASE = ""; const apiUrl = (p) => (API_BASE || "") + p;
+    const setStatus = (m,c='') => { const el = document.getElementById('formStatus'); el.textContent=m; el.className='status '+(c||''); };
 
-    // Caps Lock detection
-    const caps = document.getElementById('caps');
-    function capsHint(e){
-      const on = e.getModifierState && e.getModifierState('CapsLock');
-      caps.style.display = on ? 'block' : 'none';
-    }
-    pw.addEventListener('keydown', capsHint);
-    pw.addEventListener('keyup', capsHint);
-
-    // CONFIG
-    const API_BASE = ""; // e.g., "https://api.nighthawks.app" if API is separate
-    const apiUrl = (p) => (API_BASE || "") + p;
-
-    function setStatus(msg, cls=''){
-      const el = document.getElementById('formStatus');
-      el.textContent = msg; el.className = 'status ' + (cls || '');
-    }
-    function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-    // Submit
     (function () {
       const form = document.getElementById('login-form');
       const btn  = document.getElementById('submitBtn');
@@ -229,40 +150,21 @@
         setStatus('Signing in…'); btn.disabled = true;
 
         const fd = new FormData(form);
-        const email = (fd.get('email')||'').toString().trim();
-        const password = (fd.get('password')||'').toString();
-        const remember = !!fd.get('remember');
-
-        if (!email || !password){
+        const payload = { email: (fd.get('email')||'').toString().trim(), password: (fd.get('password')||'').toString() };
+        if (!payload.email || !payload.password){
           setStatus('Email and password are required.', 'err'); btn.disabled = false; return;
         }
-        if (!isValidEmail(email)){
-          setStatus('Please enter a valid email address.', 'err'); btn.disabled = false; return;
-        }
-
         try {
           const res = await fetch(apiUrl('/api/auth/login'), {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({ email, password, remember })
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+            body: JSON.stringify(payload)
           });
-          let data = {};
-          try { data = await res.json(); } catch(_) {}
-
-          if (res.ok) {
-            setStatus('Success. Redirecting…', 'ok');
-            window.location.href = 'dashboard.html';
-          } else {
-            // Optional: surface server-provided error detail, fallback to generic
-            const msg = data?.error || data?.message || 'Invalid email or password.';
-            setStatus(msg, 'err');
-          }
-        } catch (err) {
+          const data = await res.json().catch(()=>({}));
+          if (res.ok && data.ok) { setStatus('Success. Redirecting…', 'ok'); window.location.href = 'dashboard.html'; }
+          else setStatus(data.error || 'Invalid email or password.', 'err');
+        } catch {
           setStatus('Network error. Please try again.', 'err');
-        } finally {
-          btn.disabled = false;
-        }
+        } finally { btn.disabled = false; }
       });
     })();
   </script>
