@@ -3,68 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Nighthawks — Sign in</title>
-  <meta name="description" content="Sign in to your Nighthawks member account." />
+  <title>Login — Nighthawks</title>
+  <meta name="description" content="Member login for Nighthawks." />
   <meta name="theme-color" content="#0b0b0b" />
-  <meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-
+  <meta name="color-scheme" content="dark" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.08); --ring:rgba(255,255,255,.9) }
-    *{ box-sizing:border-box }
-    html,body{ margin:0; height:100% }
-    body{ font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
+    :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06); --ring:rgba(255,255,255,.9); }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 
     /* Backdrop */
-    .backdrop{ position:fixed; inset:0; z-index:-2; background:url("assets/bg-night.jpg") center/cover no-repeat }
-    .backdrop::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85)) }
+    .backdrop{position:fixed; inset:0; z-index:-2; background:url("assets/bg-night-sky.jpg") center/cover no-repeat}
+    .backdrop::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.78) 40%, rgba(0,0,0,.92))}
 
-    /* Header */
-    .nav{ position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line) }
-    .nav-inner{ max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between }
-    .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff }
-    .brand img{ height:24px; width:auto }
-    .brand span{ letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85 }
-    .links{ display:none; gap:24px; align-items:center }
-    .links a{ color:rgba(255,255,255,.85); text-decoration:none; font-size:14px }
-    .links a[aria-current="page"]{ color:#fff; font-weight:600 }
-    .links a:hover{ color:#fff }
-    .cta{ background:#fff; color:#000; padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:600; white-space:nowrap }
-
-    /* Burger */
-    .burger{ display:flex; flex-direction:column; gap:4px; background:transparent; border:0 }
-    .burger span{ display:block; width:22px; height:2px; background:#fff; transition:.25s }
-    .burger.open span:nth-child(1){ transform:translateY(6px) rotate(45deg) }
-    .burger.open span:nth-child(2){ opacity:0 }
-    .burger.open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg) }
-    .mobile{ display:none; position:fixed; top:52px; left:0; right:0; background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50 }
-    .mobile a{ display:block; padding:12px 16px; color:#fff; text-decoration:none }
-    .mobile .cta{ margin:8px 16px 12px; display:inline-block }
-    .mobile.open{ display:block }
+    /* Nav */
+    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(12px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
+    .nav-inner{height:56px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+    .brand img{width:32px;height:32px;object-fit:contain}
+    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
+    .links{display:none;gap:28px;align-items:center}
+    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
+    .links a:hover{color:#fff}
+    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
+    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
+    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
+    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+    .mobile{display:none;position:fixed;top:56px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
+    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
+    .mobile .cta{margin:8px 16px 12px;display:inline-block}
+    .mobile.open{display:block}
 
     /* Page */
-    .main{ min-height:calc(100svh - 52px); display:grid; place-items:center; padding:24px 16px }
-    .card{ width:min(440px,92vw); background:var(--soft); backdrop-filter:blur(8px); padding:22px; border-radius:16px; border:1px solid var(--line) }
-    h1{ margin:0 0 12px; font-size:1.6rem; font-weight:600 }
-    .field{ margin-bottom:12px }
-    label{ font-size:.92rem; color:#f3f3f3 }
-    .input-wrap{ position:relative }
-    input{ width:100%; margin-top:6px; padding:12px 44px 12px 12px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.5); color:#fff; font-size:16px }
-    input[aria-invalid="true"]{ border-color:#fda4a4; box-shadow:0 0 0 3px rgba(253,164,164,.15) }
-    .toggle{ position:absolute; right:8px; top:50%; transform:translateY(-50%); background:transparent; border:0; color:#fff; opacity:.85; cursor:pointer; padding:6px 8px; border-radius:8px }
-    .toggle:hover{ opacity:1; background:rgba(255,255,255,.08) }
-    .btn{ width:100%; padding:12px; border-radius:999px; border:1px solid var(--line); font-weight:600; cursor:pointer; transition:background .2s ease, transform .2s ease }
-    .btn.primary{ background:#fff; color:#000 }
-    .btn.primary:hover{ background:#eaeaea; transform:translateY(-1px) }
-    .hint{ color:var(--muted); font-size:.95rem; margin-top:10px }
-    .err{ color:#fecaca } .ok{ color:#a7f3d0 }
+    .page{padding:32px 16px 64px}
+    .card{max-width:440px;margin:48px auto;background:var(--soft);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(8px);padding:22px}
+    h1{margin:6px 0 10px;font-weight:500;font-size:26px;text-align:center}
+    .hint{text-align:center;color:var(--muted);margin-top:-4px}
 
-    /* a11y focus */
-    :where(a,button,input){ outline:0 }
-    :where(a,button,input):focus-visible{ outline:2px solid var(--ring); outline-offset:2px; border-radius:10px }
+    form{display:grid;gap:14px;margin-top:16px}
+    label{font-size:.95rem;color:#e9e9e9}
+    input{
+      width:100%; padding:12px; border-radius:12px; border:1px solid var(--line);
+      background:rgba(0,0,0,.55); color:#fff; font-size:16px; outline:none;
+    }
+    input:focus{outline:2px solid var(--ring); outline-offset:2px}
+    .row{display:flex; gap:8px; align-items:center; justify-content:space-between}
+    .toggle{background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:#fff;opacity:.85;cursor:pointer}
+    .toggle:hover{opacity:1}
 
-    @media (max-width: 900px){ .links{display:none} .burger{display:flex} }
-    @media (min-width: 901px){ .burger{display:none} .links{display:flex} .mobile{display:none!important} }
+    .caps{display:none;font-size:12px;color:#fecaca;margin-top:-6px}
+    .row-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+    .small-link{font-size:13px;color:#ddd;text-decoration:none}
+    .small-link:hover{color:#fff}
+
+    .actions{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:6px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:12px 18px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#000;font-weight:600;text-decoration:none;cursor:pointer;transition:background .2s ease, transform .2s ease}
+    .btn:hover{background:#eaeaea;transform:translateY(-1px)}
+    .btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .status{font-size:.92rem;color:var(--muted);text-align:center;margin-top:6px}
+    .status.ok{color:#a7f3d0}
+    .status.err{color:#fecaca}
+
+    .foot{border-top:1px solid var(--line)}
+    .copyright{padding:22px 0;text-align:center;color:rgba(255,255,255,.72);font-size:14px}
+
+    @media(min-width:768px){
+      .nav-inner{height:64px}
+      .links{display:flex}
+      .burger{display:none}
+      .mobile{display:none!important}
+    }
+    :where(a,button){outline:0}
+    :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
     @media (prefers-reduced-motion: reduce){ .burger span{transition:none} }
   </style>
 </head>
@@ -73,7 +88,7 @@
 
   <!-- NAV -->
   <header class="nav">
-    <div class="nav-inner">
+    <div class="wrap nav-inner">
       <a class="brand" href="index.html" aria-label="Nighthawks home">
         <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
@@ -87,13 +102,12 @@
         <a href="login.html" aria-current="page">Login</a>
       </nav>
 
-      <a class="cta" href="membership.html">Apply</a>
+      <a href="membership.html" class="cta">Apply</a>
 
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
     </div>
-
     <nav class="mobile" id="mobile-nav" aria-label="Mobile">
       <a href="request.html">Request</a>
       <a href="membership.html">Membership</a>
@@ -104,130 +118,153 @@
     </nav>
   </header>
 
-  <!-- SIGN-IN -->
-  <main class="main">
-    <section class="card" aria-labelledby="login-heading">
-      <h1 id="login-heading">Welcome back</h1>
+  <!-- LOGIN CARD -->
+  <main class="wrap page">
+    <div class="card" role="region" aria-labelledby="login-heading">
+      <h1 id="login-heading">Member Login</h1>
+      <p class="hint">Enter your email and password to access your dashboard.</p>
 
-      <form id="loginForm" novalidate>
-        <!-- Email -->
-        <div class="field">
+      <form id="login-form" novalidate>
+        <div>
           <label for="email">Email</label>
-          <div class="input-wrap">
-            <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" autofocus />
-          </div>
+          <input id="email" name="email" type="email" required autocomplete="username" inputmode="email" placeholder="you@email.com" />
         </div>
 
-        <!-- Password -->
-        <div class="field">
+        <div>
           <label for="password">Password</label>
-          <div class="input-wrap">
-            <input id="password" name="password" type="password" required minlength="6" autocomplete="current-password" />
-            <button type="button" class="toggle" id="togglePwd" aria-controls="password" aria-label="Show password" aria-pressed="false">Show</button>
+          <div class="row">
+            <input id="password" name="password" type="password" required minlength="6" autocomplete="current-password" placeholder="••••••••" />
+            <button type="button" class="toggle" aria-label="Show password" aria-pressed="false" id="togglePw">Show</button>
           </div>
+          <div id="caps" class="caps" role="status" aria-live="polite">Caps Lock is on.</div>
         </div>
 
-        <button class="btn primary" id="signinBtn" type="submit">Sign in</button>
-        <div id="msg" class="hint" role="status" aria-live="polite"></div>
+        <div class="row-meta">
+          <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:#ddd;">
+            <input type="checkbox" id="remember" name="remember" style="accent-color:#fff" />
+            Remember me
+          </label>
+          <a class="small-link" href="forgot.html">Forgot password?</a>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn" id="submitBtn">Sign In</button>
+        </div>
+
+        <div id="formStatus" class="status" role="status" aria-live="polite"></div>
       </form>
-    </section>
+    </div>
   </main>
 
-  <footer class="wrap" style="padding: 12px 16px 32px; text-align:center; color:rgba(255,255,255,.7);">
-    © <span id="year"></span> Nighthawks. All rights reserved.
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="wrap">
+      <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
+    </div>
   </footer>
 
   <script>
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu
+    // Mobile menu + close on Escape/outside
     const burger = document.getElementById('burger');
-    const mobile = document.getElementById('mobile-nav');
+    const panel  = document.getElementById('mobile-nav');
     burger.addEventListener('click', () => {
-      const open = mobile.classList.toggle('open');
+      const open = panel.classList.toggle('open');
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobile.classList.contains('open')) {
-        mobile.classList.remove('open');
+      if (e.key === 'Escape' && panel.classList.contains('open')) {
+        panel.classList.remove('open');
         burger.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-        burger.focus();
+        burger.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!panel.contains(e.target) && !burger.contains(e.target) && panel.classList.contains('open')) {
+        panel.classList.remove('open'); burger.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
       }
     });
 
-    // Show / hide password
-    const pwd = document.getElementById('password');
-    const togglePwd = document.getElementById('togglePwd');
-    togglePwd.addEventListener('click', () => {
-      const show = pwd.type === 'password';
-      pwd.type = show ? 'text' : 'password';
-      togglePwd.textContent = show ? 'Hide' : 'Show';
-      togglePwd.setAttribute('aria-pressed', String(show));
-      togglePwd.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    // Password toggle
+    const togglePw = document.getElementById('togglePw');
+    const pw = document.getElementById('password');
+    togglePw.addEventListener('click', () => {
+      const show = pw.type === 'password';
+      pw.type = show ? 'text' : 'password';
+      togglePw.textContent = show ? 'Hide' : 'Show';
+      togglePw.setAttribute('aria-pressed', show ? 'true' : 'false');
+      pw.focus();
     });
 
-    // ===== Helpers =====
-    const emailEl  = document.getElementById('email');
-    const msg      = document.getElementById('msg');
-    const form     = document.getElementById('loginForm');
-    const signinBtn= document.getElementById('signinBtn');
-
-    function setMsg(text, cls=''){ msg.textContent = text; msg.className = 'hint ' + (cls || ''); }
-    function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v || ''); }
-    function setInvalid(el, invalid){ el.setAttribute('aria-invalid', invalid ? 'true' : 'false'); }
-
-    // === API base: same-origin in prod, :5009 when serving static locally ===
-    const API_BASE = (() => {
-      const h = window.location;
-      const isLocal = (h.hostname === 'localhost' || h.hostname === '127.0.0.1');
-      // If you're previewing static files (e.g., VS Code Live Server on 5500), call the Node API on 5009.
-      if (isLocal && h.port !== '5009') return 'http://localhost:5009';
-      return '';
-    })();
-
-    async function call(path, body){
-      const url = API_BASE + path;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(body)
-      });
-      let data = {};
-      try { data = await res.json(); } catch(_) {}
-      return { ok: res.ok, data };
+    // Caps Lock detection
+    const caps = document.getElementById('caps');
+    function capsHint(e){
+      const on = e.getModifierState && e.getModifierState('CapsLock');
+      caps.style.display = on ? 'block' : 'none';
     }
+    pw.addEventListener('keydown', capsHint);
+    pw.addEventListener('keyup', capsHint);
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = emailEl.value.trim();
-      const password = pwd.value;
+    // CONFIG
+    const API_BASE = ""; // e.g., "https://api.nighthawks.app" if API is separate
+    const apiUrl = (p) => (API_BASE || "") + p;
 
-      let hasErr = false;
-      if (!isValidEmail(email)) { setInvalid(emailEl, true); hasErr = true; } else setInvalid(emailEl, false);
-      if ((password || '').length < 6) { setInvalid(pwd, true); hasErr = true; } else setInvalid(pwd, false);
-      if (hasErr) { setMsg('Please correct the highlighted fields.', 'err'); return; }
+    function setStatus(msg, cls=''){
+      const el = document.getElementById('formStatus');
+      el.textContent = msg; el.className = 'status ' + (cls || '');
+    }
+    function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-      setMsg('Signing in…'); signinBtn.disabled = true;
+    // Submit
+    (function () {
+      const form = document.getElementById('login-form');
+      const btn  = document.getElementById('submitBtn');
 
-      try {
-        const { ok, data } = await call('/api/auth/login', { email, password });
-        if (ok && (data.ok || data.status === 'ok')) {
-          setMsg('Success. Redirecting…', 'ok');
-          // IMPORTANT: this exists in your project; avoid 404 JSON.
-          window.location.href = '/dashboard/index.html';
-        } else {
-          const reason = (data && (data.error || data.message)) || 'Login failed';
-          setMsg(reason, 'err');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setStatus('Signing in…'); btn.disabled = true;
+
+        const fd = new FormData(form);
+        const email = (fd.get('email')||'').toString().trim();
+        const password = (fd.get('password')||'').toString();
+        const remember = !!fd.get('remember');
+
+        if (!email || !password){
+          setStatus('Email and password are required.', 'err'); btn.disabled = false; return;
         }
-      } catch(_) {
-        setMsg('Network error. Please try again.', 'err');
-      } finally {
-        signinBtn.disabled = false;
-      }
-    });
+        if (!isValidEmail(email)){
+          setStatus('Please enter a valid email address.', 'err'); btn.disabled = false; return;
+        }
+
+        try {
+          const res = await fetch(apiUrl('/api/auth/login'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ email, password, remember })
+          });
+          let data = {};
+          try { data = await res.json(); } catch(_) {}
+
+          if (res.ok) {
+            setStatus('Success. Redirecting…', 'ok');
+            window.location.href = 'dashboard.html';
+          } else {
+            // Optional: surface server-provided error detail, fallback to generic
+            const msg = data?.error || data?.message || 'Invalid email or password.';
+            setStatus(msg, 'err');
+          }
+        } catch (err) {
+          setStatus('Network error. Please try again.', 'err');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    })();
   </script>
 </body>
 </html>

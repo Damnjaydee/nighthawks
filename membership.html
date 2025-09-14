@@ -6,22 +6,33 @@
   <title>Nighthawks — Apply for Membership</title>
   <meta name="description" content="Apply to join Nighthawks, a private members society and concierge in New York City." />
   <meta name="theme-color" content="#0b0b0b" />
+  <meta name="color-scheme" content="dark" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Preload backdrop for faster LCP -->
+  <link rel="preload" as="image" href="assets/bg-membership.jpg" />
+
   <style>
     :root{
       --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
       --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
+      --focus:#d4af37; --ring:rgba(255,255,255,.9);
     }
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--ink); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
 
-    /* Backdrop image (no 'fixed' for better mobile perf) */
+    /* Backdrop */
     .backdrop{position:fixed; inset:0; z-index:-2; background:url("assets/bg-membership.jpg") center/cover no-repeat}
-    .backdrop::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.78) 40%, rgba(0,0,0,.92))}
+    .backdrop::after{content:""; position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.78) 40%, rgba(0,0,0,.92))}
 
     /* NAV */
-    .nav{position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px); background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)}
+    .nav{position:sticky; top:0; z-index:60; backdrop-filter:saturate(140%) blur(10px);
+         background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)}
     .nav-inner{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between}
     .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
     .brand img{height:24px; width:auto}
@@ -44,7 +55,8 @@
 
     /* Page */
     .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 64px}
-    .container{max-width:760px; margin:28px auto; background:var(--soft); border:1px solid var(--line); border-radius:16px; backdrop-filter:blur(8px); padding:22px}
+    .container{max-width:760px; margin:28px auto; background:var(--soft);
+      border:1px solid var(--line); border-radius:16px; backdrop-filter:blur(8px); padding:22px}
     h1{font-family:"DM Serif Display",serif; font-weight:400; margin:6px 0 2px; font-size:28px}
     .hint{font-size:.92rem; color:var(--muted); margin:8px 0 0}
     .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px}
@@ -54,16 +66,22 @@
     input, select, textarea{
       width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--line);
       background:rgba(0,0,0,.55); color:#fff; font-size:16px; -webkit-appearance:none; appearance:none;
+      outline: none;
     }
+    input:focus, select:focus, textarea:focus{ border-color: var(--focus); box-shadow:0 0 0 3px rgba(212,175,55,.15); }
     input::placeholder, textarea::placeholder{color:rgba(255,255,255,.55)}
     textarea{min-height:120px; resize:vertical}
 
     /* Headshot preview */
-    .headshot-preview{width:120px; height:120px; border-radius:50%; overflow:hidden; background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:var(--muted); margin-top:10px}
+    .headshot-preview{width:120px; height:120px; border-radius:50%; overflow:hidden;
+      background:rgba(255,255,255,.05); display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; color:var(--muted); margin-top:10px}
 
     /* Buttons & status */
     .actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:8px}
-    .btn{display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:12px 18px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#000; font-weight:600; text-decoration:none; cursor:pointer; transition:background .2s ease, transform .2s ease, border-color .2s ease}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:.55rem; padding:12px 18px;
+      border-radius:999px; border:1px solid var(--line); background:#fff; color:#000; font-weight:600;
+      text-decoration:none; cursor:pointer; transition:background .2s ease, transform .2s ease, border-color .2s ease}
     .btn:hover{background:#eaeaea; transform:translateY(-1px)}
     .btn:disabled{opacity:.6; cursor:not-allowed; transform:none}
     .status{font-size:.92rem; color:var(--muted)}
@@ -107,7 +125,8 @@
         <a href="login.html">Login</a>
       </nav>
 
-      <a class="cta" href="signup.html">Apply</a>
+      <!-- CTA now points to membership (not signup) -->
+      <a class="cta" href="membership.html">Apply</a>
 
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
@@ -120,7 +139,7 @@
       <a href="about.html">About</a>
       <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
-      <a href="signup.html" class="cta">Apply</a>
+      <a href="membership.html" class="cta">Apply</a>
     </nav>
   </header>
 
@@ -130,16 +149,22 @@
       <h1>Apply for Membership</h1>
       <p class="hint">Fields marked * are required.</p>
 
-      <form id="membershipForm" novalidate>
-        <div class="grid">
+      <!-- Normalized field names for backend -->
+      <form id="apply-form" novalidate>
+        <!-- Honeypot for spam bots -->
+        <input type="text" name="company_internal" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
+
+        <div class="grid" role="group" aria-labelledby="contact">
+          <div class="row-2" id="contact" style="display:none">Contact</div>
+
           <div>
             <label for="fullName">Full Name*</label>
             <input id="fullName" name="fullName" type="text" required autocomplete="name" placeholder="First & Last Name" />
           </div>
 
           <div>
-            <label for="birthDate">Date of Birth*</label>
-            <input id="birthDate" name="birthDate" type="date" required />
+            <label for="dob">Date of Birth*</label>
+            <input id="dob" name="dob" type="date" required />
           </div>
 
           <div>
@@ -149,12 +174,13 @@
 
           <div>
             <label for="phone">Mobile*</label>
-            <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(xxx) xxx-xxxx" />
+            <input id="phone" name="phone" type="tel" required inputmode="tel" autocomplete="tel"
+                   placeholder="(xxx) xxx-xxxx" pattern="^[0-9+()\-.\s]{7,}$" />
           </div>
 
-          <div>
-            <label for="streetAddress">Street Address*</label>
-            <input id="streetAddress" name="streetAddress" type="text" required autocomplete="street-address" />
+          <div class="row-2">
+            <label for="address">Street Address*</label>
+            <input id="address" name="address" type="text" required autocomplete="street-address" />
           </div>
 
           <div>
@@ -181,14 +207,14 @@
 
           <div class="row-2">
             <label for="headshot">Headshot*</label>
-            <input id="headshot" name="headshot" type="file" accept="image/*" required />
-            <div class="headshot-preview" id="headshotPreview">Preview</div>
-            <p class="hint">Your image is uploaded securely with a one-time link.</p>
+            <input id="headshot" name="headshot" type="file" accept="image/*" required aria-describedby="headshotHelp" />
+            <div class="headshot-preview" id="headshotPreview" aria-hidden="true">Preview</div>
+            <p class="hint" id="headshotHelp">Your image is uploaded securely with a one-time link.</p>
           </div>
 
           <div>
-            <label for="companyName">Company Name*</label>
-            <input id="companyName" name="companyName" type="text" required />
+            <label for="company">Company Name*</label>
+            <input id="company" name="company" type="text" required />
           </div>
 
           <div>
@@ -207,8 +233,8 @@
           </div>
 
           <div class="row-2">
-            <label for="social">Social Networks</label>
-            <input id="social" name="social" type="text" placeholder="Instagram, LinkedIn, website…" />
+            <label for="socials">Social Networks</label>
+            <input id="socials" name="socials" type="text" placeholder="Instagram, LinkedIn, website…" />
           </div>
         </div>
 
@@ -217,7 +243,9 @@
           <span id="formStatus" class="status" role="status" aria-live="polite"></span>
         </div>
 
-        <p class="hint" style="text-align:center;margin-top:10px;">By submitting, you agree we may contact you regarding your application.</p>
+        <p class="hint" style="text-align:center;margin-top:10px;">
+          By submitting, you agree we may contact you regarding your application.
+        </p>
       </form>
     </div>
   </main>
@@ -227,24 +255,63 @@
   </footer>
 
   <script>
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // --------- CONFIG ----------
+    // If your API is on another host, set API_BASE to its origin, e.g. "https://api.nighthawks.app"
+    const API_BASE = ""; // same-origin by default
+    const apiUrl = (path) => (API_BASE || "") + path;
 
-    // Mobile menu
-    const burger = document.getElementById('burger');
-    const mobile = document.getElementById('mobile-nav');
+    // --------- UTIL ----------
+    const setStatus = (msg, cls='') => {
+      const el = document.getElementById('formStatus');
+      el.textContent = msg;
+      el.className = 'status ' + (cls || '');
+    };
+    const get = (id) => document.getElementById(id);
+
+    // Year
+    get('year').textContent = new Date().getFullYear();
+
+    // Mobile menu + close on escape/outside
+    const burger = get('burger');
+    const mobile = get('mobile-nav');
     burger.addEventListener('click', () => {
       const open = mobile.classList.toggle('open');
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobile.classList.contains('open')) {
+        mobile.classList.remove('open'); burger.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (!mobile.contains(e.target) && !burger.contains(e.target) && mobile.classList.contains('open')) {
+        mobile.classList.remove('open'); burger.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+      }
+    });
 
-    // Headshot preview
-    document.getElementById('headshot').addEventListener('change', (event) => {
-      const preview = document.getElementById('headshotPreview');
+    // Headshot preview + light validation
+    const headshotInput = get('headshot');
+    headshotInput.addEventListener('change', (event) => {
+      const preview = get('headshotPreview');
       preview.innerHTML = '';
       const file = event.target.files && event.target.files[0];
       if (file) {
+        // Basic checks (<=10MB, image)
+        if (!file.type.startsWith('image/')) {
+          headshotInput.value = '';
+          preview.textContent = 'Preview';
+          alert('Please upload an image file.');
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) { // 10MB
+          headshotInput.value = '';
+          preview.textContent = 'Preview';
+          alert('Image too large (max 10MB).');
+          return;
+        }
         const img = document.createElement('img');
         img.src = URL.createObjectURL(file);
         img.style.width = '100%';
@@ -257,74 +324,87 @@
       }
     });
 
-    // S3 presigned upload
+    // Presigned upload (expects { ok, uploadUrl, key } or { uploadUrl, key })
     async function uploadHeadshot(file) {
       if (!file) return '';
-      const presignRes = await fetch('/api/uploads/presign', {
+      const res = await fetch(apiUrl('/api/uploads/presign'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fileName: file.name, fileType: file.type, folder: 'headshots' })
       });
-      const { ok, uploadUrl, key, error } = await presignRes.json();
-      if (!ok) throw new Error(error || 'Failed to prepare upload');
-      await fetch(uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
-      return key; // store this in the application
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.uploadUrl) throw new Error(data.error || 'Failed to prepare upload');
+
+      // Upload to S3 (or compatible)
+      const putRes = await fetch(data.uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file
+      });
+      if (!putRes.ok) throw new Error('Upload failed');
+      return data.key;
     }
 
-    // Submit to API
+    // Submit
     (function () {
-      const form = document.getElementById('membershipForm');
-      const statusEl = document.getElementById('formStatus');
-      const submitBtn = document.getElementById('submitBtn');
-
-      function setStatus(msg, cls=''){ statusEl.textContent = msg; statusEl.className = 'status ' + (cls || ''); }
+      const form = get('apply-form');
+      const submitBtn = get('submitBtn');
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // honeypot
+        const hp = form.querySelector('input[name="company_internal"]');
+        if (hp && hp.value) { setStatus('Blocked (bot detected).', 'err'); return; }
+
         setStatus('Submitting…'); submitBtn.disabled = true;
 
         try {
           const fd = new FormData(form);
 
-          // simple client-side required checks
-          const required = ['fullName','birthDate','email','phone','streetAddress','city','state','country','companyName','industry','role','bio','headshot'];
+          // Required checks (in addition to native)
+          const required = ['fullName','dob','email','phone','address','city','state','country','company','industry','role','bio','headshot'];
           for (const k of required) {
-            if (!fd.get(k) || (fd.get(k) instanceof File && !fd.get(k).size)) {
-              setStatus('Please complete all required fields.', 'err'); submitBtn.disabled = false; return;
+            const v = fd.get(k);
+            if (!v || (v instanceof File && !v.size)) {
+              setStatus('Please complete all required fields.', 'err');
+              submitBtn.disabled = false;
+              return;
             }
           }
 
-          // Upload headshot first
-          const headshotFile = fd.get('headshot');
-          const headshotKey = await uploadHeadshot(headshotFile);
+          // Upload headshot
+          const headshotKey = await uploadHeadshot(fd.get('headshot'));
 
+          // Build payload
           const payload = {
             fullName: (fd.get('fullName')||'').toString().trim(),
-            birthDate: fd.get('birthDate'),
+            dob: fd.get('dob'),
             email: (fd.get('email')||'').toString().trim(),
             phone: (fd.get('phone')||'').toString().trim(),
-            streetAddress: (fd.get('streetAddress')||'').toString().trim(),
+            address: (fd.get('address')||'').toString().trim(),
             city: (fd.get('city')||'').toString().trim(),
             state: (fd.get('state')||'').toString().trim(),
             country: fd.get('country'),
-            companyName: (fd.get('companyName')||'').toString().trim(),
+            company: (fd.get('company')||'').toString().trim(),
             industry: (fd.get('industry')||'').toString().trim(),
             role: (fd.get('role')||'').toString().trim(),
             bio: (fd.get('bio')||'').toString().trim(),
-            social: (fd.get('social')||'').toString().trim(),
+            socials: (fd.get('socials')||'').toString().trim(),
             headshotKey
           };
 
-          const res = await fetch('/api/signup', {
+          const res = await fetch(apiUrl('/api/applications'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(payload)
           });
-          const json = await res.json();
+          const json = await res.json().catch(() => ({}));
 
-          if (res.ok && (json.ok || json.status === 'ok')) {
+          if (res.ok && (json.ok !== false)) {
             setStatus('Application received. Redirecting…', 'ok');
-            window.location.href = 'signup-success.html';
+            window.location.href = 'thank-you.html?type=apply';
           } else {
             setStatus(json.error || 'Something went wrong.', 'err');
           }

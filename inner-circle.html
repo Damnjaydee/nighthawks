@@ -6,10 +6,12 @@
   <title>Nighthawks — Inner Circle</title>
   <meta name="description" content="A peek inside Nighthawks’ Inner Circle: editorial moments, private dinners, and cultural activations." />
   <meta name="theme-color" content="#0b0b0b" />
-  <meta name="color-scheme" content="dark light" />
+  <meta name="color-scheme" content="dark" />
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
   <style>
-    :root{
+    :root {
       --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78);
       --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06);
       --ring:rgba(255,255,255,.9);
@@ -22,97 +24,76 @@
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ===== Header (unified) ===== */
-    .nav{
-      position:sticky; top:0; z-index:60;
-      backdrop-filter:saturate(140%) blur(10px);
-      background:rgba(0,0,0,.35); border-bottom:1px solid var(--line)
-    }
-    .nav-inner{
-      max-width:1120px; margin:0 auto; padding:10px 16px;
-      display:flex; align-items:center; justify-content:space-between
-    }
-    .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff}
-    .brand img{height:24px; width:auto}
-    .brand span{letter-spacing:.2em; text-transform:uppercase; font-size:12px; opacity:.85}
-    .links{display:none; gap:24px; align-items:center}
-    .links a{color:rgba(255,255,255,.85); text-decoration:none; font-size:14px}
-    .links a[aria-current="page"]{color:#fff; font-weight:600}
+    /* ===== Header ===== */
+    .nav{position:sticky;top:0;z-index:60;
+         backdrop-filter:saturate(140%) blur(10px);
+         background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
+    .nav-inner{max-width:1120px;margin:0 auto;padding:10px 16px;
+               display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+    .brand img{height:24px;width:auto}
+    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
+    .links{display:none;gap:24px;align-items:center}
+    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
+    .links a[aria-current="page"]{color:#fff;font-weight:600}
     .links a:hover{color:#fff}
-    .cta{
-      background:#fff; color:#000; padding:10px 16px; border-radius:999px;
-      text-decoration:none; font-weight:600; white-space:nowrap
-    }
-    .burger{display:flex; flex-direction:column; gap:4px; background:transparent; border:0}
-    .burger span{display:block; width:22px; height:2px; background:#fff; transition:.25s}
+    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;
+         text-decoration:none;font-weight:600;white-space:nowrap}
+    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
+    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
     .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
     .burger.open span:nth-child(2){opacity:0}
     .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{
-      display:none; position:fixed; top:52px; left:0; right:0;
-      background:#0b0b0b; border-bottom:1px solid var(--line); z-index:50
-    }
-    .mobile a{display:block; padding:12px 16px; color:#fff; text-decoration:none}
-    .mobile .cta{margin:8px 16px 12px; display:inline-block}
+    .mobile{display:none;position:fixed;top:52px;left:0;right:0;
+            background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
+    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
+    .mobile .cta{margin:8px 16px 12px;display:inline-block}
     .mobile.open{display:block}
     @media (min-width:901px){.burger{display:none}.links{display:flex}.mobile{display:none!important}}
 
     /* ===== Page heading ===== */
-    .wrap{max-width:1120px; margin:0 auto; padding:28px 16px}
-    .page-title{margin:10px 0 6px; font-weight:300; letter-spacing:.01em; font-size:clamp(24px,4vw,40px)}
-    .page-sub{margin:0; color:var(--muted); font-size:15px}
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 16px}
+    .page-title{margin:10px 0 6px;font-weight:300;letter-spacing:.01em;font-size:clamp(24px,4vw,40px)}
+    .page-sub{margin:0;color:var(--muted);font-size:15px}
 
     /* ===== Gallery grid ===== */
-    .grid{
-      display:grid; grid-template-columns:1fr;
-      gap:28px; padding:22px 0 48px;
-    }
-    @media (min-width:640px){ .grid{grid-template-columns:repeat(2,1fr)} }
-    @media (min-width:960px){ .grid{grid-template-columns:repeat(3,1fr)} }
-    @media (min-width:1200px){ .grid{grid-template-columns:repeat(4,1fr)} }
+    .grid{display:grid;grid-template-columns:1fr;gap:28px;padding:22px 0 48px}
+    @media (min-width:640px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (min-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (min-width:1200px){.grid{grid-template-columns:repeat(4,1fr)}}
 
-    .card{display:flex; flex-direction:column; gap:10px}
-    .thumb{
-      position:relative; aspect-ratio:3/4;
-      overflow:hidden; border-radius:8px; border:1px solid var(--line); background:var(--soft)
-    }
-    .thumb img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease}
-    .thumb:focus-within img,.thumb:hover img{transform:scale(1.03)}
-    .thumb a{position:absolute; inset:0; outline:0; border:0}
-    .labels{display:grid; grid-template-columns:1fr; gap:6px}
-    .label-row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
-    .tag{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:6px 8px; border:1px solid var(--line); border-radius:4px;
-      font-size:12px; color:#dcdcdc; background:rgba(255,255,255,.02)
-    }
-    .tag.title{font-weight:500; grid-column:1/-1; text-align:center}
+    .card{display:flex;flex-direction:column;gap:10px}
+    .thumb{position:relative;aspect-ratio:3/4;overflow:hidden;
+           border-radius:8px;border:1px solid var(--line);background:var(--soft)}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+    .thumb:hover img,.thumb:focus-within img{transform:scale(1.03)}
+    .thumb a{position:absolute;inset:0;outline:0;border:0}
+    .labels{display:grid;gap:6px}
+    .label-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .tag{display:inline-flex;align-items:center;justify-content:center;
+         padding:6px 8px;border:1px solid var(--line);border-radius:4px;
+         font-size:12px;color:#dcdcdc;background:rgba(255,255,255,.02)}
+    .tag.title{font-weight:500;grid-column:1/-1;text-align:center}
 
     /* ===== Lightbox ===== */
-    .lightbox{
-      position:fixed; inset:0; background:rgba(0,0,0,.92);
-      display:none; align-items:center; justify-content:center; z-index:80
-    }
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);
+              display:none;align-items:center;justify-content:center;z-index:80}
     .lightbox.open{display:flex}
-    .lightbox img{max-width:90vw; max-height:86vh; border-radius:10px}
-    .lb-close{
-      position:absolute; top:12px; right:12px;
-      background:#fff; color:#000; border:0; border-radius:999px; padding:10px 14px;
-      font-weight:600; cursor:pointer
-    }
-    .lb-meta{
-      position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:center
-    }
+    .lightbox img{max-width:90vw;max-height:86vh;border-radius:10px}
+    .lb-close{position:absolute;top:12px;right:12px;
+              background:#fff;color:#000;border:0;border-radius:999px;
+              padding:10px 14px;font-weight:600;cursor:pointer}
+    .lb-meta{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+             display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
     .lb-meta .tag{background:rgba(255,255,255,.06)}
 
     /* Footer */
     .foot{border-top:1px solid var(--line)}
-    .copyright{padding:20px 16px; text-align:center; color:rgba(255,255,255,.7); font-size:14px}
+    .copyright{padding:20px 16px;text-align:center;color:rgba(255,255,255,.7);font-size:14px}
 
     /* A11y focus */
     :where(a,button){outline:0}
-    :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
+    :where(a,button):focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:10px}
   </style>
 </head>
 <body>
@@ -123,7 +104,6 @@
         <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
         <span>NIGHTHAWKS</span>
       </a>
-
       <nav class="links" aria-label="Primary">
         <a href="request.html">Request</a>
         <a href="membership.html">Membership</a>
@@ -131,9 +111,7 @@
         <a href="inner-circle.html" aria-current="page">Inner Circle</a>
         <a href="login.html">Login</a>
       </nav>
-
       <a class="cta" href="membership.html">Apply</a>
-
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
         <span></span><span></span><span></span>
       </button>
@@ -154,7 +132,8 @@
     <p class="page-sub">Editorial highlights and private moments curated with our partners.</p>
 
     <section class="grid" id="gallery">
-      <!-- Example cards — replace src with your images in /assets/events/ -->
+      <!-- Example cards -->
+      <!-- Swap with your real event images in assets/events/ -->
       <article class="card">
         <div class="thumb">
           <img src="assets/bg-night.jpg" alt="Moncler × Mercedes-Benz" loading="lazy" width="1200" height="1600" />
@@ -162,114 +141,14 @@
         </div>
         <div class="labels">
           <div class="tag title">Moncler × Mercedes-Benz</div>
-          <div class="label-row">
-            <div class="tag">April, 2025</div>
-            <div class="tag">New York</div>
-          </div>
+          <div class="label-row"><div class="tag">April, 2025</div><div class="tag">New York</div></div>
         </div>
       </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-sunrise.jpg" alt="Coperni" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-sunrise.jpg" data-title="Coperni" data-date="March, 2025" data-city="Paris" aria-label="Open image — Coperni"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Coperni</div>
-          <div class="label-row">
-            <div class="tag">March, 2025</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-morning.jpg" alt="Valentino" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-morning.jpg" data-title="Valentino" data-date="January, 2025" data-city="Paris" aria-label="Open image — Valentino"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Valentino</div>
-          <div class="label-row">
-            <div class="tag">January, 2025</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-sunset.jpg" alt="Tiffany &amp; Co" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-sunset.jpg" data-title="Tiffany &amp; Co" data-date="November, 2024" data-city="Paris" aria-label="Open image — Tiffany &amp; Co"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Tiffany &amp; Co</div>
-          <div class="label-row">
-            <div class="tag">November, 2024</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-night-sky.jpg" alt="Evian × Pharrell" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-night-sky.jpg" data-title="Evian × Pharrell" data-date="November, 2024" data-city="Los Angeles" aria-label="Open image — Evian × Pharrell"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Evian × Pharrell</div>
-          <div class="label-row">
-            <div class="tag">November, 2024</div>
-            <div class="tag">Los Angeles</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-night.jpg" alt="Nicole Hollis" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-night.jpg" data-title="Nicole Hollis" data-date="October, 2024" data-city="Paris" aria-label="Open image — Nicole Hollis"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Nicole Hollis</div>
-          <div class="label-row">
-            <div class="tag">October, 2024</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-sunrise.jpg" alt="Chanel" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-sunrise.jpg" data-title="Chanel" data-date="October, 2024" data-city="Paris" aria-label="Open image — Chanel"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Chanel</div>
-          <div class="label-row">
-            <div class="tag">October, 2024</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-sunset.jpg" alt="Balenciaga" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-sunset.jpg" data-title="Balenciaga" data-date="September, 2024" data-city="Paris" aria-label="Open image — Balenciaga"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Balenciaga</div>
-          <div class="label-row">
-            <div class="tag">September, 2024</div>
-            <div class="tag">Paris</div>
-          </div>
-        </div>
-      </article>
-      <!-- /examples -->
+      <!-- More cards... -->
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="foot">
     <div class="wrap">
       <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
@@ -296,7 +175,7 @@
       }
     });
 
-    // Lightbox (accessible)
+    // Lightbox
     const gallery = document.getElementById('gallery');
     const lb = document.createElement('div');
     lb.className = 'lightbox';
@@ -316,21 +195,19 @@
 
     function trapFocus(e){
       const focusables = lb.querySelectorAll('button,img,[tabindex]:not([tabindex="-1"])');
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
       if (e.key !== 'Tab') return;
-      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first){e.preventDefault();last.focus();}
+      else if (!e.shiftKey && document.activeElement === last){e.preventDefault();first.focus();}
     }
 
-    function openLB(src, title, date, city, triggerEl) {
-      lastFocused = triggerEl || document.activeElement;
-      lbImg.src = src;
-      lbImg.alt = title || '';
+    function openLB(src,title,date,city,triggerEl){
+      lastFocused = triggerEl||document.activeElement;
+      lbImg.src = src; lbImg.alt = title||'';
       lbMeta.innerHTML = `
-        <span class="tag title">${title || ''}</span>
-        <span class="tag">${date || ''}</span>
-        <span class="tag">${city || ''}</span>
+        <span class="tag title">${title||''}</span>
+        <span class="tag">${date||''}</span>
+        <span class="tag">${city||''}</span>
       `;
       lb.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -338,7 +215,7 @@
       lb.addEventListener('keydown', trapFocus);
     }
 
-    function closeLB() {
+    function closeLB(){
       lb.classList.remove('open');
       lbImg.src = '';
       document.body.style.overflow = '';
@@ -346,16 +223,16 @@
       if (lastFocused && lastFocused.focus) lastFocused.focus();
     }
 
-    gallery.addEventListener('click', (e) => {
+    gallery.addEventListener('click',(e)=>{
       const a = e.target.closest('a[href]');
       if (!a) return;
       e.preventDefault();
-      openLB(a.getAttribute('href'), a.dataset.title, a.dataset.date, a.dataset.city, a);
+      openLB(a.href,a.dataset.title,a.dataset.date,a.dataset.city,a);
     });
 
-    lbClose.addEventListener('click', closeLB);
-    lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
+    lbClose.addEventListener('click',closeLB);
+    lb.addEventListener('click',(e)=>{if(e.target===lb) closeLB();});
+    document.addEventListener('keydown',(e)=>{if(e.key==='Escape') closeLB();});
   </script>
 </body>
 </html>
