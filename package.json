@@ -2,33 +2,30 @@
   "name": "nighthawks-site",
   "version": "1.0.0",
   "private": true,
-  "description": "Nighthawks unified server (static + RSVP + Concierge + Auth)",
+  "description": "Nighthawks unified server (static + Concierge + Membership + Auth + uploads)",
   "main": "server.js",
+  "type": "commonjs",
   "engines": {
-    "node": ">=20 <23"
+    "node": ">=18.17"
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "render-build": "echo 'no build step'",
-    "postinstall": "npm run render-build"
+    "dev": "nodemon --quiet server.js",
+    "health": "node -e \"require('http').get('http://localhost:'+(process.env.PORT||5009)+'/api/health',res=>res.pipe(process.stdout))\""
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.888.0",
-    "@aws-sdk/s3-request-presigner": "^3.888.0",
     "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.6.0",
     "connect-sqlite3": "^0.9.16",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.6.1",
-    "express": "^4.21.2",
-    "express-rate-limit": "^7.5.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
     "express-session": "^1.18.2",
-    "helmet": "^7.2.0",
-    "nodemailer": "^6.10.1"
-  },
-  "optionalDependencies": {
-    "better-sqlite3": "^9.6.0"
+    "helmet": "^7.1.0",
+    "nodemailer": "^6.9.13",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

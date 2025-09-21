@@ -2,192 +2,192 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Nighthawks — Inner Circle</title>
-  <meta name="description" content="Editorial highlights and private moments from Nighthawks’ Inner Circle." />
-  <meta name="theme-color" content="#0b0b0b" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Circle — Reserve</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="color-scheme" content="dark" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Config first (provides window.NH.*) -->
+  <script src="./config.js"></script>
+
+  <!-- Inject the Tock loader using your slug from config.js -->
+  <script>
+    (function loadTock(){
+      const slug = (window.NH && window.NH.TOCK_SLUG) || "";
+      if (!slug) { console.warn("Missing NH.TOCK_SLUG in /config.js"); return; }
+      const s = document.createElement("script");
+      s.defer = true; s.src = "https://widgets.exploretock.com/v1/loader.js";
+      s.setAttribute("data-tock-slug", slug);
+      document.head.appendChild(s);
+    })();
+  </script>
+
   <style>
-    :root{ --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.14); --soft:rgba(255,255,255,.06); --ring:rgba(255,255,255,.9); }
-    *{box-sizing:border-box} html,body{margin:0}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(10px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
-    .nav-inner{max-width:1120px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
-    .brand img{height:24px}
-    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
-    .links{display:none;gap:24px;align-items:center}
-    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
-    .links a[aria-current="page"]{color:#fff;font-weight:600}
-    .links a:hover{color:#fff}
-    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:600;white-space:nowrap}
-    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
-    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
-    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .burger.open span:nth-child(2){opacity:0}
-    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{display:none;position:fixed;top:52px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
-    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
-    .mobile .cta{margin:8px 16px 12px;display:inline-block}
-    .mobile.open{display:block}
-    @media (min-width:901px){.burger{display:none}.links{display:flex}.mobile{display:none!important}}
-
-    .wrap{max-width:1120px;margin:0 auto;padding:28px 16px}
-    .page-title{margin:10px 0 6px;font-weight:300;letter-spacing:.01em;font-size:clamp(24px,4vw,40px)}
-    .page-sub{margin:0;color:var(--muted);font-size:15px}
-
-    .grid{display:grid;grid-template-columns:1fr;gap:28px;padding:22px 0 48px}
-    @media (min-width:640px){ .grid{grid-template-columns:repeat(2,1fr)} }
-    @media (min-width:960px){ .grid{grid-template-columns:repeat(3,1fr)} }
-    @media (min-width:1200px){ .grid{grid-template-columns:repeat(4,1fr)} }
-
-    .card{display:flex;flex-direction:column;gap:10px}
-    .thumb{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:8px;border:1px solid var(--line);background:var(--soft)}
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
-    .thumb:hover img,.thumb:focus-within img{transform:scale(1.03)}
-    .thumb a{position:absolute;inset:0;outline:0;border:0}
-    .labels{display:grid;gap:6px}
-    .label-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .tag{display:inline-flex;align-items:center;justify-content:center;padding:6px 8px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:#dcdcdc;background:rgba(255,255,255,.02)}
-    .tag.title{font-weight:500;grid-column:1/-1;text-align:center}
-
-    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:80}
-    .lightbox.open{display:flex}
-    .lightbox img{max-width:90vw;max-height:86vh;border-radius:10px}
-    .lb-close{position:absolute;top:12px;right:12px;background:#fff;color:#000;border:0;border-radius:999px;padding:10px 14px;font-weight:600;cursor:pointer}
-    .lb-meta{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-    .lb-meta .tag{background:rgba(255,255,255,.06)}
-
-    .foot{border-top:1px solid var(--line)}
-    .copyright{padding:20px 16px;text-align:center;color:rgba(255,255,255,.7);font-size:14px}
-    :where(a,button){outline:0}
-    :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
+    :root{--bg:#0a0a0a;--fg:#eaeaea;--muted:#a7a7a7;--line:#1f1f1f;--accent:#c9a227}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .wrap{max-width:960px;margin:0 auto;padding:28px 20px 56px}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 0 18px;border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+    .mark{width:34px;height:34px;border-radius:999px;background:linear-gradient(145deg,#151515,#0d0d0d);border:1px solid #202020;display:grid;place-items:center}
+    .mark::before{content:"\1F985";filter:grayscale(1);opacity:.85}
+    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:18px}
+    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .hero{padding:52px 0 8px}
+    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(30px,6vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
+    .card{margin:34px 0 42px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
+    .card .in{padding:22px;display:grid;gap:18px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:720px){.form-grid{grid-template-columns:1fr}}
+    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+    input,select{width:100%;padding:12px;border-radius:12px;background:#0f0f0f;color:var(--fg);border:1px solid #1b1b1b;outline:none}
+    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 /.14)}
+    .row{display:grid;gap:6px}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+    .note{color:var(--muted);font-size:12px}
+    .divider{height:1px;background:var(--line);margin:6px 0 0}
+    .muted{color:var(--muted);font-size:13px}
+    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
+    a{color:var(--fg)}
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
-        <span>NIGHTHAWKS</span>
-      </a>
-      <nav class="links" aria-label="Primary">
-        <a href="request.html">Request</a>
-        <a href="membership.html">Membership</a>
-        <a href="about.html">About</a>
-        <a href="inner-circle.html" aria-current="page">Inner Circle</a>
-        <a href="login.html">Login</a>
-      </nav>
-      <a class="cta" href="membership.html">Apply</a>
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <nav class="mobile" id="mobile-nav" aria-label="Mobile">
-      <a href="request.html">Request</a>
-      <a href="membership.html">Membership</a>
-      <a href="about.html">About</a>
-      <a href="inner-circle.html" aria-current="page">Inner Circle</a>
-      <a href="login.html">Login</a>
-      <a href="membership.html" class="cta">Apply</a>
-    </nav>
-  </header>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="/"><span class="mark" aria-hidden="true"></span><span class="name">Nighthawks</span></a>
+      <span class="pill">Private Members</span>
+    </header>
 
-  <main class="wrap">
-    <h1 class="page-title">The Circle</h1>
-    <p class="page-sub">Editorial highlights and private moments curated with our partners.</p>
-
-    <section class="grid" id="gallery">
-      <!-- Swap src with your images in /assets/events/ -->
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-night.jpg" alt="Moncler × Mercedes-Benz" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-night.jpg" data-title="Moncler × Mercedes-Benz" data-date="April, 2025" data-city="New York" aria-label="Open image — Moncler × Mercedes-Benz"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Moncler × Mercedes-Benz</div>
-          <div class="label-row"><div class="tag">April, 2025</div><div class="tag">New York</div></div>
-        </div>
-      </article>
-
-      <!-- Duplicate the card structure for more entries -->
-      <article class="card">
-        <div class="thumb">
-          <img src="assets/bg-sunrise.jpg" alt="Coperni" loading="lazy" width="1200" height="1600" />
-          <a href="assets/bg-sunrise.jpg" data-title="Coperni" data-date="March, 2025" data-city="Paris" aria-label="Open image — Coperni"></a>
-        </div>
-        <div class="labels">
-          <div class="tag title">Coperni</div>
-          <div class="label-row"><div class="tag">March, 2025</div><div class="tag">Paris</div></div>
-        </div>
-      </article>
-      <!-- …add more cards as needed … -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="kicker">THE CIRCLE — DINNER 02</p>
+      <h1 id="hero-title" class="title">Prepaid reservation</h1>
     </section>
-  </main>
 
-  <footer class="foot">
-    <div class="wrap">
-      <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
-    </div>
-  </footer>
+    <section class="card" aria-labelledby="reserve">
+      <div class="in">
+        <h2 id="reserve" class="kicker">RSVP</h2>
+
+        <form id="ic-form" autocomplete="on" novalidate>
+          <!-- honeypot -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
+          <div class="form-grid">
+            <div class="row">
+              <label for="ic-name">Full name</label>
+              <input id="ic-name" name="name" placeholder="Your name" required />
+            </div>
+            <div class="row">
+              <label for="ic-email">Email</label>
+              <input id="ic-email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="row">
+              <label for="ic-plusone">Plus-one</label>
+              <select id="ic-plusone" name="plusone" required>
+                <option value="" disabled selected>Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+            <div class="row" style="grid-column:1/-1;">
+              <label for="ic-diet">Dietary notes (optional)</label>
+              <input id="ic-diet" name="diet" placeholder="Allergies, restrictions" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="ic-btn" type="submit">Reserve on Tock</button>
+            <span class="note">Secure checkout opens in a modal. You won’t leave this page.</span>
+          </div>
+        </form>
+
+        <div class="divider"></div>
+        <p class="muted">Questions? Reply to your invite email or message your concierge. All sales final; transfers allowed within 72 hours if availability permits.</p>
+      </div>
+    </section>
+
+    <!-- Hidden Tock trigger (offering id is set from config.js at runtime) -->
+    <button id="ic-tock"
+            data-tock-widget="search-single"
+            style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;"
+            aria-hidden="true">Reserve</button>
+
+    <noscript>
+      <p><a href="https://www.exploretock.com/" target="_blank" rel="noopener">Reserve on Tock</a></p>
+    </noscript>
+
+    <footer>© <span id="ic-year"></span> Nighthawks Concierge</footer>
+  </div>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    (function IC(){
+      const $ = (s,c=document)=>c.querySelector(s);
 
-    const burger = document.getElementById('burger');
-    const mobile = document.getElementById('mobile-nav');
-    burger.addEventListener('click', () => {
-      const open = mobile.classList.toggle('open');
-      burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobile.classList.contains('open')) {
-        mobile.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
+      // UTM capture
+      function captureUTM(){
+        const p = new URLSearchParams(location.search);
+        const keep = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+        const data = {}; keep.forEach(k => { if (p.get(k)) data[k] = p.get(k); });
+        if (Object.keys(data).length) localStorage.setItem("nh_utm", JSON.stringify({ ...data, ts: Date.now() }));
       }
-    });
+      function getUTM(){ try{ return JSON.parse(localStorage.getItem("nh_utm")||"null"); }catch{ return null; } }
+      function savePreview(payload){ localStorage.setItem("nh_ic_rsvp", JSON.stringify({ ...payload, ts: Date.now() })); }
 
-    // Lightbox
-    const gallery = document.getElementById('gallery');
-    const lb = document.createElement('div');
-    lb.className = 'lightbox';
-    lb.setAttribute('role','dialog'); lb.setAttribute('aria-modal','true'); lb.setAttribute('aria-label','Image preview');
-    lb.innerHTML = `<button class="lb-close" aria-label="Close">Close</button><img alt=""><div class="lb-meta" aria-live="polite"></div>`;
-    document.body.appendChild(lb);
-    const lbImg = lb.querySelector('img');
-    const lbMeta = lb.querySelector('.lb-meta');
-    const lbClose = lb.querySelector('.lb-close');
-    let lastFocused = null;
+      function init(){
+        // Gate: require invite success before access
+        try{
+          const gate = JSON.parse(localStorage.getItem("nh_ic_gate")||"null");
+          if (!gate || gate.ok !== true) { location.href = "invite.html"; return; }
+        }catch{ location.href = "invite.html"; return; }
 
-    function trapFocus(e){
-      if (e.key !== 'Tab') return;
-      const focusables = lb.querySelectorAll('button,img,[tabindex]:not([tabindex="-1"])');
-      const first = focusables[0], last = focusables[focusables.length - 1];
-      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    }
-    function openLB(src, title, date, city, triggerEl){
-      lastFocused = triggerEl || document.activeElement;
-      lbImg.src = src; lbImg.alt = title || '';
-      lbMeta.innerHTML = `<span class="tag title">${title||''}</span><span class="tag">${date||''}</span><span class="tag">${city||''}</span>`;
-      lb.classList.add('open'); document.body.style.overflow = 'hidden'; lbClose.focus(); lb.addEventListener('keydown', trapFocus);
-    }
-    function closeLB(){
-      lb.classList.remove('open'); lbImg.src = ''; document.body.style.overflow = ''; lb.removeEventListener('keydown', trapFocus);
-      if (lastFocused && lastFocused.focus) lastFocused.focus();
-    }
+        const year = $("#ic-year"); if (year) year.textContent = new Date().getFullYear();
+        captureUTM();
 
-    gallery.addEventListener('click', (e) => {
-      const a = e.target.closest('a[href]'); if (!a) return;
-      e.preventDefault();
-      openLB(a.getAttribute('href'), a.dataset.title, a.dataset.date, a.dataset.city, a);
-    });
-    lbClose.addEventListener('click', closeLB);
-    lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLB(); });
+        const form = $("#ic-form");
+        const btn  = $("#ic-btn");
+        const tock = $("#ic-tock");
+
+        // Apply offering id from config
+        const oid = (window.NH && window.NH.TOCK_OFFERING_ID) || "";
+        if (tock && oid) tock.setAttribute("data-offering-id", oid);
+
+        form.addEventListener("submit", (e)=>{
+          e.preventDefault();
+          if (!form.checkValidity()) { form.reportValidity(); return; }
+          if (form.website && form.website.value) return; // bot
+
+          const data = {
+            name: $("#ic-name").value.trim(),
+            email: $("#ic-email").value.trim(),
+            plus_one: $("#ic-plusone").value === "yes",
+            diet: $("#ic-diet").value.trim(),
+            utm: getUTM()
+          };
+
+          savePreview(data);
+          if (window.dataLayer){
+            window.dataLayer.push({
+              event: "ic_rsvp_submit",
+              plus_one: data.plus_one,
+              email_hash: data.email.replace(/(.{3}).+(@.+)/,"$1***$2")
+            });
+          }
+
+          btn.disabled = true; btn.textContent = "Opening…";
+          if (tock){ tock.click(); setTimeout(()=>{ btn.disabled=false; btn.textContent="Reserve on Tock"; }, 3200); }
+          else {
+            const slug = (window.NH && window.NH.TOCK_SLUG) || "";
+            location.href = slug ? `https://www.exploretock.com/${slug}` : "https://www.exploretock.com/";
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+    })();
   </script>
 </body>
 </html>

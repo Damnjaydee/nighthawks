@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Circle — Invite</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="color-scheme" content="dark" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0a0a;--fg:#eaeaea;--muted:#a7a7a7;--line:#1f1f1f;--accent:#c9a227}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    .wrap{max-width:720px;margin:0 auto;padding:28px 20px 56px}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 0 18px;border-bottom:1px solid var(--line)}
+    .brand{display:flex;gap:12px;align-items:center;color:inherit;text-decoration:none}
+    .mark{width:34px;height:34px;border-radius:999px;background:linear-gradient(145deg,#151515,#0d0d0d);border:1px solid #202020;display:grid;place-items:center}
+    .mark::before{content:"\1F985";filter:grayscale(1);opacity:.85}
+    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:18px}
+    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .hero{padding:52px 0 8px}
+    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(30px,6vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
+    .card{margin:34px 0 42px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
+    .in{padding:22px;display:grid;gap:18px}
+    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+    input{width:100%;padding:14px;border-radius:12px;background:#0f0f0f;color:var(--fg);border:1px solid #1b1b1b;outline:none}
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 /.14)}
+    .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)}
+    .note{color:var(--muted);font-size:12px}
+    .error{color:#ffb4b4;font-size:12px}
+    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="/"><span class="mark" aria-hidden="true"></span><span class="name">Nighthawks</span></a>
+      <span class="pill">Private Members</span>
+    </header>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="kicker">THE CIRCLE — ACCESS</p>
+      <h1 id="hero-title" class="title">Enter your invite code</h1>
+    </section>
+
+    <section class="card" aria-labelledby="invite">
+      <div class="in">
+        <h2 id="invite" class="kicker">Invite</h2>
+        <form id="gate" novalidate autocomplete="on">
+          <!-- honeypot -->
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
+          <label for="code">Invite code</label>
+          <input id="code" name="code" inputmode="latin" placeholder="IC-1234" required />
+          <div class="actions">
+            <button class="btn" type="submit" id="submit">Continue</button>
+            <span id="msg" class="note">Codes are case-insensitive.</span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>© <span id="yr"></span> Nighthawks Concierge</footer>
+  </div>
+
+  <!-- Your global config -->
+  <script src="./config.js"></script>
+  <script>
+    (function(){
+      const $ = (s,c=document)=>c.querySelector(s);
+      const year = $("#yr"); if (year) year.textContent = new Date().getFullYear();
+
+      const normalise = (c)=> c.toString().trim().toUpperCase().replace(/\s+/g,"");
+      async function sha256(str){
+        const enc = new TextEncoder().encode(str);
+        const buf = await crypto.subtle.digest("SHA-256", enc);
+        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+      }
+      async function isValid(code){
+        const cfg = window.NH || {};
+        const plain = (cfg.INVITE_CODES||[]).map(normalise);
+        if (plain.length && plain.includes(normalise(code))) return true;
+        const hashes = cfg.INVITE_HASHES||[];
+        if (hashes.length){ const h = await sha256(normalise(code)); return hashes.includes(h); }
+        return /^IC[-–—_ ]?\d{3,5}$/i.test(code); // fallback
+      }
+
+      document.getElementById("gate").addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        const form = e.currentTarget;
+        if (form.website && form.website.value) return; // bot
+        const code = document.getElementById("code").value;
+        const btn = document.getElementById("submit");
+        const msg = document.getElementById("msg");
+        btn.disabled = true; msg.textContent = "Checking…";
+        try{
+          if (await isValid(code)){
+            localStorage.setItem("nh_ic_gate", JSON.stringify({ ok:true, code: normalise(code), ts: Date.now() }));
+            if (window.dataLayer) window.dataLayer.push({event:"ic_gate_ok"});
+            location.href = "inner-circle.html"; // proceed
+          } else {
+            msg.textContent = "That code isn’t recognized. Please try again."; msg.className = "error"; btn.disabled = false;
+            if (window.dataLayer) window.dataLayer.push({event:"ic_gate_fail"});
+          }
+        }catch(err){
+          console.error(err); msg.textContent = "Unable to verify right now. Please try again."; msg.className = "error"; btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
