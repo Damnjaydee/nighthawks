@@ -103,4 +103,41 @@ Example:
 main().catch((e) => {
   console.error('Failed:', e);
   process.exit(1);
+
+  // Global helper: open Tock modal from any CTA marked with [data-tock-cta]
+(function () {
+  function openTock(overridingOfferingId) {
+    const tockBtn = document.getElementById("ic-tock");
+    if (!tockBtn) return console.warn("Tock trigger (#ic-tock) not found.");
+
+    // Use override if provided, else config.js default
+    const oid =
+      overridingOfferingId ||
+      (window.NH && window.NH.TOCK_OFFERING_ID) ||
+      "";
+
+    if (!oid) return console.warn("Missing NH.TOCK_OFFERING_ID in config.js");
+
+    tockBtn.setAttribute("data-offering-id", oid);
+    tockBtn.click();
+  }
+
+  // Make it available globally if you want to call from inline onclick
+  window.NH = window.NH || {};
+  window.NH.openTock = openTock;
+
+  // Auto-bind any element with [data-tock-cta]
+  function bindCTAs(root = document) {
+    root.querySelectorAll("[data-tock-cta]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        // optional: keep href as fallback if JS disabled
+        e.preventDefault();
+        const override = el.getAttribute("data-offering-id") || "";
+        openTock(override);
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", bindCTAs);
+})();
 });
