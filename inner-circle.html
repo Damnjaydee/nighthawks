@@ -25,90 +25,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Global config (window.NH.*) -->
-  <script src="./config.js"></script>
+  <!-- Global config (same folder). Keep defer; it executes before DOMContentLoaded and before the next deferred script. -->
+  <script src="config.js?v=2025-09-21-3" defer></script>
 
-  <!-- Load TOCK only if provider='tock' -->
-  <script>
+  <!-- Load TOCK only if provider='tock' (after config is present) -->
+  <script defer>
     (function maybeLoadTock(){
-      const p = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
-      const slug = (window.NH && window.NH.TOCK_SLUG) || "";
-      if (p !== "tock" || !slug) return;
-      const s = document.createElement("script");
-      s.src = "https://widgets.exploretock.com/v1/loader.js";
-      s.setAttribute("data-tock-slug", slug);
-      window.__tockReady = false;
-      s.onload = () => { window.__tockReady = true; };
-      document.head.appendChild(s);
+      window.addEventListener("DOMContentLoaded", function(){
+        const p = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
+        const slug = (window.NH && window.NH.TOCK_SLUG) || "";
+        if (p !== "tock" || !slug) return;
+        const s = document.createElement("script");
+        s.src = "https://widgets.exploretock.com/v1/loader.js";
+        s.setAttribute("data-tock-slug", slug);
+        window.__tockReady = false;
+        s.onload = () => { window.__tockReady = true; };
+        document.head.appendChild(s);
+      });
     })();
   </script>
 
   <style>
-    :root{
-      --bg:#0a0a0a; --fg:#eaeaea; --muted:#a7a7a7; --line:#1f1f1f; --accent:#c9a227;
-      --pad:clamp(16px,4vw,28px); --radius:18px;
-    }
-    html,body{height:100%}
-    *{box-sizing:border-box}
-    body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    .wrap{
-      max-width:960px; margin:0 auto;
-      padding:var(--pad) var(--pad) calc(var(--pad)*2);
-      padding-left:max(var(--pad),env(safe-area-inset-left));
-      padding-right:max(var(--pad),env(safe-area-inset-right));
-    }
-
-    /* Header with real logo */
-    header{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:10px 0 14px; border-bottom:1px solid var(--line);
-    }
-    .brand{display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none}
-    .logo{height:28px; width:auto; border-radius:6px; display:block}
-    .name{font-family:"DM Serif Display",serif; letter-spacing:.02em; font-size:17px}
-    .pill{color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase}
-
+    :root{--bg:#0a0a0a;--fg:#eaeaea;--muted:#a7a7a7;--line:#1f1f1f;--accent:#c9a227;--pad:clamp(16px,4vw,28px);--radius:18px}
+    html,body{height:100%} *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+    .wrap{max-width:960px;margin:0 auto;padding:var(--pad) var(--pad) calc(var(--pad)*2);padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
+    header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+    .logo{height:28px;width:auto;border-radius:6px;display:block}
+    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:17px}
+    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
     .hero{padding:clamp(28px,6vw,56px) 0 8px}
-    .kicker{color:var(--muted); font-size:12px; letter-spacing:.16em; text-transform:uppercase}
-    .title{font-family:"DM Serif Display",serif; font-weight:400; font-size:clamp(28px,7vw,58px); letter-spacing:.01em; margin:.35rem 0 0}
-
-    .card{
-      margin:clamp(18px,4.8vw,34px) 0 42px; border:1px solid var(--line); border-radius:var(--radius);
-      background:linear-gradient(180deg,#0b0b0b,#090909); box-shadow:0 1px 0 #1b1b1b inset;
-    }
-    .card .in{padding:clamp(14px,4.5vw,22px); display:grid; gap:clamp(12px,3.5vw,18px)}
-
-    .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,3.5vw,14px)}
-    @media (max-width:720px){ .form-grid{grid-template-columns:1fr} }
-
-    label{font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase}
-    input,select{
-      width:100%; padding:14px 12px; min-height:46px; font-size:16px;
-      border-radius:12px; background:#0f0f0f; color:var(--fg); border:1px solid #1b1b1b; outline:0;
-    }
-    input:focus,select:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgb(201 162 39 /.14)}
-
-    .row{display:grid; gap:6px}
-    .actions{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:14px 18px; min-height:48px; min-width:180px;
-      border-radius:999px; background:#111; color:#fff; border:1px solid #222;
-      font-weight:600; letter-spacing:.02em; cursor:pointer; touch-action:manipulation;
-    }
-    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)} .btn:disabled{opacity:.55; cursor:not-allowed}
-    .note{color:var(--muted); font-size:12px}
-    .divider{height:1px; background:var(--line); margin:6px 0 0}
-    .muted{color:var(--muted); font-size:13px}
-    footer{margin:56px 0 20px; text-align:center; color:var(--muted); font-size:12px}
-
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{animation-duration:.001ms!important; transition-duration:.001ms!important}
-    }
+    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(28px,7vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
+    .card{margin:clamp(18px,4.8vw,34px) 0 42px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
+    .card .in{padding:clamp(14px,4.5vw,22px);display:grid;gap:clamp(12px,3.5vw,18px)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,3.5vw,14px)}
+    @media (max-width:720px){.form-grid{grid-template-columns:1fr}}
+    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+    input,select{width:100%;padding:14px 12px;min-height:46px;font-size:16px;border-radius:12px;background:#0f0f0f;color:#eaeaea;border:1px solid #1b1b1b;outline:0}
+    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 /.14)}
+    .row{display:grid;gap:6px}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;min-height:48px;min-width:180px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer}
+    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)} .btn:disabled{opacity:.55;cursor:not-allowed}
+    .note{color:var(--muted);font-size:12px}
+    .divider{height:1px;background:var(--line);margin:6px 0 0}
+    .muted{color:var(--muted);font-size:13px}
+    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
   </style>
 </head>
 <body>
@@ -129,22 +93,17 @@
     <section class="card" aria-labelledby="reserve">
       <div class="in">
         <h2 id="reserve" class="kicker">RSVP</h2>
-
         <form id="ic-form" autocomplete="on" novalidate>
-          <!-- honeypot -->
           <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
-
           <div class="form-grid">
             <div class="row">
               <label for="ic-name">Full name</label>
-              <input id="ic-name" name="name" autocomplete="name" placeholder="Your name" required />
+              <input id="ic-name" name="name" inputmode="text" autocomplete="name" placeholder="Your name" required />
             </div>
-
             <div class="row">
               <label for="ic-email">Email</label>
               <input id="ic-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required />
             </div>
-
             <div class="row">
               <label for="ic-plusone">Plus-one</label>
               <select id="ic-plusone" name="plusone" required>
@@ -153,27 +112,23 @@
                 <option value="yes">Yes</option>
               </select>
             </div>
-
             <div class="row" style="grid-column:1/-1;">
               <label for="ic-diet">Dietary notes (optional)</label>
-              <input id="ic-diet" name="diet" autocomplete="off" placeholder="Allergies, restrictions" />
+              <input id="ic-diet" name="diet" inputmode="text" autocomplete="off" placeholder="Allergies, restrictions" />
             </div>
           </div>
-
           <div class="actions">
-            <button class="btn" id="ic-btn" type="submit">Reserve</button>
+            <button class="btn" id="ic-btn" type="submit" aria-describedby="ic-note">Reserve</button>
             <span id="ic-note" class="note" role="status" aria-live="polite">Secure checkout opens on Stripe.</span>
-            <!-- Optional safety for shared devices -->
             <a href="#" id="ic-clear" class="note" style="margin-left:8px;">Not you? Clear</a>
           </div>
         </form>
-
         <div class="divider"></div>
         <p class="muted">Questions? Reply to your invite email or message your concierge. All sales final; transfers allowed within 72 hours if availability permits.</p>
       </div>
     </section>
 
-    <!-- Tock (only if PAYMENT_PROVIDER='tock') -->
+    <!-- Hidden Tock triggers -->
     <button id="ic-tock" data-tock-widget="search-single" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">Reserve</button>
     <button id="ic-tock-search" data-tock-widget="search" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">Search</button>
 
@@ -181,103 +136,101 @@
     <footer>© <span id="ic-year"></span> Nighthawks Concierge</footer>
   </div>
 
-  <script>
+  <script defer>
     (function IC(){
       const $ = (s,c=document)=>c.querySelector(s);
+      const MAX_AGE = 1000*60*60*24*30; // 30d
+      const qp = new URLSearchParams(location.search);
 
-      // Capture UTM for analytics & passthrough
-      function captureUTM(){
-        const p = new URLSearchParams(location.search);
-        const keep = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
-        const data = {}; keep.forEach(k => { if (p.get(k)) data[k] = p.get(k); });
-        if (Object.keys(data).length) localStorage.setItem("nh_utm", JSON.stringify({ ...data, ts: Date.now() }));
+      function setYear(){ $("#ic-year").textContent = new Date().getFullYear(); }
+      function setWithTS(key, obj){ localStorage.setItem(key, JSON.stringify({ ...obj, ts: Date.now() })); }
+      function getFresh(key){
+        try{ const v = JSON.parse(localStorage.getItem(key) || "null");
+             if (!v || !v.ts || (Date.now()-v.ts) > MAX_AGE){ localStorage.removeItem(key); return null; }
+             return v; } catch { return null; }
       }
-      function getUTM(){ try{ return JSON.parse(localStorage.getItem("nh_utm")||"null"); }catch{ return null; } }
-      function savePreview(payload){ localStorage.setItem("nh_ic_rsvp", JSON.stringify({ ...payload, ts: Date.now() })); }
+
+      function captureUTM(){
+        const keep=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+        const data={}; keep.forEach(k=>{ const v=qp.get(k); if(v) data[k]=v; });
+        if (Object.keys(data).length) setWithTS("nh_utm", data);
+      }
+      function getUTM(){ return getFresh("nh_utm"); }
+
+      function savePreview(payload){ setWithTS("nh_ic_rsvp", payload); }
       function loadPreview(){
-        try {
-          const d = JSON.parse(localStorage.getItem("nh_ic_rsvp")||"null");
-          if (!d) return;
-          if (d.name)  $("#ic-name").value  = d.name;
-          if (d.email) $("#ic-email").value = d.email;
-          if (typeof d.plus_one === "boolean") $("#ic-plusone").value = d.plus_one ? "yes" : "no";
-          if (d.diet)  $("#ic-diet").value  = d.diet;
-        } catch {}
+        if (qp.get("prefill")==="0") return;
+        try{
+          const fromQs = {
+            name: qp.get("name"),
+            email: qp.get("email"),
+            plus_one: qp.get("plusone")==="yes" ? true : (qp.get("plusone")==="no" ? false : undefined),
+            diet: qp.get("diet")
+          };
+          if (fromQs.name)  $("#ic-name").value  = fromQs.name;
+          if (fromQs.email) $("#ic-email").value = fromQs.email;
+          if (typeof fromQs.plus_one==="boolean") $("#ic-plusone").value = fromQs.plus_one ? "yes" : "no";
+          if (fromQs.diet)  $("#ic-diet").value  = fromQs.diet;
+
+          const d = getFresh("nh_ic_rsvp"); if (!d) return;
+          if (!fromQs.name  && d.name)  $("#ic-name").value  = d.name;
+          if (!fromQs.email && d.email) $("#ic-email").value = d.email;
+          if (typeof d.plus_one==="boolean" && fromQs.plus_one===undefined) $("#ic-plusone").value = d.plus_one ? "yes" : "no";
+          if (!fromQs.diet  && d.diet)  $("#ic-diet").value  = d.diet;
+        }catch{}
       }
 
       async function openTockModal(){
         const slug = (window.NH && window.NH.TOCK_SLUG) || "";
         const oid  = (window.NH && window.NH.TOCK_OFFERING_ID) || "";
         const single = $("#ic-tock"), search = $("#ic-tock-search");
-
         if (!window.__tockReady) {
-          await new Promise(r => { let t=0; const h=setInterval(()=>{ if (window.__tockReady || t++>40) { clearInterval(h); r(); } }, 100); });
+          await new Promise(r=>{ let t=0; const h=setInterval(()=>{ if(window.__tockReady || t++>40){clearInterval(h); r();}},100);});
         }
-        if (oid && single) { single.setAttribute("data-offering-id", oid); single.click(); return; }
-        if (slug && search) { search.setAttribute("data-tock-slug", slug); search.click(); return; }
-        if (slug) location.href = `https://www.exploretock.com/${slug}`; else location.href = "https://www.exploretock.com/";
+        if (oid && single){ single.setAttribute("data-offering-id", oid); single.click(); return; }
+        if (slug && search){ search.setAttribute("data-tock-slug", slug); search.click(); return; }
+        if (slug) location.href=`https://www.exploretock.com/${slug}`; else location.href="https://www.exploretock.com/";
+      }
+
+      function buildStripeUrl(params){
+        if (window.NH && typeof window.NH.buildStripeUrl==="function") return window.NH.buildStripeUrl(params);
+        const base = (window.NH && window.NH.STRIPE_LINK) || "";
+        const q = new URLSearchParams(params);
+        const sep = base.includes("?") ? "&" : "?";
+        return `${base}${sep}${q.toString()}`;
       }
 
       function openStripeLink(data){
-        const base = (window.NH && window.NH.STRIPE_LINK) || "";
-        if (!base) { alert("Stripe link not configured."); return; }
-
-        // Quantity: allow override via ?qty=2, otherwise from plus-one
-        const urlQ = new URLSearchParams(location.search);
-        const qtyOverride = parseInt(urlQ.get("qty"),10);
-        const qty = Number.isFinite(qtyOverride) ? Math.max(1, Math.min(2, qtyOverride))
-                  : (data.plus_one ? 2 : 1);
-
-        const q = new URLSearchParams();
-        q.set("quantity", qty);
-        if (data.email) q.set("prefilled_email", data.email);
-        q.set("client_reference_id", `IC-${Date.now()}`);
-        const utm = data.utm || {};
-        Object.keys(utm||{}).forEach(k => q.set(k, utm[k]));
-        const sep = base.includes("?") ? "&" : "?";
-        location.href = `${base}${sep}${q.toString()}`;
+        if (!window.NH || !NH.STRIPE_LINK){ alert("Stripe link not configured."); return; }
+        const qtyOverride = parseInt(qp.get("qty"),10);
+        const qty = Number.isFinite(qtyOverride) ? Math.max(1,Math.min(2,qtyOverride)) : (data.plus_one ? 2 : 1);
+        const url = buildStripeUrl({
+          quantity: qty,
+          prefilled_email: data.email || "",
+          client_reference_id: `IC-${Date.now()}`,
+          ...(data.utm || {})
+        });
+        location.href = url;
       }
 
       function init(){
-        $("#ic-year").textContent = new Date().getFullYear();
-        captureUTM();
-        loadPreview();
+        if (!window.NH){ console.error("config.js not found. Ensure it is alongside this HTML file."); }
+        setYear(); captureUTM(); loadPreview();
 
-        const form = $("#ic-form");
-        const btn  = $("#ic-btn");
-        const note = $("#ic-note");
-        const clear = $("#ic-clear");
+        const form=$("#ic-form"), btn=$("#ic-btn"), note=$("#ic-note"), clear=$("#ic-clear");
         const provider = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
+        note.textContent = provider==="tock" ? "Secure checkout opens in a modal. You won’t leave this page." : "Secure checkout opens on Stripe.";
 
-        note.textContent = provider === "tock"
-          ? "Secure checkout opens in a modal. You won’t leave this page."
-          : "Secure checkout opens on Stripe.";
+        clear?.addEventListener("click",(e)=>{ e.preventDefault(); try{localStorage.removeItem("nh_ic_rsvp");}catch{} form.reset(); $("#ic-plusone").value=""; });
 
-        // Optional: quick clear for shared devices
-        clear?.addEventListener("click", (e) => {
-          e.preventDefault();
-          try { localStorage.removeItem("nh_ic_rsvp"); } catch {}
-          form.reset();
-          $("#ic-plusone").value = ""; // reset select placeholder
-          note.textContent = (provider === "tock")
-            ? "Secure checkout opens in a modal. You won’t leave this page."
-            : "Secure checkout opens on Stripe.";
-        });
+        const auto = qp.get("open");
+        if (auto==="tock" && provider==="tock") setTimeout(openTockModal,300);
+        else if (auto==="stripe" && provider==="stripe"){ const d=getFresh("nh_ic_rsvp"); if(d) openStripeLink(d); }
 
-        // Auto-open from invite if requested
-        const params = new URLSearchParams(location.search);
-        const auto = params.get("open");
-        if (auto === "tock" && provider === "tock") {
-          setTimeout(openTockModal, 300);
-        } else if (auto === "stripe" && provider === "stripe") {
-          try { const d = JSON.parse(localStorage.getItem("nh_ic_rsvp")||"null"); if (d) openStripeLink(d); } catch {}
-        }
-
-        let lock = false; // prevent rapid double submit
-        form.addEventListener("submit", (e)=>{
-          e.preventDefault();
-          if (lock) return;
-          if (!form.checkValidity()) { form.reportValidity(); return; }
+        let lock=false;
+        form.addEventListener("submit",(e)=>{
+          e.preventDefault(); if (lock) return;
+          if (!form.checkValidity()){ form.reportValidity(); return; }
           if (form.website && form.website.value) return;
 
           const data = {
@@ -288,20 +241,11 @@
             utm: getUTM()
           };
           savePreview(data);
+          if (window.dataLayer){ window.dataLayer.push({ event:"ic_rsvp_submit", provider, plus_one:data.plus_one, email_hash:data.email.replace(/(.{3}).+(@.+)/,"$1***$2") }); }
 
-          if (window.dataLayer){
-            window.dataLayer.push({
-              event: "ic_rsvp_submit",
-              plus_one: data.plus_one,
-              email_hash: data.email.replace(/(.{3}).+(@.+)/,"$1***$2")
-            });
-          }
-
-          lock = true; btn.disabled = true; btn.textContent = "Opening…";
-          const go = provider === "tock" ? openTockModal() : openStripeLink(data);
-          Promise.resolve(go).finally(()=>{
-            setTimeout(()=>{ lock=false; btn.disabled=false; btn.textContent="Reserve"; }, 2500);
-          });
+          lock=true; btn.disabled=true; btn.textContent="Opening…";
+          const go = provider==="tock" ? openTockModal() : openStripeLink(data);
+          Promise.resolve(go).finally(()=>{ setTimeout(()=>{ lock=false; btn.disabled=false; btn.textContent="Reserve"; }, 2500); });
         });
       }
 

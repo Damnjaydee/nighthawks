@@ -15,67 +15,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Global config FIRST (provides window.NH.*) -->
-  <script src="./config.js"></script>
+  <!-- Global config FIRST (provides window.NH.*). Bump ?v= when you change config.js -->
+  <script src="config.js?v=2025-09-21-4" defer></script>
 
   <style>
-    :root{
-      --bg:#0a0a0a; --fg:#eaeaea; --muted:#a7a7a7; --line:#1f1f1f; --accent:#c9a227;
-      --pad: clamp(16px, 4vw, 28px); --radius: 18px;
-    }
+    :root{ --bg:#0a0a0a; --fg:#eaeaea; --muted:#a7a7a7; --line:#1f1f1f; --accent:#c9a227; --pad:clamp(16px,4vw,28px); --radius:18px }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    .wrap{
-      max-width:720px; margin:0 auto;
-      padding:var(--pad) var(--pad) calc(var(--pad)*2);
-      padding-left:max(var(--pad), env(safe-area-inset-left));
-      padding-right:max(var(--pad), env(safe-area-inset-right));
-    }
-    header{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:10px 0 14px; border-bottom:1px solid var(--line)
-    }
-    .brand{display:flex; gap:12px; align-items:center; color:inherit; text-decoration:none}
-    .logo{height:28px; width:auto; display:block; border-radius:6px}
-    .name{font-family:"DM Serif Display",serif; letter-spacing:.02em; font-size:18px}
-    .pill{color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase}
-
-    .hero{padding: clamp(28px,6vw,56px) 0 8px}
-    .kicker{color:var(--muted); font-size:12px; letter-spacing:.16em; text-transform:uppercase}
-    .title{font-family:"DM Serif Display",serif; font-weight:400; font-size:clamp(28px,7vw,58px); letter-spacing:.01em; margin:.35rem 0 0}
-
-    .card{margin:clamp(18px,4.8vw,34px) 0 42px; border:1px solid var(--line); border-radius:var(--radius);
-      background:linear-gradient(180deg,#0b0b0b,#090909); box-shadow:0 1px 0 #1b1b1b inset}
-    .in{padding:clamp(14px,4.5vw,22px); display:grid; gap:clamp(12px,3.5vw,18px)}
-
-    label{font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase}
-    input{
-      width:100%; padding:14px 14px; min-height:46px; font-size:16px;
-      border-radius:12px; background:#0f0f0f; color:var(--fg); border:1px solid #1b1b1b; outline:none;
-      text-transform:uppercase; letter-spacing:.06em;
-    }
-    input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgb(201 162 39 / .14)}
-    .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding:14px 18px; min-height:48px; min-width:160px;
-      border-radius:999px; background:#111; color:#fff; border:1px solid #222;
-      font-weight:600; letter-spacing:.02em; cursor:pointer; touch-action:manipulation;
-    }
-    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)}
-    .btn:disabled{opacity:.55; cursor:not-allowed}
-    .note{color:var(--muted); font-size:12px}
-    .error{color:#ffb4b4; font-size:12px}
-    footer{margin:56px 0 20px; text-align:center; color:var(--muted); font-size:12px}
-
-    @media (prefers-reduced-motion:reduce){
-      *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
-    }
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .wrap{max-width:720px;margin:0 auto;padding:var(--pad) var(--pad) calc(var(--pad)*2);padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
+    header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;border-bottom:1px solid var(--line)}
+    .brand{display:flex;gap:12px;align-items:center;color:inherit;text-decoration:none}
+    .logo{height:28px;width:auto;display:block;border-radius:6px}
+    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:18px}
+    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .hero{padding:clamp(28px,6vw,56px) 0 8px}
+    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(28px,7vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
+    .card{margin:clamp(18px,4.8vw,34px) 0 42px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
+    .in{padding:clamp(14px,4.5vw,22px);display:grid;gap:clamp(12px,3.5vw,18px)}
+    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+    input{width:100%;padding:14px 14px;min-height:46px;font-size:16px;border-radius:12px;background:#0f0f0f;color:var(--fg);border:1px solid #1b1b1b;outline:none;text-transform:uppercase;letter-spacing:.06em}
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 / .14)}
+    input[aria-invalid="true"]{border-color:#c44;box-shadow:0 0 0 3px rgb(196 68 68 / .18)}
+    .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;min-height:48px;min-width:160px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer;touch-action:manipulation}
+    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)} .btn:disabled{opacity:.55;cursor:not-allowed}
+    .note{color:var(--muted);font-size:12px}
+    .error{color:#ffb4b4;font-size:12px}
+    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
   </style>
 </head>
 <body>
@@ -103,13 +72,13 @@
 
           <label for="code">Invite code</label>
           <input id="code" name="code"
-                 inputmode="text" autocomplete="one-time-code"
+                 inputmode="text" enterkeyhint="go" autocomplete="one-time-code"
                  autocapitalize="characters" autocorrect="off" spellcheck="false"
-                 placeholder="IC-1234" aria-describedby="msg" required />
+                 placeholder="IC-1234" aria-describedby="msg" aria-invalid="false" autofocus required />
 
           <div class="actions">
             <button class="btn" type="submit" id="submit">Continue</button>
-            <span id="msg" class="note" role="status" aria-live="polite">Codes are case-insensitive.</span>
+            <span id="msg" class="note" role="status" aria-live="assertive">Codes are case-insensitive.</span>
           </div>
         </form>
       </div>
@@ -137,13 +106,15 @@
         // A) Plain codes
         const plain = (cfg.INVITE_CODES || []).map(normalize);
         if (plain.length && plain.includes(normalize(code))) return true;
+
         // B) Hashes
         const hashes = cfg.INVITE_HASHES || [];
         if (hashes.length){
           const h = await sha256(normalize(code));
           return hashes.includes(h);
         }
-        // C) Fallback (loose pattern)
+
+        // C) Fallback (loose pattern so you can test without config)
         return /^IC[-–—_ ]?\d{3,5}$/i.test(code);
       }
 
@@ -152,7 +123,7 @@
         const qs = new URLSearchParams(location.search);
         const pre = qs.get("code");
         if (pre) $("#code").value = pre.toUpperCase();
-        if (qs.get("go") === "1" && pre) $("#gate").dispatchEvent(new Event("submit", {cancelable:true}));
+        if (qs.get("go") === "1" && pre) $("#gate").dispatchEvent(new Event("submit",{cancelable:true}));
       }catch{}
 
       // Uppercase as you type; keep caret position
@@ -161,13 +132,16 @@
         const pos = el.selectionStart;
         el.value = el.value.toUpperCase();
         el.setSelectionRange(pos, pos);
+        el.removeAttribute("aria-invalid");
       });
 
-      // Basic paste cleanup (trim/uppercase)
+      // Modern paste cleanup (no execCommand)
       $("#code").addEventListener("paste", (e)=>{
         e.preventDefault();
-        const t = (e.clipboardData || window.clipboardData).getData("text");
-        document.execCommand("insertText", false, t.toUpperCase().trim());
+        const el = e.currentTarget;
+        const text = (e.clipboardData || window.clipboardData).getData("text").toUpperCase().trim();
+        const start = el.selectionStart, end = el.selectionEnd;
+        el.setRangeText(text, start, end, "end");
       });
 
       $("#gate").addEventListener("submit", async (e)=>{
@@ -175,34 +149,43 @@
         const form = e.currentTarget;
         if (form.website && form.website.value) return; // bot trap
 
-        const code = $("#code").value;
-        const btn  = $("#submit");
-        const msg  = $("#msg");
+        const input = $("#code");
+        const btn   = $("#submit");
+        const msg   = $("#msg");
+        const code  = input.value.trim();
 
-        if (!code){ msg.textContent = "Please enter your invite code."; msg.className = "error"; return; }
+        if (!code){
+          msg.textContent = "Please enter your invite code.";
+          msg.className = "error";
+          input.setAttribute("aria-invalid","true");
+          input.focus();
+          return;
+        }
 
-        btn.disabled = true; msg.textContent = "Checking…"; msg.className = "note";
+        btn.disabled = true;
+        msg.textContent = "Checking…";
+        msg.className = "note";
 
         try{
           if (await isValid(code)){
-            // Persist gate for the next page
             localStorage.setItem("nh_ic_gate", JSON.stringify({ ok:true, code: normalize(code), ts: Date.now() }));
-
             if (window.dataLayer) window.dataLayer.push({ event:"ic_gate_ok" });
 
-            // If you want to auto-open Tock on arrival, pass ?open=tock
             const provider = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
             const qs = provider === "tock" ? "?open=tock" : "";
             location.href = "inner-circle.html" + qs;
           } else {
             msg.textContent = "That code isn’t recognized. Please try again or reply to your invite email.";
-            msg.className = "error"; btn.disabled = false;
-            if (window.dataLayer) window.dataLayer.push({ event:"ic_gate_fail" });
+            msg.className = "error";
+            input.setAttribute("aria-invalid","true");
+            btn.disabled = false;
           }
         }catch(err){
           console.error(err);
           msg.textContent = "Unable to verify right now. Please try again.";
-          msg.className = "error"; btn.disabled = false;
+          msg.className = "error";
+          input.setAttribute("aria-invalid","true");
+          btn.disabled = false;
         }
       });
     })();
