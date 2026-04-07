@@ -18,9 +18,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
 
-  <!-- Only preload the first panel image — the rest load lazily via JS -->
-  <link rel="preload" as="image" href="assets/bg-sunset.jpg" fetchpriority="high" />
-
   <style>
     :root{
       --bg:#0b0b0b;
@@ -31,7 +28,6 @@
       --ring:rgba(255,255,255,.9);
       --gold:rgba(200,178,122,.9);
       --navH:60px;
-      --bg-img:none;
       --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
       --sans:Inter,system-ui,-apple-system,sans-serif;
     }
@@ -224,36 +220,27 @@
     }
     .panel:last-child{border-right:0}
 
-    .panel::before{
-      content:"";
-      position:absolute;inset:0;
-      background-image:var(--bg-img);
-      background-position:center;
-      background-size:cover;
-      background-repeat:no-repeat;
+    /* ── REAL IMG ELEMENT (replaces ::before hack) ── */
+    .panel-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
       opacity:.9;
       transform:scale(1.03);
       transition:transform .8s ease, opacity .6s ease;
       z-index:0;
-      will-change:transform;
-      -webkit-backface-visibility:hidden;
-      backface-visibility:hidden;
+      display:block;
     }
 
-    .panel:not(.img-loaded)::before{
-      background-image:none;
-      background:linear-gradient(110deg,#1a1a1a 30%,#252525 50%,#1a1a1a 70%);
-      background-size:200% 100%;
-      animation:shimmer 1.6s infinite;
-    }
-    @keyframes shimmer{
-      0%{background-position:200% 0}
-      100%{background-position:-200% 0}
-    }
-    .panel.img-loaded::before{
-      animation:none;
+    .panel:hover .panel-bg{
+      transform:scale(1);
+      opacity:1;
     }
 
+    /* Gradient overlay using ::after */
     .panel::after{
       content:"";
       position:absolute;inset:0;
@@ -264,13 +251,9 @@
         rgba(0,0,0,.88) 100%
       );
       transition:background .5s ease;
-      z-index:0;
+      z-index:1;
     }
 
-    .panel:hover::before{
-      transform:scale(1);
-      opacity:1;
-    }
     .panel:hover::after{
       background:linear-gradient(
         to bottom,
@@ -283,7 +266,7 @@
     .panel-inner{
       position:absolute;
       left:20px;right:20px;bottom:22px;
-      z-index:1;
+      z-index:2;
     }
 
     .panel-whisper{
@@ -302,6 +285,7 @@
       transform:translateY(0);
     }
 
+    /* Always show whisper on mobile */
     @media(max-width:768px){
       .panel-whisper{
         opacity:1;
@@ -360,9 +344,8 @@
     }
 
     @media(prefers-reduced-motion:reduce){
-      .panel::before,.panel::after,.panel-whisper,
+      .panel-bg,.panel::after,.panel-whisper,
       .drawer,.drawer-backdrop{transition:none !important}
-      .panel:not(.img-loaded)::before{animation:none}
     }
   </style>
 </head>
@@ -410,40 +393,36 @@
     </nav>
   </aside>
 
-  <!-- PANELS -->
+  <!-- PANELS — now use real <img> tags, no CSS variable tricks -->
   <main>
     <section class="panels" aria-label="Navigation panels">
 
-      <a class="panel" href="about.html"
-        data-img="assets/bg-sunset.jpg"
-        aria-label="About Nighthawks">
+      <a class="panel" href="about.html" aria-label="About Nighthawks">
+        <img class="panel-bg" src="assets/bg-sunset.jpg" alt="" loading="eager" />
         <div class="panel-inner">
           <p class="panel-whisper">A private hospitality studio.</p>
           <p class="panel-label">A &nbsp;B &nbsp;O &nbsp;U &nbsp;T</p>
         </div>
       </a>
 
-      <a class="panel" href="membership.html"
-        data-img="assets/bg-sunrise.jpg"
-        aria-label="Membership">
+      <a class="panel" href="membership.html" aria-label="Membership">
+        <img class="panel-bg" src="assets/bg-sunrise.jpg" alt="" loading="lazy" />
         <div class="panel-inner">
           <p class="panel-whisper">Access is limited.</p>
           <p class="panel-label">M E M B E R S H I P</p>
         </div>
       </a>
 
-      <a class="panel" href="request.html"
-        data-img="assets/bg-morning.jpg"
-        aria-label="Concierge">
+      <a class="panel" href="request.html" aria-label="Concierge">
+        <img class="panel-bg" src="assets/bg-morning.jpg" alt="" loading="lazy" />
         <div class="panel-inner">
           <p class="panel-whisper">Requests, curated.</p>
           <p class="panel-label">C O N C I E R G E</p>
         </div>
       </a>
 
-      <a class="panel" href="inner-circle.html"
-        data-img="assets/bg-night.jpg"
-        aria-label="Inner Circle">
+      <a class="panel" href="inner-circle.html" aria-label="Inner Circle">
+        <img class="panel-bg" src="assets/bg-night.jpg" alt="" loading="lazy" />
         <div class="panel-inner">
           <p class="panel-whisper">Private dinners. No guests.</p>
           <p class="panel-label">I N N E R &nbsp;C I R C L E</p>
@@ -489,36 +468,8 @@
       if(e.key === 'Escape' && html.classList.contains('drawer-open')) closeDrawer();
     });
 
-    /* ── IMAGE LOADING FIX ──
-       iOS Safari fix: declare --bg-img on :root first (done in CSS),
-       then use cssText += to set it per-element. Safari respects this
-       method reliably for custom properties on ::before pseudo-elements. */
-    const panels = document.querySelectorAll('.panel[data-img]');
-
-    function loadPanelImage(panel) {
-      const src = panel.dataset.img;
-      if (!src) return;
-      const img = new Image();
-      img.onload = () => {
-        panel.style.cssText += `--bg-img: url('${src}');`;
-        panel.classList.add('img-loaded');
-      };
-      img.onerror = () => {
-        panel.classList.add('img-loaded');
-      };
-      img.src = src;
-    }
-
-    panels.forEach((panel, i) => {
-      if (i === 0) {
-        loadPanelImage(panel);
-      } else {
-        setTimeout(() => loadPanelImage(panel), i * 200);
-      }
-    });
-
     /* ── MOBILE TAP TO ACTIVATE WHISPER ── */
-    panels.forEach(panel => {
+    document.querySelectorAll('.panel').forEach(panel => {
       panel.addEventListener('touchstart', e => {
         if (!panel.classList.contains('active')) {
           e.preventDefault();
