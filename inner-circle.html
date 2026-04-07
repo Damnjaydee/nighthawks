@@ -3,254 +3,746 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>The Circle — Reserve</title>
-  <meta name="description" content="Prepaid reservation for The Circle." />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#0a0a0a" />
+  <title>Inner Circle</title>
+  <meta name="theme-color" content="#0b0b0b" />
   <meta name="color-scheme" content="dark" />
-  <meta name="format-detection" content="telephone=no,email=no,address=no" />
-
-  <!-- Early gate check -->
-  <script>
-    (function () {
-      try {
-        const g = JSON.parse(localStorage.getItem("nh_ic_gate") || "null");
-        if (!g || g.ok !== true) location.replace("invite.html");
-      } catch { location.replace("invite.html"); }
-    })();
-  </script>
-
-  <!-- Fonts -->
+  <meta name="description" content="Inner Circle — invitation-only private dining by Nighthawks." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;500;600&display=swap" rel="stylesheet" />
-
-  <!-- Global config (same folder). Keep defer; it executes before DOMContentLoaded and before the next deferred script. -->
-  <script src="config.js?v=2025-09-21-3" defer></script>
-
-  <!-- Load TOCK only if provider='tock' (after config is present) -->
-  <script defer>
-    (function maybeLoadTock(){
-      window.addEventListener("DOMContentLoaded", function(){
-        const p = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
-        const slug = (window.NH && window.NH.TOCK_SLUG) || "";
-        if (p !== "tock" || !slug) return;
-        const s = document.createElement("script");
-        s.src = "https://widgets.exploretock.com/v1/loader.js";
-        s.setAttribute("data-tock-slug", slug);
-        window.__tockReady = false;
-        s.onload = () => { window.__tockReady = true; };
-        document.head.appendChild(s);
-      });
-    })();
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet" />
 
   <style>
-    :root{--bg:#0a0a0a;--fg:#eaeaea;--muted:#a7a7a7;--line:#1f1f1f;--accent:#c9a227;--pad:clamp(16px,4vw,28px);--radius:18px}
-    html,body{height:100%} *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
-    .wrap{max-width:960px;margin:0 auto;padding:var(--pad) var(--pad) calc(var(--pad)*2);padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
-    header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;border-bottom:1px solid var(--line)}
-    .brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
-    .logo{height:28px;width:auto;border-radius:6px;display:block}
-    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:17px}
-    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-    .hero{padding:clamp(28px,6vw,56px) 0 8px}
-    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
-    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(28px,7vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
-    .card{margin:clamp(18px,4.8vw,34px) 0 42px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
-    .card .in{padding:clamp(14px,4.5vw,22px);display:grid;gap:clamp(12px,3.5vw,18px)}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,3.5vw,14px)}
-    @media (max-width:720px){.form-grid{grid-template-columns:1fr}}
-    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-    input,select{width:100%;padding:14px 12px;min-height:46px;font-size:16px;border-radius:12px;background:#0f0f0f;color:#eaeaea;border:1px solid #1b1b1b;outline:0}
-    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 /.14)}
-    .row{display:grid;gap:6px}
-    .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;min-height:48px;min-width:180px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer}
-    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)} .btn:disabled{opacity:.55;cursor:not-allowed}
-    .note{color:var(--muted);font-size:12px}
-    .divider{height:1px;background:var(--line);margin:6px 0 0}
-    .muted{color:var(--muted);font-size:13px}
-    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
+    :root{
+      --bg:#0b0b0b;
+      --ink:#f5f3ee;
+      --muted:rgba(245,243,238,.72);
+      --muted2:rgba(245,243,238,.45);
+      --line:rgba(255,255,255,.09);
+      --ring:rgba(255,255,255,.85);
+      --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
+      --sans:Inter,system-ui,-apple-system,sans-serif;
+      --max:1120px;
+      --navH:64px;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100%;
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    :where(a,button,input){outline:0}
+    :where(a,button,input):focus-visible{
+      outline:2px solid var(--ring);
+      outline-offset:2px;
+      border-radius:12px;
+    }
+
+    .wrap{position:relative;z-index:2}
+    .container{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+    /* ── NAV ── */
+    .nav{
+      position:fixed;inset:0 0 auto 0;
+      height:var(--navH);z-index:30;
+      background:rgba(0,0,0,.48);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(140%) blur(14px);
+      -webkit-backdrop-filter:saturate(140%) blur(14px);
+    }
+    .nav-inner{
+      height:100%;
+      display:flex;align-items:center;
+      justify-content:space-between;gap:14px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{height:26px;width:auto;border-radius:6px}
+    .brand span{
+      font-family:var(--serif);font-weight:600;
+      letter-spacing:.10em;text-transform:uppercase;
+      font-size:16px;color:rgba(245,243,238,.92);
+    }
+    .navlinks{display:flex;align-items:center;gap:20px;}
+    .navlinks a{
+      font-size:11px;letter-spacing:.09em;
+      text-transform:uppercase;color:rgba(245,243,238,.48);
+      transition:color .15s;
+    }
+    .navlinks a:hover{color:var(--ink)}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:36px;padding:0 16px;border-radius:999px;
+      font-weight:500;font-size:11px;letter-spacing:.07em;
+      border:1px solid transparent;white-space:nowrap;
+      transition:border-color .15s,color .15s;
+    }
+    .btn-outline{
+      background:transparent;
+      border-color:rgba(245,243,238,.28);
+      color:rgba(245,243,238,.72);
+    }
+    .btn-outline:hover{
+      border-color:rgba(245,243,238,.75);
+      color:var(--ink);
+    }
+    @media(max-width:880px){.navlinks{display:none}}
+
+    /* ── HERO ── */
+    .hero{
+      margin-top:var(--navH);
+      min-height:94vh;
+      display:grid;
+      place-items:end;
+      position:relative;
+      overflow:hidden;
+      border-bottom:1px solid var(--line);
+      background:
+        linear-gradient(to bottom,
+          rgba(0,0,0,.10) 0%,
+          rgba(0,0,0,.55) 55%,
+          rgba(0,0,0,.92) 100%),
+        url("assets/inner/hero.jpg") center/cover no-repeat;
+    }
+    .hero-inner{width:100%;padding:0 0 80px;}
+    .eyebrow{
+      display:flex;align-items:center;gap:14px;
+      margin:0 0 22px;
+    }
+    .eyebrow span{
+      font-size:10px;letter-spacing:.34em;
+      text-transform:uppercase;color:rgba(245,243,238,.35);
+    }
+    .eyebrow-line{
+      width:40px;height:1px;
+      background:rgba(245,243,238,.16);
+    }
+    .hero h1{
+      font-family:var(--serif);font-weight:600;
+      font-size:78px;line-height:.94;
+      letter-spacing:-.01em;
+      margin:0 0 20px;max-width:10ch;
+    }
+    .hero h1 em{
+      font-style:italic;font-weight:500;
+      color:rgba(245,243,238,.48);
+    }
+    .hero-tagline{
+      font-size:12px;letter-spacing:.10em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.45);
+      margin:0 0 10px;
+    }
+    .hero-note{
+      font-size:10px;letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.22);
+    }
+    @media(max-width:900px){.hero h1{font-size:56px}}
+    @media(max-width:520px){.hero h1{font-size:44px}}
+
+    /* ── SECTION BASE ── */
+    .section{border-bottom:1px solid var(--line)}
+    .pad{padding:88px 0}
+
+    /* ── EDITORIAL ── */
+    .editorial{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:72px;align-items:center;
+    }
+    .ed-label{
+      font-size:10px;letter-spacing:.34em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.28);
+      margin:0 0 22px;
+    }
+    .ed-h2{
+      font-family:var(--serif);font-size:50px;
+      font-weight:600;line-height:1.00;
+      letter-spacing:-.01em;margin:0 0 18px;
+    }
+    .ed-h2 em{
+      font-style:italic;font-weight:500;
+      color:rgba(245,243,238,.42);
+    }
+    .ed-p{
+      color:rgba(245,243,238,.52);
+      font-size:14px;line-height:1.95;
+      max-width:42ch;
+    }
+    .ed-img{
+      aspect-ratio:4/5;
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:#111;
+      border:1px solid var(--line);
+    }
+    .ed-img img{
+      width:100%;height:100%;
+      object-fit:cover;
+      filter:saturate(88%) contrast(106%);
+      transition:transform .7s ease;
+    }
+    .ed-img:hover img{transform:scale(1.03)}
+    @media(max-width:860px){
+      .editorial{grid-template-columns:1fr;gap:36px;}
+      .ed-img{aspect-ratio:3/2;}
+    }
+
+    /* ── TRIPTYCH ── */
+    .triheader{
+      display:flex;align-items:flex-end;
+      justify-content:space-between;
+      margin:0 0 36px;
+      padding-bottom:18px;
+      border-bottom:1px solid var(--line);
+    }
+    .triheader h2{
+      font-family:var(--serif);font-size:38px;
+      font-weight:600;letter-spacing:-.01em;
+    }
+    .triheader span{
+      font-size:10px;letter-spacing:.2em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.28);
+    }
+    .triptych{
+      display:grid;
+      grid-template-columns:1.25fr 1fr 1fr;
+      gap:10px;
+    }
+    .shot{
+      border-radius:var(--radius);
+      overflow:hidden;background:#111;
+      position:relative;
+    }
+    .shot.tall{aspect-ratio:2/3}
+    .shot.sq{aspect-ratio:3/4}
+    .shot img{
+      width:100%;height:100%;
+      object-fit:cover;
+      filter:saturate(82%) contrast(110%);
+      transition:transform .65s ease;
+    }
+    .shot:hover img{transform:scale(1.05)}
+    .shot-label{
+      position:absolute;bottom:14px;left:16px;
+      font-size:10px;letter-spacing:.2em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.45);
+      z-index:2;
+    }
+    @media(max-width:860px){
+      .triptych{grid-template-columns:1fr 1fr;gap:8px}
+      .shot.tall{grid-row:span 2}
+    }
+    @media(max-width:520px){
+      .triptych{grid-template-columns:1fr}
+      .shot.tall{grid-row:auto}
+    }
+
+    /* ── STATEMENT ── */
+    .statement{
+      text-align:center;
+      padding:100px 0;
+    }
+    .stmt-pre{
+      font-size:10px;letter-spacing:.34em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.24);
+      margin:0 0 28px;
+    }
+    .stmt-h2{
+      font-family:var(--serif);font-size:58px;
+      font-weight:600;line-height:1.01;
+      letter-spacing:-.01em;
+    }
+    .stmt-h2 em{
+      font-style:italic;
+      color:rgba(245,243,238,.38);
+    }
+    .stmt-note{
+      margin:28px auto 0;
+      font-size:11px;letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.2);
+    }
+    @media(max-width:700px){.stmt-h2{font-size:40px}}
+
+    /* ── GATE ── */
+    .gate-wrap{
+      padding:88px 0;
+      display:grid;place-items:center;
+    }
+    .panel{
+      width:min(560px,96vw);
+      background:rgba(6,6,6,.75);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:36px;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+    .panel-eye{
+      font-size:10px;letter-spacing:.30em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.26);
+      margin:0 0 16px;
+    }
+    .panel-h3{
+      font-family:var(--serif);font-weight:600;
+      font-size:34px;letter-spacing:-.01em;
+      margin:0 0 10px;
+    }
+    .panel-desc{
+      color:rgba(245,243,238,.46);
+      font-size:13px;line-height:1.75;
+      margin:0 0 26px;
+    }
+    .code-row{display:flex;gap:10px;align-items:stretch;}
+    .code-input{
+      flex:1;padding:14px 16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--ink);border-radius:12px;
+      font:500 14px/1 var(--sans);
+      letter-spacing:.10em;
+      transition:border-color .15s;
+    }
+    .code-input::placeholder{color:rgba(245,243,238,.22)}
+    .code-input:focus{border-color:rgba(245,243,238,.36)}
+    .code-btn{
+      padding:14px 22px;
+      background:#f5f3ee;color:#0b0b0b;
+      border:none;border-radius:999px;
+      cursor:pointer;
+      font:600 11px/1 var(--sans);
+      letter-spacing:.09em;text-transform:uppercase;
+      white-space:nowrap;
+      transition:filter .15s;
+    }
+    .code-btn:hover{filter:brightness(.93)}
+    .code-btn:disabled{opacity:.4;cursor:not-allowed}
+    .code-help{
+      margin-top:14px;font-size:11px;
+      color:rgba(245,243,238,.26);letter-spacing:.04em;
+    }
+    .msg-error{
+      margin-top:10px;color:#ff6b6b;
+      font-size:12px;display:none;
+    }
+    .msg-checking{
+      margin-top:10px;
+      color:rgba(245,243,238,.36);
+      font-size:12px;display:none;
+    }
+
+    /* ── ARCHIVES ── */
+    .archives{display:none}
+    .arch-head{
+      display:flex;align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;margin:0 0 28px;
+      border-bottom:1px solid var(--line);
+      padding-bottom:16px;
+    }
+    .arch-head h2{
+      font-family:var(--serif);font-weight:600;
+      font-size:30px;letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .arch-head small{
+      color:rgba(245,243,238,.34);font-size:11px;
+      letter-spacing:.06em;
+    }
+    .ev-grid{
+      display:grid;gap:20px;
+      grid-template-columns:repeat(12,1fr);
+    }
+    .ev{
+      grid-column:span 4;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .ev-photo{
+      aspect-ratio:4/5;
+      border-radius:var(--radius);overflow:hidden;
+      border:1px solid var(--line);background:#111;
+      cursor:pointer;
+    }
+    .ev-photo img{
+      width:100%;height:100%;
+      object-fit:cover;
+    }
+    .ev-name{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:12px;padding:10px 14px;
+      font-size:13px;color:rgba(245,243,238,.86);
+      text-align:center;
+    }
+    .ev-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .ev-chip{
+      border:1px solid var(--line);background:transparent;
+      color:rgba(245,243,238,.46);border-radius:12px;
+      padding:8px 12px;text-align:center;font-size:11px;
+    }
+    @media(max-width:1000px){.ev{grid-column:span 6}}
+    @media(max-width:640px){.ev{grid-column:span 12}}
+
+    /* ── DRAWER ── */
+    .drawer-backdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.62);
+      opacity:0;pointer-events:none;
+      transition:opacity .22s ease;z-index:80;
+    }
+    .drawer{
+      position:fixed;top:0;right:0;
+      width:min(520px,96vw);height:100%;
+      background:#0e0e0e;color:var(--ink);
+      border-left:1px solid var(--line);
+      transform:translateX(100%);
+      transition:transform .26s ease;
+      z-index:81;display:flex;flex-direction:column;
+    }
+    .drawer.open{transform:translateX(0)}
+    .drawer-backdrop.open{opacity:1;pointer-events:auto}
+    .drawer-head{
+      display:flex;align-items:center;
+      justify-content:space-between;
+      padding:18px 22px;
+      border-bottom:1px solid var(--line);
+    }
+    .drawer-head h3{
+      font-family:var(--serif);font-size:24px;font-weight:600;
+    }
+    .drawer-close{
+      border:1px solid var(--line);background:transparent;
+      color:rgba(245,243,238,.52);
+      padding:8px 14px;border-radius:999px;
+      cursor:pointer;font:500 11px/1 var(--sans);
+      letter-spacing:.07em;text-transform:uppercase;
+      transition:color .15s,border-color .15s;
+    }
+    .drawer-close:hover{
+      color:var(--ink);
+      border-color:rgba(245,243,238,.36);
+    }
+    .drawer-body{
+      padding:22px;overflow:auto;
+      display:grid;gap:18px;
+    }
+    .drawer-row{display:grid;gap:6px}
+    .drawer-row strong{
+      font-size:10px;letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.32);
+    }
+    .drawer-row p{
+      color:rgba(245,243,238,.68);
+      line-height:1.78;font-size:14px;
+    }
+    .reserve-btn{
+      display:block;margin-top:6px;padding:15px;
+      background:#f5f3ee;color:#0b0b0b;
+      border-radius:999px;text-align:center;
+      font:600 12px/1 var(--sans);
+      letter-spacing:.07em;text-transform:uppercase;
+      transition:filter .15s;
+    }
+    .reserve-btn:hover{filter:brightness(.93)}
+
+    /* ── FOOTER ── */
+    .footer{
+      padding:28px 0;
+      color:rgba(245,243,238,.26);
+      font-size:11px;letter-spacing:.07em;
+      border-top:1px solid var(--line);
+      text-align:center;
+    }
+    .footer a{
+      color:rgba(245,243,238,.36);
+      transition:color .15s;
+    }
+    .footer a:hover{color:rgba(245,243,238,.75)}
+    .footer-links{margin-top:8px}
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <a class="brand" href="index.html" aria-label="Nighthawks — Home">
-        <img class="logo" src="assets/logo-white.jpg" alt="Nighthawks logo" width="28" height="28" decoding="async" fetchpriority="high" />
-        <span class="name">Nighthawks</span>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html" aria-label="Nighthawks home">
+        <img src="assets/logo-white.jpg" alt="Nighthawks" />
+        <span>Nighthawks</span>
       </a>
-      <span class="pill">Private Members</span>
-    </header>
+      <nav class="navlinks" aria-label="Primary">
+        <a href="membership.html">Membership</a>
+        <a href="archive.html">Archive</a>
+      </nav>
+      <a class="btn btn-outline" href="#access">Enter Invite Code</a>
+    </div>
+  </header>
 
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="kicker">THE CIRCLE — DINNER 02</p>
-      <h1 id="hero-title" class="title">Prepaid reservation</h1>
-    </section>
+  <div class="wrap">
 
-    <section class="card" aria-labelledby="reserve">
-      <div class="in">
-        <h2 id="reserve" class="kicker">RSVP</h2>
-        <form id="ic-form" autocomplete="on" novalidate>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
-          <div class="form-grid">
-            <div class="row">
-              <label for="ic-name">Full name</label>
-              <input id="ic-name" name="name" inputmode="text" autocomplete="name" placeholder="Your name" required />
-            </div>
-            <div class="row">
-              <label for="ic-email">Email</label>
-              <input id="ic-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required />
-            </div>
-            <div class="row">
-              <label for="ic-plusone">Plus-one</label>
-              <select id="ic-plusone" name="plusone" required>
-                <option value="" disabled selected>Select</option>
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-              </select>
-            </div>
-            <div class="row" style="grid-column:1/-1;">
-              <label for="ic-diet">Dietary notes (optional)</label>
-              <input id="ic-diet" name="diet" inputmode="text" autocomplete="off" placeholder="Allergies, restrictions" />
-            </div>
-          </div>
-          <div class="actions">
-            <button class="btn" id="ic-btn" type="submit" aria-describedby="ic-note">Reserve</button>
-            <span id="ic-note" class="note" role="status" aria-live="polite">Secure checkout opens on Stripe.</span>
-            <a href="#" id="ic-clear" class="note" style="margin-left:8px;">Not you? Clear</a>
-          </div>
-        </form>
-        <div class="divider"></div>
-        <p class="muted">Questions? Reply to your invite email or message your concierge. All sales final; transfers allowed within 72 hours if availability permits.</p>
+    <!-- HERO -->
+    <section class="hero" aria-label="Inner Circle hero">
+      <div class="container hero-inner">
+        <div class="eyebrow">
+          <span>Inner Circle</span>
+          <div class="eyebrow-line"></div>
+          <span>New York City</span>
+        </div>
+        <h1>The table<br/><em>is the<br/>gallery.</em></h1>
+        <p class="hero-tagline">One chef &nbsp;·&nbsp; One location &nbsp;·&nbsp; One night</p>
+        <p class="hero-note">Locations revealed day-of &nbsp;·&nbsp; Invitations issued privately</p>
       </div>
     </section>
 
-    <!-- Hidden Tock triggers -->
-    <button id="ic-tock" data-tock-widget="search-single" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">Reserve</button>
-    <button id="ic-tock-search" data-tock-widget="search" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">Search</button>
+    <!-- EDITORIAL -->
+    <section class="section">
+      <div class="container pad">
+        <div class="editorial">
+          <div class="editorial-text">
+            <p class="ed-label">What we are</p>
+            <h2 class="ed-h2">A roaming<br/><em>test kitchen.</em></h2>
+            <p class="ed-p">Inner Circle is a private dining experience hosted in unexpected spaces across New York City — rooftops, lofts, galleries, gardens. Each dinner features a chef presenting an original menu to an intimate room of 12 to 20 guests. The food is art. The room is the canvas.</p>
+          </div>
+          <div class="ed-img">
+            <img src="assets/inner/editorial.jpg" alt="Private dining setting" loading="lazy"/>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <noscript><p><a href="https://www.exploretock.com/" target="_blank" rel="noopener">Reserve</a></p></noscript>
-    <footer>© <span id="ic-year"></span> Nighthawks Concierge</footer>
+    <!-- TRIPTYCH -->
+    <section class="section">
+      <div class="container pad">
+        <div class="triheader">
+          <h2>Every dinner,<br/>a different world.</h2>
+          <span>Past settings</span>
+        </div>
+        <div class="triptych">
+          <div class="shot tall">
+            <img src="assets/inner/grid-1.jpg" alt="Outdoor dinner setting" loading="lazy"/>
+            <span class="shot-label">The garden</span>
+          </div>
+          <div class="shot sq">
+            <img src="assets/inner/grid-2.jpg" alt="Chef plating" loading="lazy"/>
+            <span class="shot-label">The kitchen</span>
+          </div>
+          <div class="shot sq">
+            <img src="assets/inner/grid-3.jpg" alt="Plated dish" loading="lazy"/>
+            <span class="shot-label">The plate</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATEMENT -->
+    <section class="section">
+      <div class="container">
+        <div class="statement">
+          <p class="stmt-pre">Invite Only</p>
+          <h2 class="stmt-h2">Interesting people.<br/><em>One table.</em></h2>
+          <p class="stmt-note">You were chosen. Not everyone is.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESS GATE -->
+    <section id="access" class="section">
+      <div class="gate-wrap">
+        <div class="panel">
+          <p class="panel-eye">The Circle — Access</p>
+          <h3 class="panel-h3">You've been chosen.</h3>
+          <p class="panel-desc">Enter the code from your invitation to unlock the Inner Circle archives and upcoming dinners.</p>
+          <div class="code-row">
+            <input
+              id="code"
+              class="code-input"
+              type="text"
+              inputmode="text"
+              autocomplete="one-time-code"
+              placeholder="Enter your code"
+              aria-label="Access code"
+            />
+            <button id="enter" class="code-btn" type="button">Enter</button>
+          </div>
+          <div id="checking" class="msg-checking">Checking...</div>
+          <div id="err" class="msg-error">That code isn't valid. Check your invitation.</div>
+          <p class="code-help">Codes are not case sensitive.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHIVES -->
+    <main id="gallery" class="section archives" aria-live="polite">
+      <div class="container pad">
+        <div class="arch-head">
+          <h2>Past Dinners</h2>
+          <small>Private archives</small>
+        </div>
+        <div id="grid" class="ev-grid"></div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>Inner Circle &nbsp;·&nbsp; by Nighthawks &nbsp;·&nbsp; New York City</div>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+          <a href="terms.html">Terms</a> &nbsp;·&nbsp;
+          <span>© <span id="y"></span> Nighthawks Concierge</span>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <script defer>
-    (function IC(){
-      const $ = (s,c=document)=>c.querySelector(s);
-      const MAX_AGE = 1000*60*60*24*30; // 30d
-      const qp = new URLSearchParams(location.search);
+  <!-- Drawer -->
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="drawer" class="drawer" aria-modal="true" aria-hidden="true">
+    <div class="drawer-head">
+      <h3 id="drawerTitle">Event</h3>
+      <button class="drawer-close" id="drawerClose">Close</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+  </aside>
 
-      function setYear(){ $("#ic-year").textContent = new Date().getFullYear(); }
-      function setWithTS(key, obj){ localStorage.setItem(key, JSON.stringify({ ...obj, ts: Date.now() })); }
-      function getFresh(key){
-        try{ const v = JSON.parse(localStorage.getItem(key) || "null");
-             if (!v || !v.ts || (Date.now()-v.ts) > MAX_AGE){ localStorage.removeItem(key); return null; }
-             return v; } catch { return null; }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const SUPA_URL = "https://iyhoqnxhfvphuufuekfc.supabase.co";
+    const SUPA_KEY = "sb_publishable_9bAHUIAzGbtBRE4cevJVtQ_uWuY07e6";
+    const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+    const SESSION_KEY = "nh_ic_session_v2";
+
+    const galleryEl  = document.getElementById("gallery");
+    const gridEl     = document.getElementById("grid");
+    const codeInput  = document.getElementById("code");
+    const enterBtn   = document.getElementById("enter");
+    const errEl      = document.getElementById("err");
+    const checkingEl = document.getElementById("checking");
+    const drawer         = document.getElementById("drawer");
+    const drawerBackdrop = document.getElementById("drawerBackdrop");
+    const drawerTitle    = document.getElementById("drawerTitle");
+    const drawerBody     = document.getElementById("drawerBody");
+    const drawerClose    = document.getElementById("drawerClose");
+
+    async function validateCode(raw) {
+      const code = (raw || "").trim().toUpperCase();
+      if (!code) return;
+      enterBtn.disabled = true;
+      checkingEl.style.display = "block";
+      errEl.style.display = "none";
+      const { data, error } = await sb
+        .from("invite_codes")
+        .select("id, used_count, max_uses, active")
+        .eq("code", code)
+        .single();
+      checkingEl.style.display = "none";
+      enterBtn.disabled = false;
+      if (error || !data || !data.active || data.used_count >= data.max_uses) {
+        errEl.style.display = "block";
+        return;
+      }
+      sessionStorage.setItem(SESSION_KEY, code);
+      unlock();
+    }
+
+    function unlock() {
+      galleryEl.style.display = "block";
+      loadEvents();
+      galleryEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function loadEvents() {
+      gridEl.innerHTML = `<div style="grid-column:span 12;color:rgba(245,243,238,.4);font-size:14px;padding:16px 0;">Loading...</div>`;
+      const { data: events, error } = await sb
+        .from("events")
+        .select("*")
+        .eq("active", true)
+        .order("date", { ascending: false });
+
+      if (error || !events || events.length === 0) {
+        gridEl.innerHTML = `<div style="grid-column:span 12;color:rgba(245,243,238,.3);font-size:13px;padding:48px 0;letter-spacing:.06em;">No events yet. Check back soon.</div>`;
+        return;
       }
 
-      function captureUTM(){
-        const keep=["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
-        const data={}; keep.forEach(k=>{ const v=qp.get(k); if(v) data[k]=v; });
-        if (Object.keys(data).length) setWithTS("nh_utm", data);
-      }
-      function getUTM(){ return getFresh("nh_utm"); }
+      gridEl.innerHTML = "";
+      events.forEach(ev => {
+        const card = document.createElement("article");
+        card.className = "ev";
+        const dateStr = ev.date
+          ? new Date(ev.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+          : "TBA";
+        card.innerHTML = `
+          <div class="ev-photo" role="button" aria-label="${ev.title}" data-id="${ev.id}" tabindex="0">
+            <img src="assets/events/${ev.id}.jpg" alt="${ev.title}" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="ev-name">${ev.title}</div>
+          <div class="ev-meta">
+            <div class="ev-chip">${dateStr}</div>
+            <div class="ev-chip">${ev.location || "New York"}</div>
+          </div>
+        `;
+        gridEl.appendChild(card);
+      });
+    }
 
-      function savePreview(payload){ setWithTS("nh_ic_rsvp", payload); }
-      function loadPreview(){
-        if (qp.get("prefill")==="0") return;
-        try{
-          const fromQs = {
-            name: qp.get("name"),
-            email: qp.get("email"),
-            plus_one: qp.get("plusone")==="yes" ? true : (qp.get("plusone")==="no" ? false : undefined),
-            diet: qp.get("diet")
-          };
-          if (fromQs.name)  $("#ic-name").value  = fromQs.name;
-          if (fromQs.email) $("#ic-email").value = fromQs.email;
-          if (typeof fromQs.plus_one==="boolean") $("#ic-plusone").value = fromQs.plus_one ? "yes" : "no";
-          if (fromQs.diet)  $("#ic-diet").value  = fromQs.diet;
+    async function openDrawer(eventId) {
+      const { data: ev } = await sb.from("events").select("*").eq("id", eventId).single();
+      if (!ev) return;
+      const dateStr = ev.date
+        ? new Date(ev.date).toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric", year:"numeric" })
+        : "TBA";
+      drawerTitle.textContent = ev.title;
+      drawerBody.innerHTML = `
+        <div class="drawer-row"><strong>Date</strong><p>${dateStr}</p></div>
+        <div class="drawer-row"><strong>Location</strong><p>${ev.location || "—"}</p></div>
+        <div class="drawer-row"><strong>Chef</strong><p>${ev.chef || "TBA"}</p></div>
+        <div class="drawer-row"><strong>About the chef</strong><p>${ev.bio || "—"}</p></div>
+        <a href="RSVP-form.html?event=${ev.id}" class="reserve-btn">Reserve My Seat →</a>
+      `;
+      drawer.classList.add("open");
+      drawerBackdrop.classList.add("open");
+      drawerBackdrop.hidden = false;
+      drawer.setAttribute("aria-hidden","false");
+      drawerClose.focus();
+    }
 
-          const d = getFresh("nh_ic_rsvp"); if (!d) return;
-          if (!fromQs.name  && d.name)  $("#ic-name").value  = d.name;
-          if (!fromQs.email && d.email) $("#ic-email").value = d.email;
-          if (typeof d.plus_one==="boolean" && fromQs.plus_one===undefined) $("#ic-plusone").value = d.plus_one ? "yes" : "no";
-          if (!fromQs.diet  && d.diet)  $("#ic-diet").value  = d.diet;
-        }catch{}
-      }
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      drawerBackdrop.classList.remove("open");
+      drawerBackdrop.hidden = true;
+      drawer.setAttribute("aria-hidden","true");
+    }
 
-      async function openTockModal(){
-        const slug = (window.NH && window.NH.TOCK_SLUG) || "";
-        const oid  = (window.NH && window.NH.TOCK_OFFERING_ID) || "";
-        const single = $("#ic-tock"), search = $("#ic-tock-search");
-        if (!window.__tockReady) {
-          await new Promise(r=>{ let t=0; const h=setInterval(()=>{ if(window.__tockReady || t++>40){clearInterval(h); r();}},100);});
-        }
-        if (oid && single){ single.setAttribute("data-offering-id", oid); single.click(); return; }
-        if (slug && search){ search.setAttribute("data-tock-slug", slug); search.click(); return; }
-        if (slug) location.href=`https://www.exploretock.com/${slug}`; else location.href="https://www.exploretock.com/";
-      }
+    enterBtn.addEventListener("click", () => validateCode(codeInput.value));
+    codeInput.addEventListener("keydown", e => { if (e.key === "Enter") validateCode(codeInput.value); });
+    gridEl.addEventListener("click", e => {
+      const ph = e.target.closest(".ev-photo");
+      if (ph) openDrawer(ph.dataset.id);
+    });
+    drawerClose.addEventListener("click", closeDrawer);
+    drawerBackdrop.addEventListener("click", closeDrawer);
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape" && drawer.classList.contains("open")) closeDrawer();
+    });
 
-      function buildStripeUrl(params){
-        if (window.NH && typeof window.NH.buildStripeUrl==="function") return window.NH.buildStripeUrl(params);
-        const base = (window.NH && window.NH.STRIPE_LINK) || "";
-        const q = new URLSearchParams(params);
-        const sep = base.includes("?") ? "&" : "?";
-        return `${base}${sep}${q.toString()}`;
-      }
-
-      function openStripeLink(data){
-        if (!window.NH || !NH.STRIPE_LINK){ alert("Stripe link not configured."); return; }
-        const qtyOverride = parseInt(qp.get("qty"),10);
-        const qty = Number.isFinite(qtyOverride) ? Math.max(1,Math.min(2,qtyOverride)) : (data.plus_one ? 2 : 1);
-        const url = buildStripeUrl({
-          quantity: qty,
-          prefilled_email: data.email || "",
-          client_reference_id: `IC-${Date.now()}`,
-          ...(data.utm || {})
-        });
-        location.href = url;
-      }
-
-      function init(){
-        if (!window.NH){ console.error("config.js not found. Ensure it is alongside this HTML file."); }
-        setYear(); captureUTM(); loadPreview();
-
-        const form=$("#ic-form"), btn=$("#ic-btn"), note=$("#ic-note"), clear=$("#ic-clear");
-        const provider = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
-        note.textContent = provider==="tock" ? "Secure checkout opens in a modal. You won’t leave this page." : "Secure checkout opens on Stripe.";
-
-        clear?.addEventListener("click",(e)=>{ e.preventDefault(); try{localStorage.removeItem("nh_ic_rsvp");}catch{} form.reset(); $("#ic-plusone").value=""; });
-
-        const auto = qp.get("open");
-        if (auto==="tock" && provider==="tock") setTimeout(openTockModal,300);
-        else if (auto==="stripe" && provider==="stripe"){ const d=getFresh("nh_ic_rsvp"); if(d) openStripeLink(d); }
-
-        let lock=false;
-        form.addEventListener("submit",(e)=>{
-          e.preventDefault(); if (lock) return;
-          if (!form.checkValidity()){ form.reportValidity(); return; }
-          if (form.website && form.website.value) return;
-
-          const data = {
-            name: $("#ic-name").value.trim(),
-            email: $("#ic-email").value.trim(),
-            plus_one: $("#ic-plusone").value === "yes",
-            diet: $("#ic-diet").value.trim(),
-            utm: getUTM()
-          };
-          savePreview(data);
-          if (window.dataLayer){ window.dataLayer.push({ event:"ic_rsvp_submit", provider, plus_one:data.plus_one, email_hash:data.email.replace(/(.{3}).+(@.+)/,"$1***$2") }); }
-
-          lock=true; btn.disabled=true; btn.textContent="Opening…";
-          const go = provider==="tock" ? openTockModal() : openStripeLink(data);
-          Promise.resolve(go).finally(()=>{ setTimeout(()=>{ lock=false; btn.disabled=false; btn.textContent="Reserve"; }, 2500); });
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", init);
-    })();
+    const seed = new URLSearchParams(location.search).get("code");
+    if (seed) { codeInput.value = seed; validateCode(seed); }
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    if (saved) unlock();
   </script>
 </body>
 </html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Nighthawks — Member Passport</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root{
+      --navy:#0a1628;
+      --foil:#c8ad62;
+      --foil-hi:#e8d48a;
+      --foil-lo:#8e7240;
+      --paper:#f4efe3;
+      --paper2:#ede7d9;
+      --ink:#1a1a1a;
+      --stamp-ink:#1a3a6e;
+      --stamp-red:#8b1a1a;
+      --line:rgba(26,26,26,.15);
+      --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
+      --sans:Inter,system-ui,sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      --book-w:500px;
+      --book-h:700px;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;overflow:hidden}
+    body{
+      background:radial-gradient(ellipse at 50% 38%, #1c1c1c, #080808);
+      display:grid;place-items:center;
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+      padding:24px 16px;
+    }
+
+    .scene{
+      display:flex;flex-direction:column;
+      align-items:center;gap:24px;
+    }
+
+    .book{
+      position:relative;
+      width:var(--book-w);
+      height:var(--book-h);
+      filter:drop-shadow(0 40px 80px rgba(0,0,0,.85));
+    }
+
+    .page{
+      position:absolute;inset:0;
+      width:var(--book-w);height:var(--book-h);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+
+    /* ── COVER ── */
+    .cover{
+      background:var(--navy);
+      cursor:pointer;
+      z-index:2;
+      display:flex;flex-direction:column;
+      align-items:center;
+      padding:32px 28px 28px;
+      transition:opacity .3s ease;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.07),
+        inset 0 0 0 4px rgba(200,173,98,.10);
+    }
+    .cover::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:
+        repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 1px,transparent 1px 5px),
+        repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 5px),
+        radial-gradient(ellipse at 28% 18%,rgba(255,255,255,.07),transparent 52%);
+      border-radius:var(--radius);
+    }
+    .cover::after{
+      content:"";position:absolute;inset:12px;pointer-events:none;
+      border:1px solid rgba(200,173,98,.28);
+      border-radius:calc(var(--radius) - 5px);
+    }
+
+    /* Cover flip animation */
+    @keyframes flipOpen{
+      0%  { transform:rotateY(0deg) translateX(0);    opacity:1; }
+      60% { transform:rotateY(-90deg) translateX(-60px); opacity:0; }
+      100%{ transform:rotateY(-90deg) translateX(-60px); opacity:0; visibility:hidden; }
+    }
+    @keyframes flipClose{
+      0%  { transform:rotateY(-90deg) translateX(-60px); opacity:0; }
+      40% { transform:rotateY(-90deg) translateX(-60px); opacity:0; }
+      100%{ transform:rotateY(0deg) translateX(0);    opacity:1; }
+    }
+
+    .book.open .cover{
+      animation:flipOpen .8s cubic-bezier(.4,0,.2,1) forwards;
+      pointer-events:none;
+    }
+    .book.closing .cover{
+      animation:flipClose .8s cubic-bezier(.4,0,.2,1) forwards;
+    }
+
+    @media(hover:hover){
+      .cover:not(.book.open .cover):hover{
+        transform:scale(1.01) translateY(-2px);
+        transition:transform .2s ease;
+      }
+    }
+
+    .cover-country{
+      font-family:var(--serif);font-size:13px;font-weight:700;
+      letter-spacing:.42em;text-transform:uppercase;color:var(--foil);
+      text-shadow:0 1px 0 var(--foil-lo),0 0 24px rgba(200,173,98,.28);
+      position:relative;z-index:1;margin-bottom:4px;
+    }
+    .cover-title{
+      font-family:var(--serif);font-size:10px;font-weight:500;
+      letter-spacing:.26em;text-transform:uppercase;
+      color:rgba(200,173,98,.55);
+      position:relative;z-index:1;margin-bottom:24px;
+    }
+
+    .seal-wrap{position:relative;z-index:1;flex:1;display:grid;place-items:center;}
+    .seal{width:230px;height:230px;position:relative;}
+    .seal svg{width:100%;height:100%;}
+    .seal-logo{
+      position:absolute;inset:0;margin:auto;
+      width:136px;height:136px;object-fit:contain;
+      filter:brightness(0) invert(1) sepia(60%) saturate(400%) hue-rotate(355deg) contrast(.9);
+      opacity:.92;
+    }
+
+    .cover-passport{
+      font-family:var(--serif);font-size:32px;font-weight:700;
+      letter-spacing:.28em;text-transform:uppercase;color:var(--foil);
+      text-shadow:0 2px 0 var(--foil-lo),0 0 36px rgba(200,173,98,.22);
+      position:relative;z-index:1;margin:20px 0 24px;
+    }
+
+    .chip{
+      position:relative;z-index:1;
+      width:50px;height:36px;
+      border:1.5px solid rgba(200,173,98,.45);
+      border-radius:6px;display:grid;place-items:center;
+      background:rgba(200,173,98,.05);
+    }
+    .chip::before{content:"";width:68%;height:1.5px;background:rgba(200,173,98,.38)}
+    .chip::after{
+      content:"";position:absolute;width:15px;height:15px;
+      border:1.5px solid rgba(200,173,98,.38);border-radius:50%;
+    }
+
+    .open-hint{
+      position:relative;z-index:1;margin-top:12px;
+      font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+      color:rgba(200,173,98,.3);
+    }
+
+    /* ── SPINE ── */
+    .spine{
+      position:absolute;left:-14px;top:12px;bottom:12px;width:14px;
+      background:linear-gradient(90deg,#07111f,var(--navy));
+      border-radius:5px 0 0 5px;
+      display:flex;align-items:center;justify-content:center;
+      z-index:1;
+    }
+    .spine-text{
+      font-family:var(--serif);font-size:8px;
+      letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(200,173,98,.4);
+      writing-mode:vertical-rl;transform:rotate(180deg);
+    }
+
+    /* ── INSIDE ── */
+    .inside{
+      background:var(--paper);
+      display:flex;flex-direction:column;
+      overflow:hidden;
+      z-index:1;
+      opacity:0;
+      pointer-events:none;
+      transform:scale(.98);
+      transition:opacity .5s ease .55s, transform .5s ease .55s;
+    }
+    .inside::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:repeating-linear-gradient(
+        180deg,transparent,transparent 29px,
+        rgba(26,26,26,.055) 29px,rgba(26,26,26,.055) 30px
+      );
+    }
+
+    .book.open .inside{
+      opacity:1;
+      pointer-events:auto;
+      transform:scale(1);
+    }
+    .book.closing .inside{
+      opacity:0;
+      pointer-events:none;
+      transform:scale(.98);
+      transition:opacity .3s ease, transform .3s ease;
+    }
+
+    /* Inside header */
+    .inside-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 22px 14px;
+      border-bottom:2.5px solid var(--stamp-ink);
+      background:var(--paper2);
+      position:relative;z-index:2;flex-shrink:0;
+    }
+    .inside-header-brand{display:flex;align-items:center;gap:10px;}
+    .inside-header-brand img{
+      height:24px;width:auto;
+      filter:brightness(0) saturate(100%);opacity:.82;
+    }
+    .inside-header-title{
+      font-family:var(--serif);font-size:14px;font-weight:700;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--stamp-ink);
+    }
+    .inside-header-sub{
+      font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+      color:rgba(26,26,26,.45);margin-top:2px;
+    }
+
+    .status-badge{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:5px 11px;border-radius:999px;
+      font-size:9px;font-weight:600;letter-spacing:.12em;
+      text-transform:uppercase;border:1px solid;flex-shrink:0;
+    }
+    .status-badge.pending{color:#7a5c00;border-color:rgba(122,92,0,.28);background:rgba(200,173,98,.1);}
+    .status-badge.confirmed{color:#0f5c2e;border-color:rgba(15,92,46,.28);background:rgba(15,92,46,.07);}
+    .badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+    .inside-body{
+      flex:1;padding:18px 22px;
+      display:flex;flex-direction:column;gap:16px;
+      position:relative;z-index:2;overflow-y:auto;
+    }
+
+    .data-section{
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:12px;padding:16px;flex-shrink:0;
+    }
+    .data-label{
+      font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+      color:rgba(26,26,26,.48);margin:0 0 6px;
+    }
+    .data-value{
+      font-family:var(--mono);font-size:17px;font-weight:700;
+      color:var(--stamp-ink);letter-spacing:.1em;
+    }
+    .data-sub{font-size:10px;color:rgba(26,26,26,.42);margin-top:4px;}
+
+    .code-row{display:flex;gap:8px;margin-top:12px;}
+    .code-input{
+      flex:1;padding:11px 13px;
+      border:1px solid rgba(26,26,26,.18);border-radius:9px;
+      font:500 13px/1 var(--mono);color:var(--stamp-ink);
+      background:rgba(255,255,255,.92);outline:none;letter-spacing:.08em;
+    }
+    .code-input:focus{border-color:var(--stamp-ink);}
+    .code-copy-btn{
+      padding:11px 16px;border-radius:9px;
+      border:1px solid rgba(26,26,26,.18);
+      background:rgba(255,255,255,.92);color:var(--stamp-ink);
+      font:600 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;
+      cursor:pointer;white-space:nowrap;transition:background .15s;
+    }
+    .code-copy-btn:hover{background:#fff;}
+    .code-hint{font-size:10px;color:rgba(26,26,26,.42);line-height:1.65;margin-top:8px;}
+
+    .rsvp-btn{
+      width:100%;padding:14px;border-radius:10px;border:none;
+      background:var(--stamp-ink);color:#fff;
+      font:600 11px/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;
+      cursor:pointer;transition:filter .15s;flex-shrink:0;
+    }
+    .rsvp-btn:hover{filter:brightness(1.12);}
+    .rsvp-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+    .stamps-label{
+      font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+      color:rgba(26,26,26,.38);
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;flex-shrink:0;
+    }
+    .stamps-grid{display:flex;flex-wrap:wrap;gap:14px;}
+
+    .stamp{
+      width:140px;height:84px;
+      border:2.5px solid var(--stamp-ink);
+      border-radius:50% / 38%;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      position:relative;
+      opacity:.1;
+      transition:opacity .45s ease;
+      transform:rotate(-5deg);
+      color:var(--stamp-ink);
+    }
+    .stamp::before{
+      content:"";position:absolute;inset:6px;
+      border:1.5px dashed var(--stamp-ink);
+      border-radius:50% / 38%;
+      pointer-events:none;opacity:.6;
+    }
+    .stamp.confirmed{opacity:1;}
+    .stamp.red{border-color:var(--stamp-red);color:var(--stamp-red);}
+    .stamp.red::before{border-color:var(--stamp-red);}
+
+    .stamp-no{font-size:7px;letter-spacing:.18em;text-transform:uppercase;font-family:var(--mono);font-weight:700;}
+    .stamp-name{font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);font-weight:700;text-align:center;line-height:1.2;padding:0 8px;}
+    .stamp-date{font-size:7px;letter-spacing:.08em;font-family:var(--mono);margin-top:3px;opacity:.8;}
+
+    .inside-footer{
+      padding:12px 22px 16px;
+      border-top:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--paper2);
+      position:relative;z-index:2;flex-shrink:0;
+    }
+    .mrz{
+      font-family:var(--mono);font-size:7px;
+      color:rgba(26,26,26,.28);letter-spacing:.08em;line-height:1.6;
+    }
+    .close-btn{
+      padding:9px 16px;border-radius:9px;
+      border:1px solid var(--line);background:transparent;
+      color:rgba(26,26,26,.55);
+      font:500 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
+      cursor:pointer;transition:background .15s,color .15s;flex-shrink:0;
+    }
+    .close-btn:hover{background:rgba(26,26,26,.07);color:var(--ink);}
+
+    /* ── OPEN BUTTON ── */
+    .open-btn{
+      padding:13px 32px;border-radius:999px;
+      border:1px solid rgba(200,173,98,.32);
+      background:rgba(0,0,0,.45);
+      color:rgba(200,173,98,.75);
+      font:500 11px/1 var(--sans);
+      letter-spacing:.12em;text-transform:uppercase;
+      cursor:pointer;
+      transition:border-color .15s,color .15s,background .15s;
+      backdrop-filter:blur(8px);
+    }
+    .open-btn:hover{
+      border-color:rgba(200,173,98,.65);
+      color:rgba(200,173,98,1);
+      background:rgba(0,0,0,.55);
+    }
+    .book.open + .open-btn,
+    .book.closing + .open-btn{ display:none; }
+
+    @media(max-width:540px){
+      :root{
+        --book-w:min(92vw,500px);
+        --book-h:calc(min(92vw,500px) * 1.4);
+      }
+      .cover-passport{font-size:26px;}
+      .seal{width:190px;height:190px;}
+      .seal-logo{width:112px;height:112px;}
+      .inside-body{padding:14px 16px;gap:12px;}
+      .inside-header{padding:13px 16px 11px;}
+      .inside-footer{padding:10px 16px 13px;}
+      .stamp{width:120px;height:72px;}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene">
+  <article class="book" id="book" aria-label="Nighthawks Passport">
+
+    <div class="spine">
+      <span class="spine-text">Nighthawks · Inner Circle</span>
+    </div>
+
+    <!-- COVER -->
+    <section class="page cover" id="cover" tabindex="0" role="button" aria-label="Open passport">
+      <div class="cover-country">Nighthawks</div>
+      <div class="cover-title">Private Members Society · New York City</div>
+
+      <div class="seal-wrap">
+        <div class="seal">
+          <svg viewBox="0 0 230 230" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="foil" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#e8d48a"/>
+                <stop offset="50%" stop-color="#c8ad62"/>
+                <stop offset="100%" stop-color="#8e7240"/>
+              </linearGradient>
+              <linearGradient id="foilLite" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="rgba(232,212,138,.82)"/>
+                <stop offset="100%" stop-color="rgba(200,173,98,.52)"/>
+              </linearGradient>
+              <path id="arc1" d="M115,20 a95,95 0 1,1 0,190 a95,95 0 1,1 0,-190"/>
+            </defs>
+            <circle cx="115" cy="115" r="108" fill="none" stroke="url(#foil)" stroke-width="1.5"/>
+            <circle cx="115" cy="115" r="96" fill="none" stroke="url(#foilLite)" stroke-width=".9"/>
+            <circle cx="115" cy="115" r="82" fill="none" stroke="url(#foilLite)" stroke-width=".9" stroke-dasharray="5 7"/>
+            <circle cx="115" cy="115" r="68" fill="none" stroke="url(#foilLite)" stroke-width=".7" stroke-dasharray="1 5"/>
+            <circle cx="115" cy="115" r="56" fill="none" stroke="url(#foilLite)" stroke-width=".6"/>
+            <text font-size="7.5" letter-spacing="4.2" fill="url(#foilLite)" font-family="Georgia,serif" font-weight="700">
+              <textPath href="#arc1" startOffset="8%">INNER CIRCLE · PRIVATE MEMBERS · NEW YORK CITY ·</textPath>
+            </text>
+          </svg>
+          <img src="../assets/logo-white.jpg" alt="Nighthawks" class="seal-logo"/>
+        </div>
+      </div>
+
+      <div class="cover-passport">PASSPORT</div>
+      <div class="chip" aria-label="e-Passport chip"></div>
+      <div class="open-hint">Tap to open</div>
+    </section>
+
+    <!-- INSIDE -->
+    <section class="page inside" aria-label="Passport interior">
+      <div class="inside-header">
+        <div class="inside-header-brand">
+          <img src="../assets/logo-white.jpg" alt="Nighthawks"/>
+          <div>
+            <div class="inside-header-title">Inner Circle</div>
+            <div class="inside-header-sub">Member Passport · New York City</div>
+          </div>
+        </div>
+        <div class="status-badge pending" id="statusBadge">
+          <span class="badge-dot"></span>
+          <span id="statusText">Pending</span>
+        </div>
+      </div>
+
+      <div class="inside-body">
+        <div class="data-section">
+          <div class="data-label">Passport No. · Your RSVP Code</div>
+          <div class="data-value" id="passNo">NH-——————</div>
+          <div class="data-sub">Inner Circle · New York City · <span id="passYear">2025</span></div>
+          <div class="code-row">
+            <input class="code-input" id="codeInput" type="text" readonly autocomplete="one-time-code" aria-label="Your invite code"/>
+            <button class="code-copy-btn" id="copyBtn" type="button">Copy</button>
+          </div>
+          <p class="code-hint">Copy your code then tap "Enter Inner Circle" to complete your RSVP and receive your dinner stamp.</p>
+        </div>
+
+        <button class="rsvp-btn" id="rsvpBtn" type="button">Enter Inner Circle →</button>
+
+        <div class="stamps-label">Dinner Stamps</div>
+        <div class="stamps-grid" id="stampsGrid"></div>
+      </div>
+
+      <div class="inside-footer">
+        <div class="mrz">
+          NH&lt;&lt;INNER&lt;CIRCLE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br/>
+          <span id="mrzCode">NH000000000000000000000000000000</span>
+        </div>
+        <button class="close-btn" id="closeBtn" type="button">Close</button>
+      </div>
+    </section>
+
+  </article>
+
+  <button class="open-btn" id="openBtn" type="button">Open Passport</button>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const book = $('book');
+  const cover = $('cover');
+
+  const RSVP_URL = 'https://www.nighthawksconcierge.com/invite.html';
+  const STAMP_KEY = 'NH_STAMP_IC2';
+
+  const DINNERS = [
+    { id:'dinner-01', stampKey:'NH_STAMP_IC1', no:'No. 01', name:'Opening\nTable',  date:'SEP 2025', color:'blue' },
+    { id:'dinner-02', stampKey:'NH_STAMP_IC2', no:'No. 02', name:'Velocity\nBlack', date:'OCT 2025', color:'blue' },
+    { id:'dinner-03', stampKey:'NH_STAMP_IC3', no:'No. 03', name:'Harbor\nLights',  date:'NOV 2025', color:'red'  },
+  ];
+
+  function readParam(name){
+    try{ return new URL(location.href).searchParams.get(name)||null; }catch{ return null; }
+  }
+  function hash(s){
+    let h=2166136261>>>0;
+    for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
+    return(h>>>0).toString(36).toUpperCase();
+  }
+  function looksValid(c){ return /^[A-Z0-9]{6,}$/.test((c||'').replace(/-/g,'')); }
+
+  let passportNo = readParam('code');
+  if(!passportNo||!looksValid(passportNo)){
+    const d=new Date();
+    passportNo=`NH-${hash(`IC|${d.getFullYear()}|${d.getMonth()+1}`).slice(0,8)}`;
+  }
+  passportNo = passportNo.toUpperCase();
+
+  $('passNo').textContent = passportNo;
+  $('codeInput').value = passportNo;
+  $('passYear').textContent = new Date().getFullYear();
+  $('mrzCode').textContent = `NH${passportNo.replace(/-/g,'').padEnd(30,'<').slice(0,30)}`;
+
+  function renderStamps(){
+    const grid = $('stampsGrid');
+    grid.innerHTML = '';
+    const currentConfirmed = localStorage.getItem(STAMP_KEY)==='true';
+    DINNERS.forEach(d => {
+      const confirmed = localStorage.getItem(d.stampKey)==='true';
+      const el = document.createElement('div');
+      el.className = `stamp${confirmed?' confirmed':''}${d.color==='red'?' red':''}`;
+      el.innerHTML = `
+        <div class="stamp-no">${d.no}</div>
+        <div class="stamp-name">${d.name.replace('\n','<br/>')}</div>
+        <div class="stamp-date">${d.date}</div>`;
+      grid.appendChild(el);
+    });
+    const badge=$('statusBadge'), statusText=$('statusText');
+    if(currentConfirmed){
+      badge.className='status-badge confirmed';
+      statusText.textContent='RSVP Confirmed';
+    } else {
+      badge.className='status-badge pending';
+      statusText.textContent='Pending';
+    }
+  }
+  renderStamps();
+
+  function openPassport(){
+    book.classList.remove('closing');
+    book.classList.add('open');
+  }
+
+  function closePassport(){
+    book.classList.remove('open');
+    book.classList.add('closing');
+    setTimeout(() => book.classList.remove('closing'), 900);
+  }
+
+  cover.addEventListener('click', openPassport);
+  cover.addEventListener('keydown', e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();openPassport();}
+  });
+  $('closeBtn').addEventListener('click', closePassport);
+  $('openBtn').addEventListener('click', openPassport);
+
+  $('copyBtn').addEventListener('click', async ()=>{
+    const code=$('codeInput').value.trim();
+    try{ await navigator.clipboard.writeText(code); }
+    catch{ $('codeInput').select();document.execCommand('copy'); }
+    $('copyBtn').textContent='Copied!';
+    setTimeout(()=>$('copyBtn').textContent='Copy',1500);
+  });
+
+  $('rsvpBtn').addEventListener('click', async ()=>{
+    try{ await navigator.clipboard.writeText(passportNo); }catch{}
+    try{ localStorage.setItem(STAMP_KEY,'true'); }catch{}
+    renderStamps();
+    const url=new URL(RSVP_URL);
+    url.searchParams.set('code',passportNo);
+    window.open(url.toString(),'_blank','noopener');
+  });
+</script>
+</body>
+</html>

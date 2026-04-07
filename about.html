@@ -3,126 +3,452 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>About — Nighthawks Concierge</title>
+  <title>About — Nighthawks</title>
   <meta name="description" content="Nighthawks — a private members society and concierge in New York City." />
   <meta name="theme-color" content="#0b0b0b" />
   <meta name="color-scheme" content="dark" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="assets/bg-sunset.jpg" />
+  <link rel="icon" href="assets/logo-white.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+
   <style>
-    :root { --bg:#0b0b0b; --ink:#fff; --muted:rgba(255,255,255,.78); --line:rgba(255,255,255,.12); --ring:rgba(255,255,255,.9); }
-    *{box-sizing:border-box}
-    html,body{margin:0}
-    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
-    .nav{position:sticky;top:0;z-index:60;backdrop-filter:saturate(140%) blur(12px);background:rgba(0,0,0,.35);border-bottom:1px solid var(--line)}
-    .nav-inner{height:56px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
-    .brand img{width:32px;height:32px;object-fit:contain}
-    .brand span{letter-spacing:.2em;text-transform:uppercase;font-size:12px;opacity:.85}
-    .links{display:none;gap:28px;align-items:center}
-    .links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
-    .links a:hover{color:#fff}
-    .cta{background:#fff;color:#000;padding:10px 16px;border-radius:999px;text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
-    .burger{display:flex;flex-direction:column;gap:4px;background:transparent;border:0}
-    .burger span{display:block;width:22px;height:2px;background:#fff;transition:.25s}
-    .burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-    .burger.open span:nth-child(2){opacity:0}
-    .burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-    .mobile{display:none;position:fixed;top:56px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);z-index:50}
-    .mobile a{display:block;padding:12px 16px;color:#fff;text-decoration:none}
-    .mobile .cta{margin:8px 16px 12px;display:inline-block}
-    .mobile.open{display:block}
-
-    .hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;padding:calc(24px + env(safe-area-inset-top)) 0 56px}
-    .hero-bg{position:absolute;inset:0;z-index:-1}
-    .hero-bg img{width:100%;height:100%;object-fit:cover}
-    .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,.40), rgba(0,0,0,.62) 55%, rgba(0,0,0,.85))}
-    .hero .inner{max-width:720px;margin:0 auto;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
-    .kicker{font-size:11px;letter-spacing:.35em;text-transform:uppercase;opacity:.78}
-    h1{margin:.55rem 0 0;font-weight:300;font-size:clamp(32px,6vw,48px);line-height:1.15}
-    .sub{margin:14px auto 0;max-width:720px;color:var(--muted);font-size:clamp(15px,2.4vw,17px);line-height:1.55}
-
-    .foot{border-top:1px solid var(--line)}
-    .copyright{padding:22px 0;text-align:center;color:rgba(255,255,255,.72);font-size:14px}
-
-    @media(min-width:768px){
-      .nav-inner{height:64px}
-      .links{display:flex}
-      .burger{display:none}
-      .mobile{display:none!important}
-      .hero{padding:calc(32px + env(safe-area-inset-top)) 0 72px}
+    :root{
+      --bg:#0b0b0b;
+      --ink:#f5f3ee;
+      --muted:rgba(245,243,238,.58);
+      --line:rgba(255,255,255,.09);
+      --ring:rgba(255,255,255,.9);
+      --gold:rgba(200,178,122,.85);
+      --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
+      --sans:Inter,system-ui,-apple-system,sans-serif;
+      --max:1120px;
+      --navH:60px;
     }
-    :where(a,button){outline:0}
-    :where(a,button):focus-visible{outline:2px solid var(--ring); outline-offset:2px; border-radius:10px}
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit;text-decoration:none}
+    :where(a,button):focus-visible{
+      outline:2px solid var(--ring);
+      outline-offset:2px;
+      border-radius:10px;
+    }
+    .container{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+    /* ── NAV ── */
+    .nav{
+      position:fixed;inset:0 0 auto 0;
+      height:var(--navH);z-index:60;
+      display:flex;align-items:center;
+      justify-content:space-between;
+      padding:0 24px;
+      background:rgba(0,0,0,.38);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(140%) blur(12px);
+      -webkit-backdrop-filter:saturate(140%) blur(12px);
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{height:26px;width:auto;border-radius:4px}
+    .brand-name{
+      font-family:var(--serif);font-weight:600;
+      font-size:16px;letter-spacing:.10em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.9);
+    }
+    .nav-links{display:flex;align-items:center;gap:24px;}
+    .nav-links a{
+      font-size:11px;letter-spacing:.09em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.48);
+      transition:color .15s;
+    }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"]{color:var(--ink)}
+    .nav-apply{
+      display:inline-flex;align-items:center;
+      height:34px;padding:0 16px;
+      border-radius:999px;
+      border:1px solid rgba(245,243,238,.28);
+      font-size:11px;letter-spacing:.07em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.72);
+      transition:border-color .15s,color .15s;
+    }
+    .nav-apply:hover{
+      border-color:rgba(245,243,238,.7);
+      color:var(--ink);
+    }
+    .hamburger{
+      display:none;
+      flex-direction:column;gap:5px;
+      width:36px;height:36px;
+      align-items:center;justify-content:center;
+      background:transparent;
+      border:1px solid var(--line);
+      border-radius:999px;cursor:pointer;
+    }
+    .hamburger span{
+      display:block;width:16px;height:1px;
+      background:rgba(245,243,238,.75);
+      transition:transform .2s,opacity .2s;
+    }
+    @media(max-width:768px){
+      .nav-links,.nav-apply{display:none}
+      .hamburger{display:flex}
+    }
+
+    /* ── MOBILE DRAWER ── */
+    .drawer-backdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0;pointer-events:none;
+      transition:opacity .25s;z-index:70;
+    }
+    .drawer{
+      position:fixed;top:0;right:0;
+      height:100%;width:min(300px,85vw);
+      background:#0d0d0f;
+      border-left:1px solid var(--line);
+      transform:translateX(100%);
+      transition:transform .28s ease;
+      z-index:71;display:flex;flex-direction:column;
+    }
+    .drawer-head{
+      display:flex;align-items:center;
+      justify-content:space-between;
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+    }
+    .drawer-head strong{
+      font-size:11px;letter-spacing:.2em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.5);
+    }
+    .drawer-close{
+      background:transparent;
+      border:1px solid var(--line);
+      color:rgba(245,243,238,.6);
+      width:32px;height:32px;
+      border-radius:8px;cursor:pointer;font-size:14px;
+    }
+    .drawer-nav{padding:12px}
+    .drawer-nav a{
+      display:block;padding:13px 12px;
+      font-size:12px;letter-spacing:.1em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.58);
+      border-radius:10px;
+      transition:background .15s,color .15s;
+    }
+    .drawer-nav a:hover{
+      background:rgba(255,255,255,.05);
+      color:var(--ink);
+    }
+    .drawer-open .drawer{transform:none}
+    .drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
+
+    /* ── HERO ── */
+    .hero{
+      margin-top:var(--navH);
+      min-height:70vh;
+      display:grid;place-items:end;
+      position:relative;overflow:hidden;
+      border-bottom:1px solid var(--line);
+      background:
+        linear-gradient(to bottom,
+          rgba(0,0,0,.12) 0%,
+          rgba(0,0,0,.58) 55%,
+          rgba(0,0,0,.92) 100%),
+        url("assets/nyc-penthouse-skyline.jpg") center/cover no-repeat;
+    }
+    .hero-inner{
+      width:100%;padding:0 0 72px;
+    }
+    .hero-eye{
+      font-size:10px;letter-spacing:.34em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin:0 0 18px;
+    }
+    .hero h1{
+      font-family:var(--serif);
+      font-size:clamp(44px,7vw,80px);
+      font-weight:600;line-height:.96;
+      letter-spacing:-.01em;
+      margin:0 0 20px;
+      max-width:12ch;
+    }
+    .hero h1 em{
+      font-style:italic;font-weight:500;
+      color:rgba(245,243,238,.45);
+    }
+    .hero-sub{
+      font-size:13px;letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.42);
+      margin:0;
+    }
+
+    /* ── ABOUT CONTENT ── */
+    .about{padding:88px 0 100px;}
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:1fr 2fr;
+      gap:80px;
+      align-items:start;
+    }
+
+    .about-left{
+      position:sticky;top:calc(var(--navH) + 32px);
+    }
+    .about-left-label{
+      font-size:10px;letter-spacing:.32em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.28);
+      margin:0 0 16px;
+    }
+    .about-left h2{
+      font-family:var(--serif);
+      font-size:38px;font-weight:600;
+      line-height:1.05;
+      letter-spacing:-.01em;
+      margin:0 0 24px;
+    }
+    .about-left h2 em{
+      font-style:italic;
+      color:rgba(245,243,238,.4);
+    }
+    .about-left-note{
+      font-size:12px;
+      color:rgba(245,243,238,.32);
+      line-height:1.7;
+      letter-spacing:.02em;
+    }
+
+    .about-right{display:grid;gap:32px;}
+
+    .about-lead{
+      font-family:var(--serif);
+      font-size:clamp(22px,3vw,30px);
+      font-weight:500;
+      line-height:1.38;
+      color:rgba(245,243,238,.9);
+      letter-spacing:-.005em;
+    }
+
+    .about-p{
+      font-size:15px;
+      line-height:1.9;
+      color:rgba(245,243,238,.55);
+    }
+
+    .about-rule{
+      border:0;
+      border-top:1px solid var(--line);
+    }
+
+    .about-cta{
+      display:inline-flex;align-items:center;
+      height:44px;padding:0 24px;
+      border-radius:999px;
+      background:#f5f3ee;color:#0b0b0b;
+      font:600 12px/1 var(--sans);
+      letter-spacing:.07em;text-transform:uppercase;
+      transition:filter .15s;
+    }
+    .about-cta:hover{filter:brightness(.93)}
+
+    @media(max-width:860px){
+      .about-grid{
+        grid-template-columns:1fr;
+        gap:48px;
+      }
+      .about-left{position:static}
+    }
+
+    /* ── STATEMENT STRIP ── */
+    .strip{
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      padding:64px 0;
+      text-align:center;
+    }
+    .strip h2{
+      font-family:var(--serif);
+      font-size:clamp(32px,5vw,52px);
+      font-weight:600;
+      letter-spacing:-.01em;
+      line-height:1.05;
+      margin:0 0 16px;
+    }
+    .strip h2 em{
+      font-style:italic;
+      color:rgba(245,243,238,.38);
+    }
+    .strip p{
+      font-size:13px;letter-spacing:.1em;
+      text-transform:uppercase;
+      color:rgba(245,243,238,.28);
+      margin:0 0 28px;
+    }
+
+    /* ── FOOTER ── */
+    .footer{
+      padding:24px;text-align:center;
+      border-top:1px solid var(--line);
+      color:rgba(245,243,238,.26);
+      font-size:10px;letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+    .footer a{color:rgba(245,243,238,.36);transition:color .15s}
+    .footer a:hover{color:rgba(245,243,238,.75)}
   </style>
 </head>
+
 <body>
+
+  <!-- NAV -->
   <header class="nav">
-    <div class="wrap nav-inner">
-      <a class="brand" href="index.html" aria-label="Nighthawks home">
-        <img src="assets/logo-white.jpg" alt="Nighthawks logo" />
-        <span>NIGHTHAWKS</span>
-      </a>
-      <nav class="links" aria-label="Primary">
-        <a href="request.html">Request</a>
-        <a href="membership.html">Membership</a>
-        <a href="about.html" aria-current="page">About</a>
-        <a href="inner-circle.html">Inner Circle</a>
-        <a href="login.html">Login</a>
-      </nav>
-      <a href="membership.html" class="cta">Apply</a>
-      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-    <nav class="mobile" id="mobile-nav" aria-label="Mobile">
+    <a class="brand" href="index.html" aria-label="Nighthawks home">
+      <img src="assets/logo-white.jpg" alt="Nighthawks" />
+      <span class="brand-name">Nighthawks</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
       <a href="request.html">Request</a>
       <a href="membership.html">Membership</a>
       <a href="about.html" aria-current="page">About</a>
       <a href="inner-circle.html">Inner Circle</a>
       <a href="login.html">Login</a>
-      <a href="membership.html" class="cta">Apply</a>
     </nav>
+    <a class="nav-apply" href="membership.html">Apply</a>
+    <button class="hamburger" id="openDrawer" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
 
-  <section class="hero" role="region" aria-labelledby="about-heading">
-    <div class="hero-bg" aria-hidden="true">
-      <img src="assets/bg-sunset.jpg" alt="" width="1920" height="1080" loading="eager" decoding="async" fetchpriority="high" />
+  <!-- MOBILE DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="drawer-close" id="closeDrawer" aria-label="Close">✕</button>
     </div>
-    <div class="wrap inner">
-      <div class="kicker">ABOUT</div>
-      <h1 id="about-heading">Who We Are</h1>
-      <p class="sub">
-        Nighthawks is a private members society and concierge rooted in discretion and taste.
-        We curate invite-only dinners, one-off cultural activations, and tailored nights out — delivered
-        with seamless planning and white-glove execution.
-      </p>
+    <nav class="drawer-nav">
+      <a href="request.html">Request</a>
+      <a href="membership.html">Membership</a>
+      <a href="about.html">About</a>
+      <a href="inner-circle.html">Inner Circle</a>
+      <a href="login.html">Login</a>
+      <a href="membership.html">Apply</a>
+    </nav>
+  </aside>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="About hero">
+    <div class="container hero-inner">
+      <p class="hero-eye">Nighthawks &nbsp;·&nbsp; New York City</p>
+      <h1>Who<br/>we <em>are.</em></h1>
+      <p class="hero-sub">A private hospitality studio</p>
     </div>
   </section>
 
-  <footer class="foot">
-    <div class="wrap">
-      <div class="copyright">© <span id="year"></span> Nighthawks. All rights reserved.</div>
+  <!-- ABOUT CONTENT -->
+  <section class="about" aria-label="About Nighthawks">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="about-left">
+          <p class="about-left-label">Founded in NYC</p>
+          <h2>Built for<br/>people who<br/><em>make culture.</em></h2>
+          <p class="about-left-note">
+            Membership by invitation or referral only.
+          </p>
+        </div>
+
+        <div class="about-right">
+          <p class="about-lead">
+            Nighthawks curates intimate dining rooms and after-dark experiences in the most compelling corners of New York City — pairing exceptional settings with chefs, creators, and partners who share our standards of craft and discretion.
+          </p>
+
+          <p class="about-p">
+            Our community is deliberately small and deeply connected. Members include founders, athletes, collectors, engineers, A&Rs, curators, and modern patrons of the night — each selected for character, taste, and contribution to a shared creative ecosystem.
+          </p>
+
+          <p class="about-p">
+            Nighthawks experiences are designed to feel effortlessly rare. Candlelit tables overlooking the skyline, chef-led menus, intelligent pairings, and rooms that move with intention. Beyond dinners, our concierge opens doors — from last-minute reservations and private rooms to cultural access that isn't available to the public.
+          </p>
+
+          <hr class="about-rule"/>
+
+          <p class="about-p">
+            The Inner Circle hosts rotating dinners and discreet gatherings across the city, with priority access for members and their guests. For those who value privacy and precision, Nighthawks is a trusted counterpart — a society built for people who make the culture, not just attend it.
+          </p>
+
+          <a class="about-cta" href="membership.html">Apply for Membership →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="strip">
+    <div class="container">
+      <h2>Not for everyone.<br/><em>For the right ones.</em></h2>
+      <p>Membership by invitation or referral</p>
+      <a class="about-cta" href="membership.html">Apply Now →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <span>© <span id="y"></span> Nighthawks Concierge &nbsp;·&nbsp;
+      <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+      <a href="terms.html">Terms</a></span>
     </div>
   </footer>
 
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const burger = document.getElementById('burger');
-    const panel  = document.getElementById('mobile-nav');
-    burger.addEventListener('click', () => {
-      const open = panel.classList.toggle('open');
-      burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && panel.classList.contains('open')) {
-        panel.classList.remove('open');
-        burger.classList.remove('open');
-        burger.setAttribute('aria-expanded','false');
-      }
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const html = document.documentElement;
+    const drawer = document.getElementById('drawer');
+    const backdrop = document.getElementById('drawerBackdrop');
+    const openBtn = document.getElementById('openDrawer');
+    const closeBtn = document.getElementById('closeDrawer');
+
+    function openDrawer(){
+      html.classList.add('drawer-open');
+      backdrop.hidden = false;
+      drawer.setAttribute('aria-hidden','false');
+      openBtn.setAttribute('aria-expanded','true');
+      closeBtn.focus();
+    }
+    function closeDrawer(){
+      html.classList.remove('drawer-open');
+      backdrop.hidden = true;
+      drawer.setAttribute('aria-hidden','true');
+      openBtn.setAttribute('aria-expanded','false');
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && html.classList.contains('drawer-open')) closeDrawer();
     });
   </script>
+
 </body>
 </html>

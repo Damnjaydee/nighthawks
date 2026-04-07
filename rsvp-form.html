@@ -6,48 +6,128 @@
   <title>Inner Circle — RSVP</title>
   <meta name="color-scheme" content="dark"/>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@7..96,600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{ --ink:#eae7df; --paper:#0b0b0b; --line:rgba(234,231,223,.18); --gold:#bda874; --err:#ffbcbc }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',system-ui,Arial,sans-serif; }
-    .wrap{min-height:100%; display:grid; place-items:center; padding:6vh 16px 10vh}
-    .card{ width:min(720px,92vw); background:rgba(255,255,255,.03);
-           border:1px solid var(--line); border-radius:20px; padding:32px 34px;
-           backdrop-filter: blur(8px) saturate(120%); box-shadow:0 18px 60px rgba(0,0,0,.45); }
-    .mast{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px; }
-    .wordmark{ font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:.08em; }
-    .smallcaps{ text-transform:uppercase; font-size:.72rem; letter-spacing:.22em; opacity:.75 }
-    h1{font-family:'Bodoni Moda',serif; font-size:1.25rem; margin:6px 0 6px}
-    .lede{opacity:.82; margin:0 0 10px; font-size:.95rem}
-    .summary{margin:6px 0 16px; font-size:.95rem; opacity:.9}
-    .code{font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--gold); letter-spacing:.12em}
 
+  <style>
+    :root{
+      --ink:#eae7df; --paper:#0b0b0b; --line:rgba(234,231,223,.18);
+      --mustard:#b98b2f; --mustard-2:#d0aa54;
+      --mustard-wash:rgba(185,139,47,.12);
+      --err:#ffbcbc; --focus:rgba(208,170,84,.55);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:'Inter',system-ui,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{min-height:100%; display:grid; place-items:center; padding:6vh 16px 10vh;}
+    .card{
+      width:min(720px,92vw);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)),
+        radial-gradient(1200px 600px at 20% -20%, rgba(185,139,47,.08), transparent 55%);
+      border:1px solid var(--line); border-radius:20px; padding:32px 34px;
+      backdrop-filter:blur(8px) saturate(120%);
+      box-shadow:0 18px 60px rgba(0,0,0,.45);
+      position:relative; overflow:hidden;
+    }
+    .card::before{
+      content:""; position:absolute; inset:0 0 auto 0; height:2px;
+      background:linear-gradient(90deg, transparent, rgba(185,139,47,.75), transparent);
+      opacity:.9; pointer-events:none;
+    }
+
+    /* Sold out banner */
+    .soldout-banner{
+      display:none;
+      background:rgba(255,80,80,.08);
+      border:1px solid rgba(255,80,80,.2);
+      border-radius:12px;
+      padding:14px 16px;
+      color:#ffbcbc;
+      font-size:.9rem;
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    /* Spots bar */
+    .spots-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 14px;
+      margin-bottom:16px;
+      font-size:.85rem;
+    }
+    .spots-bar .label{ color:rgba(234,231,223,.6); }
+    .spots-bar .count{ font-weight:600; }
+    .spots-bar .count.good{ color:#6fdc8c; }
+    .spots-bar .count.low{ color:#f0a500; }
+    .spots-bar .count.full{ color:#ff6b6b; }
+
+    .mast{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:12px;}
+    .wordmark{font-family:'Bodoni Moda',serif; font-size:26px; letter-spacing:.06em;}
+    .smallcaps{text-transform:uppercase; font-size:.72rem; letter-spacing:.22em; opacity:.75;}
+    h1{font-family:'Bodoni Moda',serif; font-size:1.25rem; margin:6px 0 6px;}
+    .lede{opacity:.82; margin:0 0 10px; font-size:.95rem;}
+    .summary{margin:6px 0 16px; font-size:.95rem; opacity:.9;}
+    .code{font-family:ui-monospace,Menlo,Consolas,monospace; color:var(--mustard-2); letter-spacing:.10em;}
     form{display:grid; gap:14px}
-    label{font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; opacity:.75}
+    label{font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; opacity:.75;}
     input,select,textarea{
       width:100%; background:transparent; color:var(--ink); font-size:1rem;
-      border:none; border-bottom:1px solid var(--line); padding:12px 2px 8px 2px; outline:none;
+      border:none; border-bottom:1px solid var(--line); padding:12px 2px 8px 2px;
+      outline:none; transition:border-color .15s ease, box-shadow .15s ease;
     }
-    input:focus,select:focus,textarea:focus{ border-bottom-color:var(--gold) }
+    input:focus,select:focus,textarea:focus{
+      border-bottom-color:rgba(208,170,84,.95);
+      box-shadow:0 6px 18px -16px rgba(208,170,84,.9);
+    }
     textarea{min-height:84px; resize:vertical}
     .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-    @media (max-width:720px){ .row{grid-template-columns:1fr} }
-
+    @media(max-width:720px){.row{grid-template-columns:1fr}}
     .radios{display:flex; gap:12px; flex-wrap:wrap}
-    .radio{display:flex; align-items:center; gap:8px; padding:8px 10px; border:1px solid var(--line); border-radius:12px}
-    .radio input{border:0; padding:0; width:auto}
-
-    .btn{ margin-top:6px; padding:12px 16px; border-radius:12px;
-          border:1px solid var(--ink); background:transparent; color:var(--ink);
-          text-transform:uppercase; letter-spacing:.12em; font-weight:600; cursor:pointer; transition:opacity .15s ease }
-    .btn:hover{ background:var(--ink); color:#111 }
-    .btn[disabled]{opacity:.6; cursor:not-allowed}
-
-    .err{color:var(--err); min-height:1.2em; margin-top:6px}
-    .hint{opacity:.7; font-size:.9rem}
-    .hr{height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent); margin:10px 0}
+    .radio{
+      display:flex; align-items:center; gap:8px; padding:8px 14px;
+      border:1px solid var(--line); border-radius:14px; background:rgba(255,255,255,.02);
+      cursor:pointer; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+      color:rgba(234,231,223,.72);
+      transition:border-color .15s, background .15s, box-shadow .15s, color .15s;
+      user-select:none;
+    }
+    .radio input{appearance:none; -webkit-appearance:none; width:0; height:0; margin:0; padding:0; border:0;}
+    .radio:hover{border-color:rgba(208,170,84,.55); background:rgba(185,139,47,.06);}
+    .radio:has(input:checked){
+      border-color:rgba(208,170,84,.92);
+      background:linear-gradient(180deg, rgba(185,139,47,.18), rgba(185,139,47,.08));
+      color:rgba(245,243,238,1);
+      box-shadow:0 0 0 1px rgba(185,139,47,.25), 0 10px 30px rgba(0,0,0,.25);
+    }
+    .btn{
+      margin-top:8px; padding:13px 16px; border-radius:12px;
+      border:1px solid rgba(208,170,84,.55);
+      background:linear-gradient(180deg, rgba(185,139,47,.14), rgba(185,139,47,.08));
+      color:var(--ink); text-transform:uppercase; letter-spacing:.08em;
+      font-weight:650; cursor:pointer;
+      transition:transform .05s, background .15s, border-color .15s, opacity .15s;
+    }
+    .btn:hover{
+      border-color:rgba(208,170,84,.95);
+      background:linear-gradient(180deg, rgba(185,139,47,.22), rgba(185,139,47,.12));
+    }
+    .btn:active{transform:translateY(1px);}
+    .btn[disabled]{opacity:.6; cursor:not-allowed; transform:none}
+    .err{color:var(--err); min-height:1.2em; margin-top:6px;}
+    .hint{opacity:.7; font-size:.9rem;}
+    .hr{height:1px; background:linear-gradient(90deg,transparent,rgba(208,170,84,.22),transparent); margin:10px 0;}
+    :where(button,input,textarea,select):focus-visible{outline:2px solid var(--focus); outline-offset:3px; border-radius:10px;}
   </style>
 </head>
+
 <body>
   <main class="wrap">
     <section class="card" role="main">
@@ -58,9 +138,19 @@
 
       <h1>Confirm your attendance</h1>
       <p class="lede">Final details are shared privately upon confirmation.</p>
-
       <div class="summary">
         <span id="summaryName">Guest</span> — Access code <span id="summaryCode" class="code">—</span>
+      </div>
+
+      <!-- Sold out banner (shown if full) -->
+      <div id="soldoutBanner" class="soldout-banner">
+        This dinner is now full. Please contact your concierge.
+      </div>
+
+      <!-- Spots remaining bar -->
+      <div class="spots-bar" id="spotsBar" style="display:none;">
+        <span class="label">Seats remaining</span>
+        <span class="count" id="spotsCount">—</span>
       </div>
 
       <form id="rsvpForm" novalidate>
@@ -80,7 +170,6 @@
           <div class="radios" role="radiogroup" aria-label="Notify">
             <label class="radio"><input type="radio" name="notify" value="email"> Email</label>
             <label class="radio"><input type="radio" name="notify" value="text"> Text</label>
-            <label class="radio"><input type="radio" name="notify" value="both"> Both</label>
           </div>
         </div>
 
@@ -121,28 +210,64 @@
         </div>
 
         <input type="hidden" id="code" name="code"/>
-        <button class="btn" id="submitBtn" type="submit">Confirm RSVP</button>
+        <button class="btn" id="submitBtn" type="submit">Continue to reservation</button>
         <div id="err" class="err" role="alert" aria-live="polite"></div>
-        <p class="hint">This invitation is strictly personal and non-transferable.</p>
+        <p class="hint">Details shared privately after confirmation.</p>
       </form>
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // read query for name/code
+    const SUPA_URL = "https://iyhoqnxhfvphuufuekfc.supabase.co";
+    const SUPA_KEY = "sb_publishable_9bAHUIAzGbtBRE4cevJVtQ_uWuY07e6";
+    const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+    const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/test_9B628ra9Z44y2EV0pefYY00";
+    const GUEST_CAP = 20;
+
     const qs = new URLSearchParams(location.search);
-    const code = (qs.get('code') || '').replace(/[–—−]/g,'-').replace(/\s+/g,'').toUpperCase();
+    const code = (qs.get('code') || '').replace(/\D+/g,'').slice(0,8);
     const prefillName = (qs.get('name') || '').trim();
 
     document.getElementById('summaryCode').textContent = code || '—';
     if (prefillName) document.getElementById('summaryName').textContent = prefillName;
     document.getElementById('code').value = code;
 
-    // plus-one toggle
+    // Check spots on load
+    async function checkSpots() {
+      const { data: allRsvps } = await sb.from("rsvps").select("plus_one");
+      let usedSeats = 0;
+      (allRsvps || []).forEach(r => { usedSeats += r.plus_one ? 2 : 1; });
+      const spotsLeft = GUEST_CAP - usedSeats;
+
+      const spotsBar = document.getElementById('spotsBar');
+      const spotsCount = document.getElementById('spotsCount');
+      const soldoutBanner = document.getElementById('soldoutBanner');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (spotsLeft <= 0) {
+        soldoutBanner.style.display = 'block';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'This dinner is full';
+      } else {
+        spotsBar.style.display = 'flex';
+        spotsCount.textContent = `${spotsLeft} of ${GUEST_CAP}`;
+        if (spotsLeft <= 3) spotsCount.className = 'count low';
+        else spotsCount.className = 'count good';
+      }
+
+      return { usedSeats, spotsLeft };
+    }
+
+    checkSpots();
+
+    // Plus-one toggle
     const plusRadios = Array.from(document.querySelectorAll('input[name="plusOne"]'));
     const plusWrap = document.getElementById('plusOneWrap');
     plusRadios.forEach(r => r.addEventListener('change', () => {
-      plusWrap.style.display = (document.querySelector('input[name="plusOne"]:checked').value === 'yes') ? 'block' : 'none';
+      plusWrap.style.display =
+        (document.querySelector('input[name="plusOne"]:checked').value === 'yes') ? 'block' : 'none';
     }));
 
     const form = document.getElementById('rsvpForm');
@@ -153,55 +278,80 @@
       e.preventDefault();
       err.textContent = '';
       btn.disabled = true;
+      btn.textContent = 'Saving…';
 
       const data = Object.fromEntries(new FormData(form).entries());
 
-      // front-end guardrails
-      if (!data.firstName || !data.lastName) { err.textContent = 'Please add your first and last name.'; btn.disabled = false; return; }
-      if (!data.notify) { err.textContent = 'Choose how we should notify you.'; btn.disabled = false; return; }
-      if ((data.notify === 'email' || data.notify === 'both') && !data.email) { err.textContent = 'Please provide an email.'; btn.disabled = false; return; }
-      if ((data.notify === 'text'  || data.notify === 'both') && !data.phone) { err.textContent = 'Please provide a phone number.'; btn.disabled = false; return; }
-      if (!data.code) { err.textContent = 'Missing access code. Return to your invite link.'; btn.disabled = false; return; }
-
-      try {
-        const res = await fetch('/api/rsvp', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({
-            code: data.code,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            plusOne: data.plusOne,            // "yes" | "no"
-            guestName: data.guestName || '',
-            notify: data.notify,              // "email" | "text" | "both"
-            email: data.email || '',
-            phone: data.phone || '',
-            diet: data.diet || '',
-            notes: data.notes || ''
-          })
-        });
-        const json = await res.json();
-        if (!res.ok || !json.ok) throw new Error(json.error || 'RSVP failed');
-
-        // success → send to your existing confirm page with context (for a richer summary)
-        const u = new URL('/rsvp-confirm.html', location.origin);
-        const fullName = `${data.firstName} ${data.lastName}`.trim();
-        if (fullName) u.searchParams.set('name', fullName);
-        u.searchParams.set('code', data.code);
-        const contact = data.notify === 'email' ? data.email
-                      : data.notify === 'text'  ? data.phone
-                      : `${data.email || ''} ${data.phone ? ' / ' + data.phone : ''}`.trim();
-        if (contact) u.searchParams.set('ct', contact);
-        if (data.plusOne === 'yes' && data.guestName) u.searchParams.set('plus', data.guestName);
-        const noteBlob = [data.diet, data.notes].filter(Boolean).join(' — ');
-        if (noteBlob) u.searchParams.set('notes', noteBlob);
-
-        location.href = u.toString();
-
-      } catch (e2) {
-        err.textContent = 'We couldn’t save your RSVP. Pleyoutubrase try again in a moment.';
-        btn.disabled = false;
+      // Validation
+      if (!data.firstName || !data.lastName) {
+        err.textContent = 'Please add your first and last name.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
       }
+      if (!data.notify) {
+        err.textContent = 'Choose how we should notify you.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+      if (data.notify === 'email' && !data.email) {
+        err.textContent = 'Please provide an email.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+      if (data.notify === 'text' && !data.phone) {
+        err.textContent = 'Please provide a phone number.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+      if (!data.code) {
+        err.textContent = 'Missing access code. Return to your invite link.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+
+      // Re-check guest cap (race condition protection)
+      const { usedSeats, spotsLeft } = await checkSpots();
+      const plusOne = data.plusOne === 'yes';
+      const seatsNeeded = plusOne ? 2 : 1;
+
+      if (spotsLeft <= 0) {
+        err.textContent = 'This dinner is now full. Please contact your concierge.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+      if (spotsLeft < seatsNeeded) {
+        err.textContent = 'Only 1 seat remaining — a plus one is not available.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+
+      // Duplicate check
+      const { data: existing } = await sb
+        .from("rsvps")
+        .select("id")
+        .eq("invite_code", data.code)
+        .eq("email", (data.email || '').toLowerCase())
+        .single();
+
+      if (existing) {
+        err.textContent = 'This email already has an RSVP with this code.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+
+      // Save to Supabase
+      const { error: insertErr } = await sb.from("rsvps").insert({
+        full_name: `${data.firstName.trim()} ${data.lastName.trim()}`,
+        email: (data.email || '').toLowerCase().trim(),
+        phone: (data.phone || '').trim() || null,
+        plus_one: plusOne,
+        guest_name: (data.guestName || '').trim() || null,
+        dietary_notes: (data.diet || '').trim() || null,
+        invite_code: data.code,
+      });
+
+      if (insertErr) {
+        err.textContent = 'Something went wrong. Please try again.';
+        btn.disabled = false; btn.textContent = 'Continue to reservation'; return;
+      }
+
+      // Redirect to Stripe
+      const u = new URL(STRIPE_CHECKOUT_URL);
+      if (data.email) u.searchParams.set("prefilled_email", data.email);
+      if (data.code) u.searchParams.set("client_reference_id", data.code);
+      window.location.href = u.toString();
     });
   </script>
 </body>

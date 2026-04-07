@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Archives — Inner Circle</title>
+  <meta name="description" content="Inner Circle Archives — past dinners, concepts, chefs, and collaborations." />
+  <meta name="theme-color" content="#0b0b0b" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="assets/logo-white.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --ink:#f5f3ee;
+      --muted:rgba(245,243,238,.55);
+      --muted2:rgba(245,243,238,.32);
+      --line:rgba(255,255,255,.09);
+      --line2:rgba(255,255,255,.14);
+      --gold:rgba(200,178,122,.85);
+      --ring:rgba(255,255,255,.9);
+      --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
+      --sans:Inter,system-ui,-apple-system,sans-serif;
+      --max:1200px;
+      --navH:60px;
+      --radius:12px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--ink);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    :where(a,button):focus-visible{
+      outline:2px solid var(--ring);outline-offset:2px;border-radius:10px;
+    }
+    .container{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+    /* ── NAV ── */
+    .nav{
+      position:fixed;inset:0 0 auto 0;
+      height:var(--navH);z-index:60;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;
+      background:rgba(0,0,0,.42);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(140%) blur(12px);
+      -webkit-backdrop-filter:saturate(140%) blur(12px);
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{height:26px;width:auto;border-radius:4px}
+    .brand-name{
+      font-family:var(--serif);font-weight:600;
+      font-size:16px;letter-spacing:.10em;
+      text-transform:uppercase;color:rgba(245,243,238,.9);
+    }
+    .nav-links{display:flex;align-items:center;gap:22px;}
+    .nav-links a{
+      font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+      color:rgba(245,243,238,.46);transition:color .15s;
+    }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"]{color:var(--ink)}
+    .nav-btn{
+      display:inline-flex;align-items:center;height:34px;padding:0 16px;
+      border-radius:999px;border:1px solid rgba(245,243,238,.26);
+      font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+      color:rgba(245,243,238,.7);transition:border-color .15s,color .15s;
+    }
+    .nav-btn:hover{border-color:rgba(245,243,238,.6);color:var(--ink)}
+    .hamburger{
+      display:none;flex-direction:column;gap:5px;
+      width:36px;height:36px;align-items:center;justify-content:center;
+      background:transparent;border:1px solid var(--line);
+      border-radius:999px;cursor:pointer;
+    }
+    .hamburger span{
+      display:block;width:16px;height:1px;
+      background:rgba(245,243,238,.75);
+    }
+    @media(max-width:768px){
+      .nav-links,.nav-btn{display:none}
+      .hamburger{display:flex}
+    }
+
+    /* ── DRAWER ── */
+    .drawer-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,.55);
+      opacity:0;pointer-events:none;transition:opacity .25s;z-index:70;
+    }
+    .drawer{
+      position:fixed;top:0;right:0;height:100%;width:min(300px,85vw);
+      background:#0d0d0f;border-left:1px solid var(--line);
+      transform:translateX(100%);transition:transform .28s ease;
+      z-index:71;display:flex;flex-direction:column;
+    }
+    .drawer-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 18px;border-bottom:1px solid var(--line);
+    }
+    .drawer-head strong{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,243,238,.5);}
+    .drawer-close{
+      background:transparent;border:1px solid var(--line);
+      color:rgba(245,243,238,.6);width:32px;height:32px;
+      border-radius:8px;cursor:pointer;font-size:14px;
+    }
+    .drawer-nav{padding:12px}
+    .drawer-nav a{
+      display:block;padding:13px 12px;
+      font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+      color:rgba(245,243,238,.58);border-radius:10px;
+      transition:background .15s,color .15s;
+    }
+    .drawer-nav a:hover{background:rgba(255,255,255,.05);color:var(--ink)}
+    .drawer-open .drawer{transform:none}
+    .drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
+
+    /* ── HERO ── */
+    .hero{
+      margin-top:var(--navH);
+      padding:80px 0 64px;
+      border-bottom:1px solid var(--line);
+      text-align:center;
+    }
+    .hero-eye{
+      font-size:10px;letter-spacing:.32em;text-transform:uppercase;
+      color:var(--gold);margin:0 0 18px;
+    }
+    .hero h1{
+      font-family:var(--serif);
+      font-size:clamp(44px,6vw,72px);
+      font-weight:600;line-height:.96;
+      letter-spacing:-.01em;margin:0 0 20px;
+    }
+    .hero h1 em{font-style:italic;color:rgba(245,243,238,.42);}
+    .hero-desc{
+      max-width:56ch;margin:0 auto;
+      color:var(--muted);font-size:14px;
+      line-height:1.9;
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;padding:24px 0;
+      border-bottom:1px solid var(--line);
+      flex-wrap:wrap;
+    }
+    .filter-label{
+      font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--muted2);
+    }
+    .filter-pills{display:flex;gap:8px;flex-wrap:wrap;}
+    .filter-pill{
+      padding:6px 14px;border-radius:999px;
+      border:1px solid var(--line);
+      font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--muted);cursor:pointer;
+      transition:border-color .15s,color .15s,background .15s;
+      background:transparent;
+    }
+    .filter-pill:hover{border-color:rgba(245,243,238,.3);color:var(--ink)}
+    .filter-pill.active{
+      border-color:rgba(245,243,238,.5);
+      color:var(--ink);
+      background:rgba(255,255,255,.05);
+    }
+    .archive-count{
+      font-size:11px;letter-spacing:.08em;
+      text-transform:uppercase;color:var(--muted2);
+      white-space:nowrap;
+    }
+
+    /* ── ARCHIVE GRID ── */
+    .archive-section{padding:48px 0 100px;}
+
+    .archive-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:48px 32px;
+    }
+    @media(max-width:900px){.archive-grid{grid-template-columns:repeat(2,1fr);gap:40px 24px;}}
+    @media(max-width:520px){.archive-grid{grid-template-columns:1fr;gap:40px;}}
+
+    /* Card */
+    .archive-card{
+      display:flex;flex-direction:column;gap:0;
+      cursor:pointer;
+    }
+    .archive-card:hover .card-photo img{
+      transform:scale(1.04);
+      filter:saturate(95%) contrast(108%);
+    }
+    .archive-card:hover .card-no{color:rgba(245,243,238,.6);}
+
+    .card-photo{
+      aspect-ratio:3/4;
+      overflow:hidden;
+      background:#111;
+      border:1px solid var(--line);
+      position:relative;
+    }
+    .card-photo img{
+      width:100%;height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(90%) contrast(105%);
+      transition:transform .7s ease, filter .5s ease;
+    }
+    .card-photo-empty{
+      aspect-ratio:3/4;
+      background:linear-gradient(135deg,#161616,#0d0d0d);
+      border:1px solid var(--line);
+      display:grid;place-items:center;
+      position:relative;
+    }
+    .card-photo-empty::after{
+      content:"";
+      position:absolute;inset:0;
+      background:radial-gradient(400px 300px at 30% 30%, rgba(200,178,122,.08), transparent 60%);
+    }
+    .card-photo-no{
+      font-family:var(--serif);
+      font-size:48px;font-weight:500;
+      color:rgba(245,243,238,.08);
+      letter-spacing:.06em;
+    }
+
+    .card-plate{
+      border:1px solid var(--line);
+      border-top:0;
+      background:rgba(255,255,255,.02);
+    }
+    .card-no{
+      font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--gold);padding:10px 14px 0;
+      transition:color .2s;
+    }
+    .card-name{
+      font-family:var(--serif);font-size:16px;font-weight:600;
+      padding:5px 14px 10px;line-height:1.2;
+      border-bottom:1px solid var(--line);
+    }
+    .card-meta{
+      display:grid;grid-template-columns:1fr 1fr;
+    }
+    .card-meta-item{
+      padding:9px 14px;
+      font-size:11px;color:var(--muted);
+      letter-spacing:.04em;
+    }
+    .card-meta-item+.card-meta-item{border-left:1px solid var(--line);}
+    .card-chef{
+      padding:8px 14px 12px;
+      font-size:11px;color:var(--muted2);
+      letter-spacing:.06em;
+      border-top:1px solid var(--line);
+    }
+
+    /* Empty state */
+    .empty-state{
+      grid-column:1/-1;
+      text-align:center;padding:80px 0;
+    }
+    .empty-state p{
+      font-family:var(--serif);font-size:24px;
+      color:rgba(245,243,238,.2);font-style:italic;
+    }
+
+    /* ── STATEMENT ── */
+    .statement{
+      border-top:1px solid var(--line);
+      padding:64px 0;text-align:center;
+    }
+    .statement h2{
+      font-family:var(--serif);
+      font-size:clamp(28px,4vw,44px);
+      font-weight:600;letter-spacing:-.01em;
+      margin:0 0 12px;
+    }
+    .statement h2 em{font-style:italic;color:rgba(245,243,238,.38);}
+    .statement p{
+      font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--muted2);margin:0 0 28px;
+    }
+    .statement-btn{
+      display:inline-flex;align-items:center;
+      height:44px;padding:0 24px;border-radius:999px;
+      background:#f5f3ee;color:#0b0b0b;
+      font:600 11px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;
+      transition:filter .15s;
+    }
+    .statement-btn:hover{filter:brightness(.93)}
+
+    /* ── FOOTER ── */
+    .footer{
+      padding:24px;text-align:center;
+      border-top:1px solid var(--line);
+      color:var(--muted2);font-size:10px;
+      letter-spacing:.10em;text-transform:uppercase;
+    }
+    .footer a{color:rgba(245,243,238,.36);transition:color .15s}
+    .footer a:hover{color:rgba(245,243,238,.75)}
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a class="brand" href="index.html" aria-label="Nighthawks home">
+      <img src="assets/logo-white.jpg" alt="Nighthawks" />
+      <span class="brand-name">Nighthawks</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="inner-circle.html">Inner Circle</a>
+      <a href="archive.html" aria-current="page">Archives</a>
+      <a href="membership.html">Membership</a>
+      <a href="about.html">About</a>
+    </nav>
+    <a class="nav-btn" href="invite.html">Enter Invite Code</a>
+    <button class="hamburger" id="openDrawer" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="drawer-close" id="closeDrawer">✕</button>
+    </div>
+    <nav class="drawer-nav">
+      <a href="inner-circle.html">Inner Circle</a>
+      <a href="archive.html">Archives</a>
+      <a href="membership.html">Membership</a>
+      <a href="about.html">About</a>
+      <a href="invite.html">Enter Invite Code</a>
+    </nav>
+  </aside>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eye">Inner Circle — Archives</p>
+      <h1>Nothing is staged.<br/><em>Nothing is repeated.</em></h1>
+      <p class="hero-desc">
+        Inner Circle operates as a working test kitchen. Chefs are invited to develop ideas through intimate, immersive dinners. Each evening is shaped by collaboration — food, setting, sound, and table design considered as a whole.
+      </p>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <div class="container">
+    <div class="filter-bar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span class="filter-label">Filter</span>
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="2025">2025</button>
+          <button class="filter-pill" data-filter="brooklyn">Brooklyn</button>
+          <button class="filter-pill" data-filter="new york">New York</button>
+        </div>
+      </div>
+      <span class="archive-count" id="archiveCount">3 dinners</span>
+    </div>
+  </div>
+
+  <!-- ARCHIVE GRID -->
+  <main class="archive-section">
+    <div class="container">
+      <div class="archive-grid" id="archiveGrid">
+
+        <article class="archive-card" data-city="new york" data-year="2025">
+          <div class="card-photo-empty">
+            <span class="card-photo-no">01</span>
+          </div>
+          <div class="card-plate">
+            <div class="card-no">No. 01</div>
+            <div class="card-name">Maison Provence — Opening Table</div>
+            <div class="card-meta">
+              <div class="card-meta-item">September, 2025</div>
+              <div class="card-meta-item">New York</div>
+            </div>
+            <div class="card-chef">Chef Terry Braggs</div>
+          </div>
+        </article>
+
+        <article class="archive-card" data-city="new york" data-year="2025">
+          <div class="card-photo-empty">
+            <span class="card-photo-no">02</span>
+          </div>
+          <div class="card-plate">
+            <div class="card-no">No. 02</div>
+            <div class="card-name">Velocity Black x Nighthawks</div>
+            <div class="card-meta">
+              <div class="card-meta-item">October, 2025</div>
+              <div class="card-meta-item">New York</div>
+            </div>
+            <div class="card-chef">Chef Amélie B.</div>
+          </div>
+        </article>
+
+        <article class="archive-card" data-city="brooklyn" data-year="2025">
+          <div class="card-photo-empty">
+            <span class="card-photo-no">03</span>
+          </div>
+          <div class="card-plate">
+            <div class="card-no">No. 03</div>
+            <div class="card-name">Harbor Lights Supper</div>
+            <div class="card-meta">
+              <div class="card-meta-item">November, 2025</div>
+              <div class="card-meta-item">Brooklyn</div>
+            </div>
+            <div class="card-chef">Chef D. Rivera</div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- STATEMENT -->
+  <section class="statement">
+    <div class="container">
+      <h2>Access is<br/><em>limited.</em></h2>
+      <p>Invitations are issued privately</p>
+      <a class="statement-btn" href="invite.html">Enter your code →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      © <span id="y"></span> Nighthawks Concierge &nbsp;·&nbsp;
+      <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+      <a href="terms.html">Terms</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const html = document.documentElement;
+    const drawer = document.getElementById('drawer');
+    const backdrop = document.getElementById('drawerBackdrop');
+    const openBtn = document.getElementById('openDrawer');
+    const closeBtn = document.getElementById('closeDrawer');
+
+    function openDrawer(){
+      html.classList.add('drawer-open');
+      backdrop.hidden = false;
+      drawer.setAttribute('aria-hidden','false');
+      openBtn.setAttribute('aria-expanded','true');
+    }
+    function closeDrawer(){
+      html.classList.remove('drawer-open');
+      backdrop.hidden = true;
+      drawer.setAttribute('aria-hidden','true');
+      openBtn.setAttribute('aria-expanded','false');
+    }
+    openBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape') closeDrawer();
+    });
+
+    // Filter
+    const pills = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.archive-card');
+    const countEl = document.getElementById('archiveCount');
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.dataset.filter;
+        let visible = 0;
+        cards.forEach(card => {
+          const city = card.dataset.city || '';
+          const year = card.dataset.year || '';
+          const show = filter === 'all' || city === filter || year === filter;
+          card.style.display = show ? '' : 'none';
+          if(show) visible++;
+        });
+        countEl.textContent = `${visible} dinner${visible !== 1 ? 's' : ''}`;
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0b0b0b"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Nighthawks • Founder Dashboard</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Dark luxury */
+      --bg:#07080a;
+      --paper:#0c0e12;
+      --paper2:#0f1217;
+      --ink:#f2f2f5;
+      --muted:rgba(242,242,245,.72);
+      --line:rgba(255,255,255,.10);
+      --soft:rgba(255,255,255,.05);
+
+      --gold:#c8ad62;
+      --gold2:#b79246;
+      --ring:rgba(200,173,98,.22);
+
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --err:#fb7185;
+
+      --shadow: 0 20px 70px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+
+      --safe-b: env(safe-area-inset-bottom, 0px);
+
+      --fs-12: clamp(11px, 0.8vw, 12px);
+      --fs-13: clamp(12px, 0.9vw, 13px);
+      --fs-14: clamp(13px, 1.0vw, 14px);
+      --fs-16: clamp(15px, 1.2vw, 16px);
+      --fs-18: clamp(16px, 1.4vw, 18px);
+      --fs-24: clamp(19px, 1.9vw, 24px);
+      --fs-40: clamp(28px, 3.2vw, 40px);
+
+      --r-14:14px;
+      --r-16:16px;
+      --r-18:18px;
+      --r-22:22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(900px 520px at 18% 10%, rgba(200,173,98,.12), transparent 55%),
+                  radial-gradient(700px 460px at 72% 12%, rgba(255,255,255,.06), transparent 60%),
+                  linear-gradient(180deg, #07080a, #05060a);
+      color:var(--ink);
+      font:400 var(--fs-16)/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    img{max-width:100%;display:block}
+
+    /* ===== Topbar ===== */
+    .topbar{
+      position:sticky; top:0; z-index:60;
+      backdrop-filter:saturate(150%) blur(10px);
+      background:rgba(5,6,10,.55);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar.scrolled{ box-shadow: 0 14px 60px rgba(0,0,0,.45); }
+    .topbar-inner{
+      max-width:1240px; margin:0 auto;
+      padding:14px 16px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+    }
+    .brand-badge{
+      width:38px; height:38px; border-radius:999px;
+      display:grid; place-items:center;
+      border:1px solid rgba(200,173,98,.45);
+      background:rgba(15,18,23,.65);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .brand-badge img{ width:22px; height:auto; opacity:.95; }
+    .brand-word{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .brand-word .k{
+      font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+      color:rgba(255,255,255,.70);
+    }
+    .brand-word .t{
+      font-family:"DM Serif Display", serif;
+      font-weight:400;
+      letter-spacing:.02em;
+      font-size:18px;
+    }
+    .spacer{flex:1}
+
+    .chips{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:rgba(255,255,255,.86);
+      font-weight:600;
+      font-size:var(--fs-13);
+      user-select:none;
+    }
+    .dot{ width:7px; height:7px; border-radius:999px; background:var(--ok); box-shadow:0 0 0 4px rgba(52,211,153,.16); }
+
+    .iconbtn{
+      appearance:none; border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--ink);
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight:700; font-size:var(--fs-13);
+      transition:.18s;
+    }
+    .iconbtn:hover{ transform:translateY(-1px); border-color:rgba(200,173,98,.35); }
+    .iconbtn svg{ width:18px; height:18px; opacity:.9 }
+
+    /* Menu */
+    .menu-wrap{ position:relative; }
+    .menu{
+      position:absolute; right:0; top:calc(100% + 10px);
+      width:280px;
+      background:rgba(12,14,18,.92);
+      border:1px solid var(--line);
+      border-radius:16px;
+      box-shadow: var(--shadow);
+      padding:10px;
+      display:none;
+      z-index:80;
+    }
+    .menu.open{display:block}
+    .mi{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px;
+      border-radius:12px;
+      cursor:pointer;
+      text-decoration:none;
+      color:rgba(255,255,255,.92);
+    }
+    .mi:hover{ background:rgba(255,255,255,.05); }
+    .mi svg{ width:18px; height:18px; opacity:.92 }
+    .hr{ height:1px; background:var(--line); margin:8px 0; }
+
+    /* ===== Layout ===== */
+    .wrap{ max-width:1240px; margin:0 auto; padding:24px 16px 110px; }
+    .hero{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:16px; flex-wrap:wrap;
+      padding:22px 2px 14px;
+    }
+    .hero h1{
+      margin:0;
+      font-family:"DM Serif Display", serif;
+      font-weight:400;
+      font-size:var(--fs-40);
+      letter-spacing:.02em;
+      line-height:1.05;
+    }
+    .hero p{ margin:8px 0 0; color:var(--muted); max-width:62ch; font-size:var(--fs-14); }
+    .hero .right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.92);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:var(--fs-13);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      transition:.18s;
+      display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none;
+    }
+    .btn:hover{ transform:translateY(-1px); border-color:rgba(200,173,98,.38); }
+    .btn.primary{
+      background:linear-gradient(180deg, rgba(200,173,98,.95), rgba(183,146,70,.92));
+      color:#0b0b0b;
+      border-color:rgba(200,173,98,.65);
+      box-shadow: 0 10px 30px rgba(200,173,98,.18);
+    }
+    .btn.primary:hover{ filter:brightness(1.02); }
+
+    /* ===== Grid ===== */
+    .grid{
+      display:grid;
+      gap:18px;
+      grid-template-columns: 1.2fr .8fr;
+      align-items:start;
+    }
+    @media(max-width:1100px){ .grid{ grid-template-columns:1fr; } }
+
+    .card{
+      background:rgba(12,14,18,.78);
+      border:1px solid var(--line);
+      border-radius:var(--r-18);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .card .hd{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line);
+    }
+    .card .hd h3{
+      margin:0;
+      font-size:var(--fs-14);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.82);
+    }
+    .card .bd{ padding:16px; }
+
+    /* KPI Row */
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    @media(max-width:900px){ .kpis{ grid-template-columns: repeat(2,1fr); } }
+    .kpi{
+      border-radius:var(--r-16);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      padding:14px 14px 12px;
+    }
+    .kpi .label{
+      color:rgba(255,255,255,.62);
+      font-size:var(--fs-12);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:800;
+    }
+    .kpi .val{
+      margin-top:8px;
+      font-size:var(--fs-24);
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+    .kpi .sub{
+      margin-top:6px;
+      color:rgba(255,255,255,.68);
+      font-size:var(--fs-13);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-size:var(--fs-12);
+      color:rgba(255,255,255,.78);
+      font-weight:700;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .pill.ok{ border-color:rgba(52,211,153,.35); }
+    .pill.warn{ border-color:rgba(251,191,36,.35); }
+    .pill.err{ border-color:rgba(251,113,133,.35); }
+
+    /* Tabs */
+    .tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .tab{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:rgba(255,255,255,.85);
+      padding:9px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:var(--fs-12);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.18s;
+    }
+    .tab.active{
+      border-color:rgba(200,173,98,.55);
+      box-shadow:0 0 0 4px var(--ring);
+      background:rgba(200,173,98,.10);
+    }
+
+    /* Tables / Lists */
+    .table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0 10px;
+    }
+    .tr{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:14px;
+    }
+    .table th{
+      text-align:left;
+      color:rgba(255,255,255,.62);
+      font-size:var(--fs-12);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:800;
+      padding:0 8px 8px;
+    }
+    .table td{
+      padding:12px 12px;
+      border-top:1px solid var(--line);
+      color:rgba(255,255,255,.90);
+      font-size:var(--fs-14);
+      vertical-align:middle;
+    }
+    .rowbox{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+    .rowbox .top{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;
+    }
+    .rowbox b{ font-size:var(--fs-14); }
+    .rowbox .meta{ color:rgba(255,255,255,.66); font-size:var(--fs-13); display:flex; gap:8px; flex-wrap:wrap; }
+    .rowbox .actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+    .btn2{
+      appearance:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      color:rgba(255,255,255,.92);
+      border-radius:999px;
+      padding:9px 12px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:var(--fs-12);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      transition:.18s;
+    }
+    .btn2:hover{ transform:translateY(-1px); border-color:rgba(200,173,98,.4); }
+    .btn2.gold{
+      background:rgba(200,173,98,.12);
+      border-color:rgba(200,173,98,.40);
+      color:rgba(255,255,255,.95);
+    }
+    .btn2.danger{ border-color:rgba(251,113,133,.35); background:rgba(251,113,133,.08); }
+
+    /* Seat map */
+    .seats{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    @media(max-width:560px){ .seats{ grid-template-columns: repeat(4, 1fr);} }
+    .seat{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      border-radius:14px;
+      padding:12px 10px;
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+      transition:.16s;
+      display:grid;
+      gap:6px;
+    }
+    .seat:hover{ transform:translateY(-1px); border-color:rgba(200,173,98,.35); }
+    .seat .n{ font-weight:900; letter-spacing:.06em; }
+    .seat .s{ font-size:var(--fs-12); color:rgba(255,255,255,.65); letter-spacing:.12em; text-transform:uppercase; }
+    .seat.confirmed{ border-color:rgba(52,211,153,.35); background:rgba(52,211,153,.06); }
+    .seat.pending{ border-color:rgba(251,191,36,.35); background:rgba(251,191,36,.06); }
+    .seat.blocked{ border-color:rgba(255,255,255,.12); opacity:.65; cursor:not-allowed; }
+    .seat.vip{ border-color:rgba(200,173,98,.55); background:rgba(200,173,98,.10); }
+
+    /* Right column cards */
+    .side-stack{ display:grid; gap:18px; }
+    .mini{
+      display:grid; gap:12px;
+    }
+    .mini .line{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      color:rgba(255,255,255,.88);
+      font-weight:700;
+    }
+    .mini .line span{ color:rgba(255,255,255,.62); font-weight:700; letter-spacing:.10em; text-transform:uppercase; font-size:var(--fs-12); }
+
+    .search{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .input{
+      flex:1;
+      min-width:220px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.35);
+      color:var(--ink);
+      font-size:var(--fs-14);
+      outline:none;
+      transition:.18s;
+    }
+    .input:focus{ border-color:rgba(200,173,98,.45); box-shadow:0 0 0 4px var(--ring); }
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      display:none; place-items:center;
+      background:rgba(0,0,0,.55);
+      z-index:200;
+      padding:16px;
+    }
+    .modal.open{display:grid}
+    .sheet{
+      width:min(860px, 96vw);
+      background:rgba(12,14,18,.95);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sheet-hd{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+    }
+    .sheet-hd b{
+      font-size:var(--fs-14);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.82);
+    }
+    .sheet-bd{ padding:16px; display:grid; gap:12px; }
+    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media(max-width:760px){ .grid2{ grid-template-columns:1fr; } }
+    .field label{
+      display:block;
+      color:rgba(255,255,255,.62);
+      font-size:var(--fs-12);
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:800;
+      margin:0 0 8px;
+    }
+    textarea.input{ min-height:110px; resize:vertical; }
+    .sheet-ft{
+      display:flex; justify-content:flex-end; gap:10px;
+      padding:14px 16px;
+      border-top:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:calc(18px + var(--safe-b));
+      transform:translateX(-50%);
+      background:rgba(15,18,23,.92);
+      border:1px solid var(--line);
+      color:rgba(255,255,255,.92);
+      border-radius:14px;
+      padding:12px 14px;
+      box-shadow: var(--shadow2);
+      opacity:0;
+      pointer-events:none;
+      transition:.22s;
+      z-index:250;
+      font-weight:800;
+      letter-spacing:.04em;
+    }
+    .toast.show{ opacity:1; }
+
+    /* Focus */
+    :where(a,button,input,textarea,select,[tabindex]):focus-visible{
+      outline:2px solid rgba(200,173,98,.8);
+      outline-offset:2px;
+      box-shadow:0 0 0 6px var(--ring);
+      border-radius:14px;
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important; transition:none!important; scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html" id="homeLink" aria-label="Nighthawks home">
+        <div class="brand-badge">
+          <img id="logoImg" src="../assets/logo-white.jpg" alt="Nighthawks"/>
+        </div>
+        <div class="brand-word">
+          <div class="k">Founder Console</div>
+          <div class="t">Nighthawks</div>
+        </div>
+      </a>
+
+      <div class="spacer"></div>
+
+      <div class="chips">
+        <div class="chip" title="System status">
+          <span class="dot" aria-hidden="true"></span>
+          Live
+        </div>
+        <div class="chip" id="chipCity">NYC • Inner Circle</div>
+        <div class="chip" id="chipDate">Tonight • 8:00 PM</div>
+      </div>
+
+      <div class="menu-wrap">
+        <button class="iconbtn" id="menuBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="menu" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          Menu
+        </button>
+
+        <div class="menu" id="menu" role="menu" aria-labelledby="menuBtn">
+          <div class="mi" role="menuitem" id="miMembers">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M4 21v-2a4 4 0 0 1 3-3.87"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Members
+          </div>
+          <div class="mi" role="menuitem" id="miRequests">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>
+            </svg>
+            Requests
+          </div>
+          <div class="mi" role="menuitem" id="miEvent">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 8h18"/><path d="M8 3v3"/><path d="M16 3v3"/><rect x="3" y="6" width="18" height="15" rx="2"/>
+            </svg>
+            Event control
+          </div>
+          <div class="hr"></div>
+          <div class="mi" role="menuitem" id="miExport">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M4 21h16"/>
+            </svg>
+            Export (CSV)
+          </div>
+          <div class="mi" role="menuitem" id="miLock">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V8a5 5 0 0 1 10 0v3"/>
+            </svg>
+            Lock / unlock seats
+          </div>
+          <div class="hr"></div>
+          <div class="mi" role="menuitem" id="miSignOut">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M21 3v18"/>
+            </svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h1 id="heroTitle">Good evening, Founder</h1>
+        <p id="heroSub">Control Inner Circle seats, approve requests, and monitor members — in one discreet console.</p>
+      </div>
+      <div class="right">
+        <button class="btn" id="btnNewInvite" type="button">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          New invite
+        </button>
+        <button class="btn primary" id="btnNewEvent" type="button">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 8h18"/><path d="M8 3v3"/><path d="M16 3v3"/><rect x="3" y="6" width="18" height="15" rx="2"/>
+          </svg>
+          Create event
+        </button>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Key metrics">
+      <div class="hd">
+        <h3>Tonight at a glance</h3>
+        <div class="tabs" aria-label="View selector">
+          <button class="tab active" data-tab="overview" type="button">Overview</button>
+          <button class="tab" data-tab="seats" type="button">Seats</button>
+          <button class="tab" data-tab="requests" type="button">Requests</button>
+          <button class="tab" data-tab="members" type="button">Members</button>
+        </div>
+      </div>
+      <div class="bd">
+        <div class="kpis" id="kpiRow">
+          <div class="kpi">
+            <div class="label">Seats</div>
+            <div class="val" id="kSeats">13</div>
+            <div class="sub"><span class="pill ok" id="kSeatsSub">9 confirmed</span></div>
+          </div>
+          <div class="kpi">
+            <div class="label">RSVP pending</div>
+            <div class="val" id="kPending">2</div>
+            <div class="sub"><span class="pill warn">Follow up</span></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Requests</div>
+            <div class="val" id="kRequests">6</div>
+            <div class="sub"><span class="pill" id="kReqSub">2 new</span></div>
+          </div>
+          <div class="kpi">
+            <div class="label">Members</div>
+            <div class="val" id="kMembers">42</div>
+            <div class="sub"><span class="pill ok">Active</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:18px">
+      <!-- LEFT MAIN -->
+      <div class="card" id="mainCard" aria-label="Main panel">
+        <div class="hd">
+          <h3 id="mainTitle">Overview</h3>
+          <div class="search">
+            <input class="input" id="search" placeholder="Search: member, request, seat, email…" />
+            <button class="btn2 gold" id="btnOpenComposer" type="button">Compose</button>
+          </div>
+        </div>
+
+        <div class="bd" id="mainBody">
+          <!-- Overview content injected -->
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="side-stack">
+        <section class="card" aria-label="Next actions">
+          <div class="hd"><h3>Next actions</h3></div>
+          <div class="bd mini" id="nextActions">
+            <div class="line"><span>Tonight</span> <b>Inner Circle — No. 2</b></div>
+            <div class="line"><span>Venue</span> <b>Sky Room · 252 W 57th</b></div>
+            <div class="line"><span>Chef</span> <b>Confirmed</b></div>
+            <div class="line"><span>Deposit</span> <b>$75</b></div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Inbox">
+          <div class="hd"><h3>Inbox</h3></div>
+          <div class="bd" id="inbox">
+            <div class="rowbox">
+              <div class="top">
+                <div>
+                  <b>New request: “Private dining for 4”</b>
+                  <div class="meta"><span class="pill">High</span><span class="pill warn">New</span></div>
+                </div>
+                <button class="btn2" data-act="open-request" type="button">Open</button>
+              </div>
+              <div class="meta">Received 18m ago · “West Village · 8:30 PM”</div>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div class="rowbox">
+              <div class="top">
+                <div>
+                  <b>RSVP pending: Seat 07</b>
+                  <div class="meta"><span class="pill warn">Pending</span><span class="pill">Auto-remind</span></div>
+                </div>
+                <button class="btn2" data-act="ping-seat" type="button">Ping</button>
+              </div>
+              <div class="meta">Last contact 2d ago · Member: “A. Rivers”</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Security">
+          <div class="hd"><h3>Access</h3></div>
+          <div class="bd mini">
+            <div class="line"><span>Mode</span> <b id="accessMode">Founder (local)</b></div>
+            <div class="line"><span>Admin email</span> <b id="adminEmail">—</b></div>
+            <button class="btn2" id="btnSetAdminEmail" type="button">Set admin email</button>
+            <button class="btn2 danger" id="btnClearLocal" type="button">Clear local data</button>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <!-- MODAL: COMPOSER -->
+  <div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="sheet" role="document">
+      <div class="sheet-hd">
+        <b id="modalTitle">Compose</b>
+        <button class="btn2" id="btnCloseModal" type="button">Close</button>
+      </div>
+      <div class="sheet-bd">
+        <div class="grid2">
+          <div class="field">
+            <label for="mTo">To</label>
+            <input class="input" id="mTo" placeholder="member@email.com">
+          </div>
+          <div class="field">
+            <label for="mType">Type</label>
+            <input class="input" id="mType" placeholder="Invite / RSVP / Concierge / Note">
+          </div>
+        </div>
+        <div class="field">
+          <label for="mSubject">Subject</label>
+          <input class="input" id="mSubject" placeholder="Inner Circle — RSVP confirmation">
+        </div>
+        <div class="field">
+          <label for="mBody">Message</label>
+          <textarea class="input" id="mBody" placeholder="Write a discreet note…"></textarea>
+        </div>
+        <div class="field">
+          <label for="mTag">Internal tag</label>
+          <input class="input" id="mTag" placeholder="e.g., IC2 / VIP / Deposit / Follow-up">
+        </div>
+      </div>
+      <div class="sheet-ft">
+        <button class="btn2" id="btnSaveDraft" type="button">Save draft</button>
+        <button class="btn2 gold" id="btnSend" type="button">Send (demo)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ============================================================
+       Founder Dashboard (frontend-only)
+       - Demo data stored in localStorage
+       - Tabs: Overview / Seats / Requests / Members
+       - Seat map: toggle status, lock seats
+       - Requests: approve/deny
+       - Members: notes + VIP
+       - Export CSV
+       ============================================================ */
+
+    // ---------- Storage keys ----------
+    const KEY_ADMIN_EMAIL = "NH_ADMIN_EMAIL";
+    const KEY_LOCK_SEATS  = "NH_ADMIN_LOCK_SEATS";
+    const KEY_SEATS       = "NH_ADMIN_SEATS_V1";
+    const KEY_REQUESTS    = "NH_ADMIN_REQUESTS_V1";
+    const KEY_MEMBERS     = "NH_ADMIN_MEMBERS_V1";
+    const KEY_DRAFTS      = "NH_ADMIN_DRAFTS_V1";
+
+    // ---------- Paths (adjust if needed) ----------
+    const PATHS = {
+      home: "../index.html",
+      memberDashboard: "../dashboard/dashboard.html", // update if your member dashboard path differs
+      request: "../request.html",
+      membership: "../membership.html",
+      login: "../login.html"
+    };
+
+    // ---------- Helpers ----------
+    const $ = (id) => document.getElementById(id);
+    const toastEl = $("toast");
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=>toastEl.classList.remove("show"), 1800);
+    }
+    function safeJSONParse(v, fallback){
+      try{ return JSON.parse(v); }catch{ return fallback; }
+    }
+    function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch{} }
+    function load(key, fallback){
+      try{
+        const v = localStorage.getItem(key);
+        if(v==null) return fallback;
+        return safeJSONParse(v, fallback);
+      }catch{ return fallback; }
+    }
+    function setStr(key, val){ try{ localStorage.setItem(key, val); }catch{} }
+    function getStr(key, fb=""){ try{ return localStorage.getItem(key) ?? fb; }catch{ return fb; } }
+
+    // ---------- Topbar shadow ----------
+    const topbar = $("topbar");
+    document.addEventListener("scroll", ()=>{
+      topbar.classList.toggle("scrolled", window.scrollY > 4);
+    }, {passive:true});
+
+    // ---------- Menu ----------
+    const menuBtn = $("menuBtn");
+    const menu = $("menu");
+    function toggleMenu(open){
+      const will = open ?? !menu.classList.contains("open");
+      menu.classList.toggle("open", will);
+      menuBtn.setAttribute("aria-expanded", String(will));
+    }
+    menuBtn.addEventListener("click", ()=>toggleMenu());
+    document.addEventListener("click", (e)=>{
+      if(!menu.classList.contains("open")) return;
+      if(e.target.closest("#menu") || e.target.closest("#menuBtn")) return;
+      toggleMenu(false);
+    });
+    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape") toggleMenu(false); });
+
+    // Menu actions
+    $("miMembers").addEventListener("click", ()=>{ toggleMenu(false); setTab("members"); });
+    $("miRequests").addEventListener("click", ()=>{ toggleMenu(false); setTab("requests"); });
+    $("miEvent").addEventListener("click", ()=>{ toggleMenu(false); setTab("seats"); toast("Event control opened"); });
+    $("miExport").addEventListener("click", ()=>{ toggleMenu(false); exportCSV(); });
+    $("miLock").addEventListener("click", ()=>{ toggleMenu(false); toggleSeatLock(); });
+    $("miSignOut").addEventListener("click", ()=>{ toggleMenu(false); location.href = PATHS.login; });
+
+    // ---------- Hero buttons ----------
+    $("btnOpenComposer").addEventListener("click", ()=>openModal("Compose"));
+    $("btnNewInvite").addEventListener("click", ()=>{
+      openModal("New invite");
+      $("mType").value = "Invite";
+      $("mSubject").value = "Nighthawks — Invite";
+      $("mBody").value = "You’re invited. Details are issued privately.";
+      $("mTag").value = "Invite";
+    });
+    $("btnNewEvent").addEventListener("click", ()=>{
+      openModal("Create event");
+      $("mType").value = "Event";
+      $("mSubject").value = "Inner Circle — New event draft";
+      $("mBody").value = "Drafting a new Inner Circle moment. Venue and timing TBD.";
+      $("mTag").value = "Event";
+    });
+
+    // ---------- Modal ----------
+    const modal = $("modal");
+    const btnCloseModal = $("btnCloseModal");
+    function openModal(title){
+      $("modalTitle").textContent = title;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+      setTimeout(()=> $("mTo").focus(), 40);
+    }
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+    btnCloseModal.addEventListener("click", closeModal);
+    modal.addEventListener("click",(e)=>{ if(e.target===modal) closeModal(); });
+    document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modal.classList.contains("open")) closeModal(); });
+
+    $("btnSaveDraft").addEventListener("click", ()=>{
+      const drafts = load(KEY_DRAFTS, []);
+      drafts.unshift({
+        to: $("mTo").value.trim(),
+        type: $("mType").value.trim(),
+        subject: $("mSubject").value.trim(),
+        body: $("mBody").value.trim(),
+        tag: $("mTag").value.trim(),
+        ts: Date.now()
+      });
+      save(KEY_DRAFTS, drafts.slice(0,20));
+      toast("Draft saved");
+    });
+
+    $("btnSend").addEventListener("click", ()=>{
+      // frontend-only: just pretend send
+      toast("Sent (demo)");
+      closeModal();
+    });
+
+    // ---------- Sidebar: Access ----------
+    function hydrateAccess(){
+      const email = getStr(KEY_ADMIN_EMAIL, "");
+      $("adminEmail").textContent = email || "—";
+    }
+    $("btnSetAdminEmail").addEventListener("click", ()=>{
+      const v = prompt("Admin email (used later for backend role checks):", getStr(KEY_ADMIN_EMAIL,""));
+      if(v===null) return;
+      setStr(KEY_ADMIN_EMAIL, v.trim());
+      hydrateAccess();
+      toast("Saved");
+    });
+    $("btnClearLocal").addEventListener("click", ()=>{
+      if(!confirm("Clear all local admin demo data?")) return;
+      [KEY_LOCK_SEATS, KEY_SEATS, KEY_REQUESTS, KEY_MEMBERS, KEY_DRAFTS].forEach(k=>{
+        try{ localStorage.removeItem(k); }catch{}
+      });
+      bootData();
+      render();
+      toast("Cleared");
+    });
+
+    // ---------- Demo data ----------
+    function bootData(){
+      // Seats
+      const seats = load(KEY_SEATS, null);
+      if(!seats){
+        const base = [];
+        // 13 seats (01-13) — you can change count
+        for(let i=1;i<=13;i++){
+          const id = String(i).padStart(2,"0");
+          base.push({
+            seat:id,
+            status: i<=9 ? "confirmed" : (i<=11 ? "pending" : "open"),
+            name: i<=9 ? ["A. Rivers","Noella","Yanis","Cristian","Cynthia","Antonia","Dwayne","Chef","Guest X"][i-1] : "",
+            vip: i===1 || i===2
+          });
+        }
+        save(KEY_SEATS, base);
+      }
+
+      // Requests
+      const req = load(KEY_REQUESTS, null);
+      if(!req){
+        save(KEY_REQUESTS, [
+          { id:"R-1821", type:"Concierge", name:"J. Mason", email:"jmason@example.com", summary:"Private dining for 4 · West Village · 8:30 PM", priority:"High", status:"New", ts:Date.now()-1000*60*18 },
+          { id:"R-1819", type:"Invite", name:"A. Kim", email:"akim@example.com", summary:"Requesting Inner Circle seat · referral attached", priority:"Medium", status:"New", ts:Date.now()-1000*60*55 },
+          { id:"R-1812", type:"Event access", name:"S. Patel", email:"spatel@example.com", summary:"Last-minute table · Saturday", priority:"Low", status:"In review", ts:Date.now()-1000*60*240 },
+          { id:"R-1802", type:"Concierge", name:"M. Torres", email:"mtorres@example.com", summary:"Birthday planning · 2 nights · NYC", priority:"Medium", status:"In review", ts:Date.now()-1000*60*780 }
+        ]);
+      }
+
+      // Members
+      const mem = load(KEY_MEMBERS, null);
+      if(!mem){
+        save(KEY_MEMBERS, [
+          { id:"IC-6182", name:"A. Rivers", email:"arivers@example.com", tier:"Inner Circle", status:"Active", vip:true, notes:"Prefers discreet comms. Allergies: none." },
+          { id:"IC-7011", name:"J. Mason", email:"jmason@example.com", tier:"Inner Circle", status:"Active", vip:false, notes:"Strong referral. Interested in private dining." },
+          { id:"IC-5520", name:"S. Patel", email:"spatel@example.com", tier:"Nighthawks", status:"Active", vip:false, notes:"Travel heavy. Likes tasting menus." }
+        ]);
+      }
+
+      // Lock state
+      if(localStorage.getItem(KEY_LOCK_SEATS) == null){
+        localStorage.setItem(KEY_LOCK_SEATS, JSON.stringify(false));
+      }
+    }
+
+    // ---------- Tabs / Render ----------
+    const mainTitle = $("mainTitle");
+    const mainBody = $("mainBody");
+    const tabs = [...document.querySelectorAll(".tab")];
+    const search = $("search");
+
+    let ACTIVE_TAB = "overview";
+    search.addEventListener("input", ()=>render());
+
+    tabs.forEach(t=>{
+      t.addEventListener("click", ()=>{
+        setTab(t.dataset.tab);
+      });
+    });
+
+    function setTab(tab){
+      ACTIVE_TAB = tab;
+      tabs.forEach(x=>x.classList.toggle("active", x.dataset.tab===tab));
+      mainTitle.textContent = tab === "overview" ? "Overview" :
+                              tab === "seats" ? "Seat map" :
+                              tab === "requests" ? "Requests" : "Members";
+      render();
+    }
+
+    function toggleSeatLock(){
+      const cur = !!load(KEY_LOCK_SEATS, false);
+      save(KEY_LOCK_SEATS, !cur);
+      toast(!cur ? "Seats locked" : "Seats unlocked");
+      render();
+    }
+
+    function kpisUpdate(){
+      const seats = load(KEY_SEATS, []);
+      const reqs = load(KEY_REQUESTS, []);
+      const members = load(KEY_MEMBERS, []);
+
+      const confirmed = seats.filter(s=>s.status==="confirmed").length;
+      const pending = seats.filter(s=>s.status==="pending").length;
+      const open = seats.filter(s=>s.status==="open").length;
+      const newReq = reqs.filter(r=>r.status==="New").length;
+
+      $("kSeats").textContent = seats.length;
+      $("kSeatsSub").textContent = `${confirmed} confirmed · ${pending} pending · ${open} open`;
+      $("kPending").textContent = pending;
+      $("kRequests").textContent = reqs.length;
+      $("kReqSub").textContent = `${newReq} new`;
+      $("kMembers").textContent = members.length;
+    }
+
+    function render(){
+      kpisUpdate();
+      const q = (search.value||"").trim().toLowerCase();
+
+      if(ACTIVE_TAB==="overview") renderOverview(q);
+      if(ACTIVE_TAB==="seats") renderSeats(q);
+      if(ACTIVE_TAB==="requests") renderRequests(q);
+      if(ACTIVE_TAB==="members") renderMembers(q);
+    }
+
+    // ---------- Overview ----------
+    function renderOverview(q){
+      const seats = load(KEY_SEATS, []);
+      const reqs = load(KEY_REQUESTS, []);
+      const members = load(KEY_MEMBERS, []);
+
+      const confirmed = seats.filter(s=>s.status==="confirmed");
+      const pending = seats.filter(s=>s.status==="pending");
+      const vip = seats.filter(s=>s.vip && (s.status==="confirmed" || s.status==="pending"));
+
+      const newReq = reqs.filter(r=>r.status==="New");
+      const inReview = reqs.filter(r=>r.status==="In review");
+
+      const lines = [
+        {label:"VIP seats", val: vip.length, pill: vip.length ? "ok" : "" },
+        {label:"Confirmed", val: confirmed.length, pill: "ok" },
+        {label:"Pending follow-ups", val: pending.length, pill: pending.length ? "warn" : "ok" },
+        {label:"New requests", val: newReq.length, pill: newReq.length ? "warn" : "ok" }
+      ];
+
+      const filterHit = (t)=> !q || (t||"").toLowerCase().includes(q);
+
+      mainBody.innerHTML = `
+        <div class="rowbox" style="gap:14px">
+          <div class="top" style="align-items:center">
+            <div>
+              <b>Operations summary</b>
+              <div class="meta">
+                <span class="pill">Founder view</span>
+                <span class="pill ok">Live</span>
+                <span class="pill">Discreet</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn2 gold" id="ovFollowUp" type="button">Follow up pending</button>
+              <button class="btn2" id="ovExport" type="button">Export CSV</button>
+            </div>
+          </div>
+
+          <div class="kpis" style="grid-template-columns:repeat(4,1fr)">
+            ${lines.map(x=>`
+              <div class="kpi">
+                <div class="label">${x.label}</div>
+                <div class="val">${x.val}</div>
+                <div class="sub"><span class="pill ${x.pill||""}">${x.val ? "Active" : "None"}</span></div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="grid2">
+            <div class="rowbox">
+              <div class="top">
+                <div>
+                  <b>Pending seats</b>
+                  <div class="meta"><span class="pill warn">${pending.length} pending</span><span class="pill">Auto-remind</span></div>
+                </div>
+                <button class="btn2" id="ovGoSeats" type="button">Open seat map</button>
+              </div>
+              <div class="meta">
+                ${(pending.slice(0,6)).map(s=>`<span class="pill warn">Seat ${s.seat}</span>`).join(" ") || "No pending seats."}
+              </div>
+            </div>
+
+            <div class="rowbox">
+              <div class="top">
+                <div>
+                  <b>Request queue</b>
+                  <div class="meta"><span class="pill">${newReq.length} new</span><span class="pill">${inReview.length} in review</span></div>
+                </div>
+                <button class="btn2" id="ovGoRequests" type="button">Open requests</button>
+              </div>
+              <div class="meta">
+                ${(reqs.slice(0,3).filter(r=>filterHit(`${r.type} ${r.name} ${r.email} ${r.summary}`))).map(r=>`
+                  <span class="pill ${r.status==="New"?"warn":""}">${r.id}</span>
+                `).join(" ") || "No matches."}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      $("ovFollowUp").addEventListener("click", ()=>{
+        toast(pending.length ? `Queued ${pending.length} follow-ups (demo)` : "No pending seats");
+      });
+      $("ovExport").addEventListener("click", exportCSV);
+      $("ovGoSeats").addEventListener("click", ()=>setTab("seats"));
+      $("ovGoRequests").addEventListener("click", ()=>setTab("requests"));
+    }
+
+    // ---------- Seats ----------
+    function renderSeats(q){
+      const seats = load(KEY_SEATS, []);
+      const locked = !!load(KEY_LOCK_SEATS, false);
+      const filter = (s)=>{
+        const t = `seat ${s.seat} ${s.status} ${s.name||""} ${s.vip?"vip":""}`.toLowerCase();
+        return !q || t.includes(q);
+      };
+      const list = seats.filter(filter);
+
+      mainBody.innerHTML = `
+        <div class="rowbox" style="gap:14px">
+          <div class="top" style="align-items:center">
+            <div>
+              <b>Seat map</b>
+              <div class="meta">
+                <span class="pill">${seats.length} seats</span>
+                <span class="pill ${locked ? "warn" : "ok"}">${locked ? "Locked" : "Unlocked"}</span>
+                <span class="pill">Click a seat to cycle status</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn2 gold" id="btnLock" type="button">${locked ? "Unlock seats" : "Lock seats"}</button>
+              <button class="btn2" id="btnReset" type="button">Reset demo</button>
+            </div>
+          </div>
+
+          <div class="seats" id="seatGrid"></div>
+
+          <div class="rowbox">
+            <div class="top">
+              <div>
+                <b>Seat details</b>
+                <div class="meta" id="seatDetails">Select a seat…</div>
+              </div>
+              <div class="actions">
+                <button class="btn2" id="btnSeatVIP" type="button" disabled>Toggle VIP</button>
+                <button class="btn2 danger" id="btnSeatClear" type="button" disabled>Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      $("btnLock").addEventListener("click", toggleSeatLock);
+      $("btnReset").addEventListener("click", ()=>{
+        if(!confirm("Reset seats to demo defaults?")) return;
+        localStorage.removeItem(KEY_SEATS);
+        bootData();
+        render();
+        toast("Reset");
+      });
+
+      const grid = $("seatGrid");
+      const seatDetails = $("seatDetails");
+      const btnSeatVIP = $("btnSeatVIP");
+      const btnSeatClear = $("btnSeatClear");
+
+      let selected = null;
+
+      function classFor(s){
+        const cls = ["seat"];
+        if(locked) cls.push("blocked");
+        if(s.vip) cls.push("vip");
+        if(s.status==="confirmed") cls.push("confirmed");
+        if(s.status==="pending") cls.push("pending");
+        return cls.join(" ");
+      }
+
+      function draw(){
+        grid.innerHTML = "";
+        list.forEach(s=>{
+          const el = document.createElement("div");
+          el.className = classFor(s);
+          el.tabIndex = locked ? -1 : 0;
+          el.setAttribute("role","button");
+          el.setAttribute("aria-label", `Seat ${s.seat} ${s.status}`);
+          el.innerHTML = `
+            <div class="n">Seat ${s.seat}</div>
+            <div class="s">${s.status}${s.vip?" · VIP":""}</div>
+          `;
+          el.addEventListener("click", ()=>onSeatClick(s.seat));
+          el.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onSeatClick(s.seat);} });
+          grid.appendChild(el);
+        });
+      }
+
+      function onSeatClick(seatNo){
+        const seatsAll = load(KEY_SEATS, []);
+        const s = seatsAll.find(x=>x.seat===seatNo);
+        if(!s) return;
+        selected = s.seat;
+
+        if(!locked){
+          // cycle status: open -> pending -> confirmed -> open
+          const order = ["open","pending","confirmed"];
+          const idx = order.indexOf(s.status);
+          s.status = order[(idx+1) % order.length];
+          if(s.status==="open"){ s.name=""; }
+          if(s.status!=="open" && !s.name){
+            const nm = prompt(`Name for seat ${s.seat} (${s.status})`, "") || "";
+            s.name = nm.trim();
+          }
+          save(KEY_SEATS, seatsAll);
+          toast(`Seat ${s.seat} → ${s.status}`);
+        }
+
+        // update details
+        const now = load(KEY_SEATS, []).find(x=>x.seat===seatNo);
+        seatDetails.textContent = `Seat ${now.seat} • ${now.status}${now.vip?" • VIP":""}${now.name?` • ${now.name}`:""}`;
+        btnSeatVIP.disabled = false;
+        btnSeatClear.disabled = false;
+
+        btnSeatVIP.onclick = ()=>{
+          const all = load(KEY_SEATS, []);
+          const a = all.find(x=>x.seat===selected);
+          if(!a) return;
+          a.vip = !a.vip;
+          save(KEY_SEATS, all);
+          toast(a.vip ? `Seat ${a.seat} marked VIP` : `Seat ${a.seat} unmarked VIP`);
+          render();
+        };
+        btnSeatClear.onclick = ()=>{
+          if(!confirm("Clear this seat?")) return;
+          const all = load(KEY_SEATS, []);
+          const a = all.find(x=>x.seat===selected);
+          if(!a) return;
+          a.status="open"; a.name=""; a.vip=false;
+          save(KEY_SEATS, all);
+          toast(`Seat ${a.seat} cleared`);
+          render();
+        };
+
+        draw();
+      }
+
+      draw();
+    }
+
+    // ---------- Requests ----------
+    function renderRequests(q){
+      const reqs = load(KEY_REQUESTS, []);
+      const filter = (r)=>{
+        const t = `${r.id} ${r.type} ${r.name} ${r.email} ${r.summary} ${r.priority} ${r.status}`.toLowerCase();
+        return !q || t.includes(q);
+      };
+      const list = reqs.filter(filter).sort((a,b)=>b.ts-a.ts);
+
+      const badge = (v)=>{
+        const map = { High:"err", Medium:"warn", Low:"" };
+        const cls = map[v] || "";
+        return `<span class="pill ${cls}">${v}</span>`;
+      };
+
+      mainBody.innerHTML = `
+        <div class="rowbox" style="gap:14px">
+          <div class="top" style="align-items:center">
+            <div>
+              <b>Requests</b>
+              <div class="meta">
+                <span class="pill">${reqs.length} total</span>
+                <span class="pill warn">${reqs.filter(x=>x.status==="New").length} new</span>
+                <span class="pill">Approve / deny (demo)</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn2" id="btnAddReq" type="button">Add demo request</button>
+              <button class="btn2" id="btnClearReq" type="button">Clear resolved</button>
+            </div>
+          </div>
+
+          <div class="list" id="reqList" style="display:grid; gap:12px"></div>
+        </div>
+      `;
+
+      const reqList = $("reqList");
+      function draw(){
+        reqList.innerHTML = "";
+        list.forEach(r=>{
+          const box = document.createElement("div");
+          box.className = "rowbox";
+          box.innerHTML = `
+            <div class="top">
+              <div>
+                <b>${r.type} • ${r.name}</b>
+                <div class="meta">
+                  <span class="pill">${r.id}</span>
+                  ${badge(r.priority)}
+                  <span class="pill ${r.status==="New"?"warn":""}">${r.status}</span>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn2 gold" data-id="${r.id}" data-act="approve" type="button">Approve</button>
+                <button class="btn2 danger" data-id="${r.id}" data-act="deny" type="button">Deny</button>
+              </div>
+            </div>
+            <div class="meta">${r.summary}</div>
+            <div class="meta">${r.email}</div>
+          `;
+          reqList.appendChild(box);
+        });
+        if(!list.length){
+          reqList.innerHTML = `<div class="rowbox"><b>No matches.</b><div class="meta">Try a different search.</div></div>`;
+        }
+      }
+
+      reqList.addEventListener("click",(e)=>{
+        const b = e.target.closest("button[data-act]");
+        if(!b) return;
+        const id = b.dataset.id;
+        const act = b.dataset.act;
+        const all = load(KEY_REQUESTS, []);
+        const r = all.find(x=>x.id===id);
+        if(!r) return;
+        if(act==="approve"){ r.status="Approved"; toast(`${id} approved`); }
+        if(act==="deny"){ r.status="Denied"; toast(`${id} denied`); }
+        save(KEY_REQUESTS, all);
+        render();
+      });
+
+      $("btnAddReq").addEventListener("click", ()=>{
+        const all = load(KEY_REQUESTS, []);
+        const nid = "R-" + Math.floor(Math.random()*9000+1000);
+        all.unshift({
+          id:nid,
+          type:"Concierge",
+          name:"New Prospect",
+          email:"new@prospect.com",
+          summary:"Dinner request · 2 people · Tonight",
+          priority:"High",
+          status:"New",
+          ts:Date.now()
+        });
+        save(KEY_REQUESTS, all);
+        toast("Added");
+        render();
+      });
+
+      $("btnClearReq").addEventListener("click", ()=>{
+        const all = load(KEY_REQUESTS, []);
+        const next = all.filter(r=> !["Approved","Denied"].includes(r.status));
+        save(KEY_REQUESTS, next);
+        toast("Cleared resolved");
+        render();
+      });
+
+      draw();
+    }
+
+    // ---------- Members ----------
+    function renderMembers(q){
+      const members = load(KEY_MEMBERS, []);
+      const filter = (m)=>{
+        const t = `${m.id} ${m.name} ${m.email} ${m.tier} ${m.status} ${m.vip?"vip":""} ${m.notes||""}`.toLowerCase();
+        return !q || t.includes(q);
+      };
+      const list = members.filter(filter);
+
+      mainBody.innerHTML = `
+        <div class="rowbox" style="gap:14px">
+          <div class="top" style="align-items:center">
+            <div>
+              <b>Members</b>
+              <div class="meta">
+                <span class="pill">${members.length} total</span>
+                <span class="pill ok">${members.filter(x=>x.vip).length} VIP</span>
+                <span class="pill">Notes are local (demo)</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn2" id="btnAddMember" type="button">Add demo member</button>
+            </div>
+          </div>
+
+          <div id="memList" style="display:grid; gap:12px"></div>
+        </div>
+      `;
+
+      const memList = $("memList");
+      function draw(){
+        memList.innerHTML = "";
+        list.forEach(m=>{
+          const box = document.createElement("div");
+          box.className="rowbox";
+          box.innerHTML = `
+            <div class="top">
+              <div>
+                <b>${m.name} ${m.vip?`<span class="pill ok">VIP</span>`:""}</b>
+                <div class="meta">
+                  <span class="pill">${m.id}</span>
+                  <span class="pill">${m.tier}</span>
+                  <span class="pill ok">${m.status}</span>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn2 gold" data-act="vip" data-id="${m.id}" type="button">${m.vip?"UnVIP":"Make VIP"}</button>
+                <button class="btn2" data-act="note" data-id="${m.id}" type="button">Edit note</button>
+              </div>
+            </div>
+            <div class="meta">${m.email}</div>
+            <div class="meta">${m.notes ? m.notes : "No notes yet."}</div>
+          `;
+          memList.appendChild(box);
+        });
+        if(!list.length){
+          memList.innerHTML = `<div class="rowbox"><b>No matches.</b><div class="meta">Try a different search.</div></div>`;
+        }
+      }
+
+      memList.addEventListener("click",(e)=>{
+        const b = e.target.closest("button[data-act]");
+        if(!b) return;
+        const id = b.dataset.id;
+        const act = b.dataset.act;
+        const all = load(KEY_MEMBERS, []);
+        const m = all.find(x=>x.id===id);
+        if(!m) return;
+
+        if(act==="vip"){
+          m.vip = !m.vip;
+          save(KEY_MEMBERS, all);
+          toast(m.vip ? "Marked VIP" : "Removed VIP");
+          render();
+        }
+        if(act==="note"){
+          const n = prompt("Internal note (local demo):", m.notes || "");
+          if(n===null) return;
+          m.notes = n.trim();
+          save(KEY_MEMBERS, all);
+          toast("Saved");
+          render();
+        }
+      });
+
+      $("btnAddMember").addEventListener("click", ()=>{
+        const all = load(KEY_MEMBERS, []);
+        const id = "IC-" + Math.floor(Math.random()*9000+1000);
+        all.unshift({ id, name:"New Member", email:"new@member.com", tier:"Nighthawks", status:"Active", vip:false, notes:"" });
+        save(KEY_MEMBERS, all);
+        toast("Added");
+        render();
+      });
+
+      draw();
+    }
+
+    // ---------- CSV Export ----------
+    function exportCSV(){
+      const seats = load(KEY_SEATS, []);
+      const reqs = load(KEY_REQUESTS, []);
+      const members = load(KEY_MEMBERS, []);
+
+      const rows = [];
+      rows.push(["TYPE","ID","NAME","EMAIL","DETAILS","STATUS","PRIORITY","VIP","SEAT"].join(","));
+
+      seats.forEach(s=>{
+        rows.push(["SEAT","",""+(s.name||""),"","",s.status,"",""+(s.vip?"YES":"NO"),s.seat].map(csv).join(","));
+      });
+      reqs.forEach(r=>{
+        rows.push(["REQUEST",r.id,r.name,r.email,r.summary,r.status,r.priority,"",""].map(csv).join(","));
+      });
+      members.forEach(m=>{
+        rows.push(["MEMBER",m.id,m.name,m.email,m.notes||"",m.status,"",""+(m.vip?"YES":"NO"),""].map(csv).join(","));
+      });
+
+      const blob = new Blob([rows.join("\n")], {type:"text/csv;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nighthawks-admin-export.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast("Exported CSV");
+    }
+    function csv(v){
+      v = (v ?? "").toString().replace(/\r?\n/g," ").trim();
+      if(/[",]/.test(v)) return `"${v.replace(/"/g,'""')}"`;
+      return v;
+    }
+
+    // ---------- Inbox quick actions (demo) ----------
+    $("inbox").addEventListener("click",(e)=>{
+      const btn = e.target.closest("button[data-act]");
+      if(!btn) return;
+      if(btn.dataset.act==="open-request"){ setTab("requests"); toast("Opened requests"); }
+      if(btn.dataset.act==="ping-seat"){ setTab("seats"); toast("Pinged (demo)"); }
+    });
+
+    // ---------- Boot ----------
+    bootData();
+    hydrateAccess();
+    render();
+
+    // Default to overview tab
+    setTab("overview");
+  </script>
+</body>
+</html>

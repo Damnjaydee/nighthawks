@@ -1,22 +1,861 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Nighthawks — Members Dashboard</title>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#0b0b0b"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Nighthawks — Member Dashboard</title>
+  <link rel="icon" href="../assets/logo-white.jpg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
 
-    <!-- Editorial + system fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-    <script type="module" crossorigin src="/dashboard/assets/index-Dc2bjfMz.js"></script>
-    <link rel="stylesheet" crossorigin href="/dashboard/assets/index-YXkA26YY.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --ink:#f5f3ee;
+      --muted:rgba(245,243,238,.55);
+      --muted2:rgba(245,243,238,.35);
+      --line:rgba(255,255,255,.09);
+      --line2:rgba(255,255,255,.14);
+      --soft:rgba(255,255,255,.03);
+      --gold:rgba(200,178,122,.88);
+      --ring:rgba(255,255,255,.9);
+      --ok:#6fdc8c;
+      --warn:#f0a500;
+      --err:#ff6b6b;
+      --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
+      --sans:Inter,system-ui,-apple-system,sans-serif;
+      --max:1200px;
+      --navH:64px;
+      --radius:16px;
+      --safe-b:env(safe-area-inset-bottom,0px);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      background:var(--bg);color:var(--ink);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+    :where(a,button,input,textarea,select):focus-visible{
+      outline:2px solid var(--ring);outline-offset:2px;border-radius:10px;
+    }
+
+    body::before{
+      content:"";position:fixed;inset:0;
+      background:
+        radial-gradient(800px 500px at 60% 0%, rgba(200,178,122,.06), transparent 55%),
+        radial-gradient(1000px 600px at 10% 90%, rgba(255,255,255,.02), transparent 50%);
+      pointer-events:none;z-index:-1;
+    }
+
+    .app{min-height:100dvh;display:grid;grid-template-rows:auto 1fr;}
+
+    /* ── TOPBAR ── */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      height:var(--navH);
+      background:rgba(0,0,0,.45);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:saturate(140%) blur(14px);
+      -webkit-backdrop-filter:saturate(140%) blur(14px);
+      transition:box-shadow .2s;
+    }
+    .topbar.scrolled{box-shadow:0 8px 40px rgba(0,0,0,.4)}
+    .topbar-inner{
+      max-width:var(--max);margin:0 auto;
+      height:100%;padding:0 24px;
+      display:flex;align-items:center;gap:16px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{height:26px;width:auto;border-radius:4px;}
+    .brand-text{}
+    .brand-name{
+      font-family:var(--serif);font-weight:600;
+      font-size:15px;letter-spacing:.10em;
+      text-transform:uppercase;color:rgba(245,243,238,.9);
+      line-height:1;
+    }
+    .brand-sub{
+      font-size:10px;letter-spacing:.14em;
+      text-transform:uppercase;color:rgba(245,243,238,.28);
+      margin-top:3px;
+    }
+    .spacer{flex:1}
+    .topbar-nav{display:flex;align-items:center;gap:4px;}
+    .topbar-nav a{
+      font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+      color:rgba(245,243,238,.42);padding:8px 12px;border-radius:8px;
+      transition:color .15s,background .15s;
+    }
+    .topbar-nav a:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+    .topbar-nav a.active{color:var(--ink)}
+    .topbar-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      height:34px;padding:0 14px;
+      border:1px solid var(--line2);
+      background:rgba(0,0,0,.3);
+      border-radius:999px;cursor:pointer;
+      font:500 11px/1 var(--sans);
+      letter-spacing:.06em;text-transform:uppercase;
+      color:rgba(245,243,238,.55);
+      transition:border-color .15s,color .15s;
+    }
+    .topbar-btn:hover{border-color:rgba(245,243,238,.3);color:var(--ink)}
+    .topbar-btn svg{width:14px;height:14px;}
+
+    .menu-wrap{position:relative}
+    .menu{
+      position:absolute;right:0;top:calc(100% + 10px);
+      width:220px;
+      background:rgba(8,8,8,.92);
+      border:1px solid var(--line2);
+      border-radius:14px;padding:8px;
+      display:none;z-index:60;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+    }
+    .menu.open{display:block}
+    .menu-item{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:10px;
+      font-size:13px;color:rgba(245,243,238,.65);
+      cursor:pointer;transition:background .12s,color .12s;
+    }
+    .menu-item:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+    .menu-item svg{width:15px;height:15px;opacity:.6;flex-shrink:0}
+    .menu-hr{height:1px;background:var(--line);margin:6px 0}
+    @media(max-width:768px){.topbar-nav{display:none}}
+
+    /* ── MAIN ── */
+    .main{
+      max-width:var(--max);margin:0 auto;
+      padding:44px 24px calc(80px + var(--safe-b));
+      width:100%;
+    }
+
+    /* Greeting */
+    .greet{
+      display:flex;align-items:flex-end;
+      justify-content:space-between;gap:16px;
+      margin:0 0 44px;
+      padding-bottom:36px;
+      border-bottom:1px solid var(--line);
+    }
+    .greet-eye{
+      font-size:10px;letter-spacing:.28em;
+      text-transform:uppercase;color:var(--gold);
+      margin:0 0 12px;
+    }
+    .greet h1{
+      font-family:var(--serif);
+      font-size:clamp(38px,5vw,64px);
+      font-weight:600;line-height:.94;
+      letter-spacing:-.01em;margin:0 0 10px;
+    }
+    .greet h1 em{font-style:italic;color:rgba(245,243,238,.4);}
+    .greet-sub{font-size:13px;color:var(--muted);}
+    .greet-actions{display:flex;gap:8px;flex-shrink:0;}
+
+    /* Grid */
+    .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    @media(max-width:900px){.dash-grid{grid-template-columns:1fr}}
+    .span-full{grid-column:1/-1;}
+
+    /* Card */
+    .card{
+      background:rgba(255,255,255,.025);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+    .card-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 22px 16px;
+      border-bottom:1px solid var(--line);
+    }
+    .card-head h2{
+      font-family:var(--serif);font-size:22px;
+      font-weight:600;letter-spacing:.01em;
+    }
+    .card-head-meta{
+      font-size:10px;letter-spacing:.16em;
+      text-transform:uppercase;color:var(--muted2);
+    }
+    .card-body{padding:22px;}
+
+    /* Membership */
+    .mem-grid{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;margin:0 0 20px;}
+    .mem-id{
+      font-family:var(--serif);font-size:26px;
+      font-weight:600;letter-spacing:.04em;margin:0 0 4px;
+    }
+    .mem-email{font-size:12px;color:var(--muted);margin:0 0 18px;}
+    .mem-fields{display:flex;gap:24px;}
+    .mem-field-label{
+      font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--muted2);margin:0 0 4px;
+    }
+    .mem-field-val{font-size:14px;font-weight:500;}
+
+    .avatar{
+      width:68px;height:68px;border-radius:50%;
+      overflow:hidden;background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      display:grid;place-items:center;cursor:pointer;
+      flex-shrink:0;
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;display:none;}
+    .avatar-initials{
+      font-family:var(--serif);font-size:22px;
+      font-weight:600;color:rgba(245,243,238,.65);
+    }
+
+    /* Badge */
+    .badge{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:4px 10px;border-radius:999px;
+      font-size:10px;font-weight:500;letter-spacing:.10em;
+      text-transform:uppercase;border:1px solid;
+      white-space:nowrap;
+    }
+    .badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+    .badge.active,.badge.confirmed{color:var(--ok);border-color:rgba(111,220,140,.22);background:rgba(111,220,140,.07);}
+    .badge.pending,.badge.working{color:var(--warn);border-color:rgba(240,165,0,.22);background:rgba(240,165,0,.07);}
+    .badge.secured{color:#85b7eb;border-color:rgba(133,183,235,.22);background:rgba(133,183,235,.07);}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:34px;padding:0 14px;border-radius:999px;
+      font:500 11px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;
+      border:1px solid var(--line2);background:transparent;
+      color:rgba(245,243,238,.65);cursor:pointer;
+      transition:border-color .15s,color .15s,filter .15s;
+      white-space:nowrap;
+    }
+    .btn:hover{border-color:rgba(245,243,238,.35);color:var(--ink)}
+    .btn.primary{background:#f5f3ee;color:#0b0b0b;border-color:transparent;}
+    .btn.primary:hover{filter:brightness(.93)}
+    .btn.sm{height:28px;padding:0 12px;font-size:10px;}
+
+    /* Quick Actions */
+    .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .qa-tile{
+      display:grid;gap:8px;padding:16px;
+      border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      transition:border-color .15s,background .15s,transform .15s;
+    }
+    .qa-tile:hover{
+      border-color:rgba(245,243,238,.16);
+      background:rgba(255,255,255,.04);
+      transform:translateY(-1px);
+    }
+    .qa-icon{
+      width:34px;height:34px;border-radius:10px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      display:grid;place-items:center;
+    }
+    .qa-icon svg{width:16px;height:16px;opacity:.65}
+    .qa-label{font-size:13px;font-weight:500;}
+    .qa-sub{font-size:11px;color:var(--muted);}
+
+    /* Events */
+    .events-list{display:grid;gap:14px;}
+    .event{
+      display:grid;grid-template-columns:72px 1fr;
+      gap:16px;align-items:start;
+      padding:16px;border:1px solid var(--line);
+      border-radius:14px;background:rgba(255,255,255,.02);
+      transition:border-color .15s;
+    }
+    .event:hover{border-color:rgba(245,243,238,.14)}
+    .event-thumb{
+      width:72px;height:72px;border-radius:10px;
+      background:linear-gradient(135deg,#161616,#0c0c0c);
+      border:1px solid var(--line);flex-shrink:0;
+    }
+    .event-no{
+      font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--gold);margin:0 0 5px;
+    }
+    .event-title{
+      font-family:var(--serif);font-size:16px;
+      font-weight:600;margin:0 0 6px;
+    }
+    .event-meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;}
+    .event-pill{
+      font-size:10px;color:var(--muted);
+      border:1px solid var(--line);
+      padding:3px 8px;border-radius:999px;
+    }
+    .event-actions{display:flex;gap:8px;align-items:center;}
+
+    /* Requests */
+    .requests-list{display:grid;gap:10px;}
+    .request-item{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;padding:14px 16px;
+      border:1px solid var(--line);border-radius:12px;
+      background:rgba(255,255,255,.02);
+    }
+    .request-title{font-size:14px;font-weight:500;margin:0 0 3px;}
+    .request-meta{font-size:11px;color:var(--muted);}
+
+    /* Account */
+    .account-rows{display:grid;gap:0;}
+    .account-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;border-bottom:1px solid var(--line);
+    }
+    .account-row:last-child{border-bottom:0;padding-bottom:0;}
+    .account-row-label{
+      font-size:10px;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--muted2);
+    }
+    .account-row-val{font-size:13px;font-weight:500;}
+
+    /* Bottom nav */
+    .bottom-nav{
+      display:none;
+      position:fixed;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,.65);
+      border-top:1px solid var(--line);
+      padding:10px 16px calc(10px + var(--safe-b));
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      z-index:40;
+    }
+    .bottom-nav-inner{
+      display:flex;justify-content:space-around;
+      max-width:480px;margin:0 auto;
+    }
+    .bottom-nav a{
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+      font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+      color:rgba(245,243,238,.32);padding:6px 12px;border-radius:10px;
+      transition:color .15s;
+    }
+    .bottom-nav a.active{color:var(--ink)}
+    .bottom-nav svg{width:20px;height:20px;}
+    @media(max-width:768px){.bottom-nav{display:block}}
+
+    /* Modal */
+    .modal{
+      position:fixed;inset:0;
+      display:none;place-items:center;
+      background:rgba(0,0,0,.65);
+      z-index:80;padding:20px;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+    }
+    .modal.open{display:grid}
+    .sheet{
+      width:min(600px,96vw);
+      background:rgba(10,10,10,.94);
+      border:1px solid var(--line2);
+      border-radius:20px;overflow:hidden;
+      box-shadow:0 30px 100px rgba(0,0,0,.7);
+    }
+    .sheet-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:20px 24px;border-bottom:1px solid var(--line);
+    }
+    .sheet-head h3{font-family:var(--serif);font-size:24px;font-weight:600;}
+    .sheet-body{padding:24px;display:grid;gap:18px;}
+    .sheet-foot{
+      display:flex;justify-content:flex-end;gap:10px;
+      padding:16px 24px;border-top:1px solid var(--line);
+    }
+    .field{display:grid;gap:7px;}
+    .field label{
+      font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted2);
+    }
+    .field input,.field textarea{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);border-radius:10px;
+      padding:12px 14px;color:var(--ink);
+      font:400 14px/1.4 var(--sans);outline:none;width:100%;
+      transition:border-color .15s;
+    }
+    .field input:focus,.field textarea:focus{border-color:rgba(245,243,238,.26)}
+    .field input::placeholder,.field textarea::placeholder{color:rgba(245,243,238,.18)}
+    .field textarea{min-height:80px;resize:vertical;}
+    .field-hint{font-size:11px;color:var(--muted2);line-height:1.6;}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:480px){.field-row{grid-template-columns:1fr}}
+
+    /* Toast */
+    .toast{
+      position:fixed;left:50%;bottom:calc(80px + var(--safe-b));
+      transform:translateX(-50%) translateY(8px);
+      background:rgba(10,10,10,.95);color:var(--ink);
+      padding:11px 18px;border-radius:12px;
+      border:1px solid var(--line2);font-size:13px;
+      box-shadow:0 12px 40px rgba(0,0,0,.5);
+      opacity:0;pointer-events:none;
+      transition:opacity .2s,transform .2s;z-index:90;
+      white-space:nowrap;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo-white.jpg" alt="Nighthawks"/>
+        <div class="brand-text">
+          <div class="brand-name">Nighthawks</div>
+          <div class="brand-sub">Member Portal</div>
+        </div>
+      </a>
+
+      <div class="spacer"></div>
+
+      <nav class="topbar-nav" aria-label="Dashboard">
+        <a href="#" class="active">Home</a>
+        <a href="../request.html">Concierge</a>
+        <a href="../inner-circle.html">Inner Circle</a>
+      </nav>
+
+      <div class="menu-wrap">
+        <button class="topbar-btn" id="settingsBtn" type="button" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 8.5 15a1.65 1.65 0 0 0-1.82-.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 10a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 15 8.5a1.65 1.65 0 0 0 .82 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 12 15.5z"/></svg>
+          Settings
+        </button>
+        <div class="menu" id="settingsMenu">
+          <div class="menu-item" data-open="profile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            Edit profile
+          </div>
+          <div class="menu-item" data-open="prefs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            Preferences
+          </div>
+          <div class="menu-hr"></div>
+          <div class="menu-item" id="menuSignOut">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign out
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- Greeting -->
+    <div class="greet">
+      <div>
+        <p class="greet-eye">Member Dashboard</p>
+        <h1 id="greetTitle">Good evening,<br/><em id="greetName">Member</em></h1>
+        <p class="greet-sub">Here's what's happening in New York City.</p>
+      </div>
+      <div class="greet-actions">
+        <button class="btn sm" id="editNameBtn" type="button">Edit name</button>
+      </div>
+    </div>
+
+    <!-- Dashboard grid -->
+    <div class="dash-grid">
+
+      <!-- MEMBERSHIP -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Membership</h2>
+          <span class="badge active"><span class="badge-dot"></span>Active</span>
+        </div>
+        <div class="card-body">
+          <div class="mem-grid">
+            <div>
+              <div class="mem-id" id="memberId">IC — 0000</div>
+              <div class="mem-email" id="memberEmail">member@nighthawks.com</div>
+              <div class="mem-fields">
+                <div>
+                  <div class="mem-field-label">Tier</div>
+                  <div class="mem-field-val">Inner Circle</div>
+                </div>
+                <div>
+                  <div class="mem-field-label">Renewal</div>
+                  <div class="mem-field-val">Dec 31, 2025</div>
+                </div>
+              </div>
+            </div>
+            <div class="avatar" id="avatarBox" title="Change photo">
+              <img id="avatarImg" alt="Profile"/>
+              <div class="avatar-initials" id="avatarInitials">NH</div>
+              <input type="file" id="avatarInput" accept="image/*" style="display:none"/>
+            </div>
+          </div>
+          <button class="btn sm" id="openSettingsBtn" type="button">Edit details</button>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Quick Actions</h2>
+          <span class="card-head-meta">NYC</span>
+        </div>
+        <div class="card-body">
+          <div class="qa-grid">
+            <a class="qa-tile" href="../request.html">
+              <div class="qa-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 3.6L18 8.4l-3.6 1.8L12 14 10.2 10.2 6.6 8.4l3.6-1.8L12 3z"/></svg>
+              </div>
+              <div class="qa-label">Concierge</div>
+              <div class="qa-sub">Submit a request</div>
+            </a>
+            <a class="qa-tile" href="#">
+              <div class="qa-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h11a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5z"/><path d="M8 5h9"/><path d="M8 9h9"/><path d="M8 13h6"/></svg>
+              </div>
+              <div class="qa-label">Passport</div>
+              <div class="qa-sub">View stamps</div>
+            </a>
+            <a class="qa-tile" href="#">
+              <div class="qa-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a7 7 0 0 1-7 7H9l-4 3v-5a7 7 0 1 1 16-5z"/></svg>
+              </div>
+              <div class="qa-label">Messages</div>
+              <div class="qa-sub">1 unread</div>
+            </a>
+            <a class="qa-tile" href="../inner-circle.html">
+              <div class="qa-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div class="qa-label">Inner Circle</div>
+              <div class="qa-sub">Next dinner</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div class="card span-full">
+        <div class="card-head">
+          <h2>What's Happening</h2>
+          <span class="card-head-meta">Upcoming</span>
+        </div>
+        <div class="card-body">
+          <div class="events-list" id="eventList"></div>
+        </div>
+      </div>
+
+      <!-- OPEN REQUESTS -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Open Requests</h2>
+          <span class="card-head-meta">Live</span>
+        </div>
+        <div class="card-body">
+          <div class="requests-list">
+            <div class="request-item">
+              <div>
+                <div class="request-title">Private room · Downtown</div>
+                <div class="request-meta">Anniversary dinner</div>
+              </div>
+              <span class="badge working"><span class="badge-dot"></span>Working</span>
+            </div>
+            <div class="request-item">
+              <div>
+                <div class="request-title">Bar seats · West Village</div>
+                <div class="request-meta">Tonight</div>
+              </div>
+              <span class="badge secured"><span class="badge-dot"></span>Secured</span>
+            </div>
+            <div class="request-item">
+              <div>
+                <div class="request-title">Chef's table · Tribeca</div>
+                <div class="request-meta">Friday 8PM</div>
+              </div>
+              <span class="badge confirmed"><span class="badge-dot"></span>Confirmed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCOUNT -->
+      <div class="card">
+        <div class="card-head">
+          <h2>Account</h2>
+        </div>
+        <div class="card-body">
+          <div class="account-rows">
+            <div class="account-row">
+              <span class="account-row-label">Member ID</span>
+              <span class="account-row-val" id="acctId">IC-0000</span>
+            </div>
+            <div class="account-row">
+              <span class="account-row-label">Tier</span>
+              <span class="account-row-val">Inner Circle</span>
+            </div>
+            <div class="account-row">
+              <span class="account-row-label">Status</span>
+              <span class="badge active"><span class="badge-dot"></span>Active</span>
+            </div>
+            <div class="account-row">
+              <span class="account-row-label">Renewal</span>
+              <span class="account-row-val">Dec 31, 2025</span>
+            </div>
+            <div class="account-row" style="border-bottom:0;padding-bottom:0;">
+              <button class="btn" id="signOutBtn" type="button" style="width:100%;margin-top:4px;">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+    <div class="bottom-nav-inner">
+      <a href="#" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Home
+      </a>
+      <a href="../request.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 3.6L18 8.4l-3.6 1.8L12 14 10.2 10.2 6.6 8.4l3.6-1.8L12 3z"/></svg>
+        Concierge
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a7 7 0 0 1-7 7H9l-4 3v-5a7 7 0 1 1 16-5z"/></svg>
+        Messages
+      </a>
+      <a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Profile
+      </a>
+    </div>
+  </nav>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal" id="settingsModal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>Profile & Settings</h3>
+      <button class="btn sm" id="closeSettingsBtn" type="button">Close</button>
+    </div>
+    <div class="sheet-body">
+      <div class="field-row">
+        <div class="field">
+          <label for="setName">Display name</label>
+          <input id="setName" type="text" placeholder="Your name" autocomplete="name"/>
+        </div>
+        <div class="field">
+          <label for="setEmail">Email</label>
+          <input id="setEmail" type="email" placeholder="you@email.com" autocomplete="email"/>
+        </div>
+      </div>
+      <div class="field">
+        <label for="prefDiet">Dietary notes</label>
+        <textarea id="prefDiet" placeholder="Allergies, preferences…"></textarea>
+        <p class="field-hint">Shared with your concierge when booking dining experiences.</p>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn" id="cancelSettingsBtn" type="button">Cancel</button>
+      <button class="btn primary" id="saveSettingsBtn" type="button">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const NAME_KEY   = 'NH_MEMBER_NAME';
+  const ID_KEY     = 'NH_MEMBER_ID';
+  const EMAIL_KEY  = 'NH_MEMBER_EMAIL';
+  const AVATAR_KEY = 'NH_MEMBER_AVATAR';
+  const PREFS_KEY  = 'NH_PREFS_JSON';
+
+  const $ = id => document.getElementById(id);
+
+  window.addEventListener('scroll', () => {
+    $('topbar').classList.toggle('scrolled', window.scrollY > 4);
+  }, {passive:true});
+
+  function toast(msg){
+    const el = $('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  function getName(){ try{ return localStorage.getItem(NAME_KEY) || localStorage.getItem('nh_demo_email')?.split('@')[0] || 'Member'; }catch{ return 'Member'; } }
+  function getEmail(){ try{ return localStorage.getItem(EMAIL_KEY) || localStorage.getItem('nh_demo_email') || 'member@nighthawks.com'; }catch{ return 'member@nighthawks.com'; } }
+  function getId(){ try{ let id = localStorage.getItem(ID_KEY); if(!id){ id = 'IC-' + Math.floor(Math.random()*9000+1000); localStorage.setItem(ID_KEY, id); } return id; }catch{ return 'IC-0000'; } }
+  function initials(name){ return (name||'').trim().split(/\s+/).slice(0,2).map(p=>p[0]?.toUpperCase()||'').join('') || 'NH'; }
+  function greeting(){ const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'; }
+
+  function refreshUI(){
+    const name = getName();
+    const email = getEmail();
+    const id = getId();
+    $('greetTitle').innerHTML = `${greeting()},<br/><em id="greetName">${name}</em>`;
+    $('memberEmail').textContent = email;
+    $('memberId').textContent = 'IC — ' + id.replace('IC-','');
+    $('acctId').textContent = id;
+    $('avatarInitials').textContent = initials(name);
+  }
+
+  // Avatar
+  const avatarImg = $('avatarImg');
+  const avatarInitials = $('avatarInitials');
+  const avatarInput = $('avatarInput');
+
+  (function(){
+    const saved = localStorage.getItem(AVATAR_KEY);
+    if(saved){ avatarImg.src = saved; avatarImg.style.display = 'block'; avatarInitials.style.display = 'none'; }
+  })();
+
+  $('avatarBox').addEventListener('click', () => avatarInput.click());
+  avatarInput.addEventListener('change', e => {
+    const file = e.target.files?.[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        const s = Math.min(img.width, img.height);
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 256;
+        canvas.getContext('2d').drawImage(img, (img.width-s)/2, (img.height-s)/2, s, s, 0, 0, 256, 256);
+        const data = canvas.toDataURL('image/jpeg', 0.88);
+        try{ localStorage.setItem(AVATAR_KEY, data); }catch{}
+        avatarImg.src = data;
+        avatarImg.style.display = 'block';
+        avatarInitials.style.display = 'none';
+        toast('Photo updated');
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    avatarInput.value = '';
+  });
+
+  $('editNameBtn').addEventListener('click', () => {
+    const name = prompt('Display name', getName());
+    if(name?.trim()){ try{ localStorage.setItem(NAME_KEY, name.trim()); }catch{} refreshUI(); toast('Name updated'); }
+  });
+
+  // Events
+  const events = [
+    { no:'No. 02', title:'Inner Circle — Private Dinner', when:'Thu, Oct 17 · 8:00 PM', where:'Tribeca', status:'confirmed', statusLabel:'RSVP Confirmed', ctaLabel:'View details', ctaHref:'#' },
+    { no:'No. 03', title:"Chef's Counter — LES", when:'Fri, Oct 25 · 9:00 PM', where:'Lower East Side', status:'pending', statusLabel:'10 seats', ctaLabel:'Request invite', ctaHref:'../request.html' },
+    { no:'', title:'Paris Weekend Preview', when:'Members only · RSVP by Thu', where:'Tribeca', status:'working', statusLabel:'Members only', ctaLabel:'RSVP', ctaHref:'#' },
+  ];
+
+  function renderEvents(){
+    const list = $('eventList');
+    list.innerHTML = '';
+    events.forEach(ev => {
+      const el = document.createElement('div');
+      el.className = 'event';
+      el.innerHTML = `
+        <div class="event-thumb"></div>
+        <div>
+          ${ev.no ? `<div class="event-no">${ev.no}</div>` : ''}
+          <div class="event-title">${ev.title}</div>
+          <div class="event-meta">
+            <span class="event-pill">${ev.when}</span>
+            <span class="event-pill">${ev.where}</span>
+          </div>
+          <div class="event-actions">
+            <a class="btn primary sm" href="${ev.ctaHref}">${ev.ctaLabel}</a>
+            <span class="badge ${ev.status}"><span class="badge-dot"></span>${ev.statusLabel}</span>
+          </div>
+        </div>`;
+      list.appendChild(el);
+    });
+  }
+
+  // Settings modal
+  const modal = $('settingsModal');
+  function openSettings(){
+    $('setName').value = getName();
+    $('setEmail').value = getEmail();
+    try{ $('prefDiet').value = JSON.parse(localStorage.getItem(PREFS_KEY)||'{}').diet || ''; }catch{}
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => $('setName').focus(), 50);
+  }
+  function closeSettings(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  $('openSettingsBtn').addEventListener('click', openSettings);
+  $('closeSettingsBtn').addEventListener('click', closeSettings);
+  $('cancelSettingsBtn').addEventListener('click', closeSettings);
+  modal.addEventListener('click', e => { if(e.target === modal) closeSettings(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) closeSettings(); });
+
+  $('saveSettingsBtn').addEventListener('click', () => {
+    const name = $('setName').value.trim();
+    const email = $('setEmail').value.trim();
+    const diet = $('prefDiet').value.trim();
+    if(name) try{ localStorage.setItem(NAME_KEY, name); }catch{}
+    if(email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) try{ localStorage.setItem(EMAIL_KEY, email); }catch{}
+    try{ localStorage.setItem(PREFS_KEY, JSON.stringify({ diet })); }catch{}
+    refreshUI();
+    closeSettings();
+    toast('Settings saved');
+  });
+
+  // Settings dropdown
+  const settingsBtn = $('settingsBtn');
+  const settingsMenu = $('settingsMenu');
+  function toggleMenu(open){
+    const willOpen = open ?? !settingsMenu.classList.contains('open');
+    settingsMenu.classList.toggle('open', willOpen);
+    settingsBtn.setAttribute('aria-expanded', String(willOpen));
+  }
+  settingsBtn.addEventListener('click', () => toggleMenu());
+  settingsMenu.addEventListener('click', e => {
+    const item = e.target.closest('.menu-item');
+    if(!item) return;
+    toggleMenu(false);
+    if(item.dataset.open) openSettings();
+  });
+  document.addEventListener('click', e => {
+    if(!settingsMenu.classList.contains('open')) return;
+    if(e.target.closest('#settingsMenu') || e.target.closest('#settingsBtn')) return;
+    toggleMenu(false);
+  });
+
+  function signOut(){
+    try{ Object.keys(localStorage).filter(k => /^NH_/.test(k)).forEach(k => localStorage.removeItem(k)); localStorage.removeItem('nh_demo_email'); }catch{}
+    location.href = '../login.html';
+  }
+  $('signOutBtn').addEventListener('click', signOut);
+  $('menuSignOut').addEventListener('click', signOut);
+
+  refreshUI();
+  renderEvents();
+</script>
+</body>
 </html>

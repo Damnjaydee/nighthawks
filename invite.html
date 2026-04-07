@@ -1,192 +1,229 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>The Circle — Invite</title>
-  <meta name="description" content="Private access gate for The Circle." />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta name="theme-color" content="#0a0a0a" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="format-detection" content="telephone=no,email=no,address=no" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;500;600&display=swap" rel="stylesheet" />
-
-  <!-- Global config FIRST (provides window.NH.*). Bump ?v= when you change config.js -->
-  <script src="config.js?v=2025-09-21-4" defer></script>
+  <title>Inner Circle — Access</title>
+  <link rel="preload" as="image" href="./assets/logo-white.jpg" />
+  <link rel="preload" as="image" href="./assets/invite-book.jpg" />
 
   <style>
-    :root{ --bg:#0a0a0a; --fg:#eaeaea; --muted:#a7a7a7; --line:#1f1f1f; --accent:#c9a227; --pad:clamp(16px,4vw,28px); --radius:18px }
+    :root{
+      --scene-url: url("./assets/invite-book.jpg");
+      --ink:#e7e9ed; --muted:#a3a8b0; --bg:#0c0d10; --panel:#0f1115;
+      --gold:#c5a264; --gold-600:#b68e48; --line:#232630;
+      --fs-12: clamp(11px, 0.8vw, 12px); --fs-14: clamp(13px, 1.0vw, 14px);
+      --fs-16: clamp(15px, 1.1vw, 16px); --fs-18: clamp(16px, 1.2vw, 18px);
+      --fs-32: clamp(24px, 2.5vw, 32px);
+    }
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .wrap{max-width:720px;margin:0 auto;padding:var(--pad) var(--pad) calc(var(--pad)*2);padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
-    header{display:flex;justify-content:space-between;align-items:center;padding:10px 0 14px;border-bottom:1px solid var(--line)}
-    .brand{display:flex;gap:12px;align-items:center;color:inherit;text-decoration:none}
-    .logo{height:28px;width:auto;display:block;border-radius:6px}
-    .name{font-family:"DM Serif Display",serif;letter-spacing:.02em;font-size:18px}
-    .pill{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-    .hero{padding:clamp(28px,6vw,56px) 0 8px}
-    .kicker{color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
-    .title{font-family:"DM Serif Display",serif;font-weight:400;font-size:clamp(28px,7vw,58px);letter-spacing:.01em;margin:.35rem 0 0}
-    .card{margin:clamp(18px,4.8vw,34px) 0 42px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,#0b0b0b,#090909);box-shadow:0 1px 0 #1b1b1b inset}
-    .in{padding:clamp(14px,4.5vw,22px);display:grid;gap:clamp(12px,3.5vw,18px)}
-    label{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-    input{width:100%;padding:14px 14px;min-height:46px;font-size:16px;border-radius:12px;background:#0f0f0f;color:var(--fg);border:1px solid #1b1b1b;outline:none;text-transform:uppercase;letter-spacing:.06em}
-    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgb(201 162 39 / .14)}
-    input[aria-invalid="true"]{border-color:#c44;box-shadow:0 0 0 3px rgb(196 68 68 / .18)}
-    .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;min-height:48px;min-width:160px;border-radius:999px;background:#111;color:#fff;border:1px solid #222;font-weight:600;letter-spacing:.02em;cursor:pointer;touch-action:manipulation}
-    .btn:hover{transform:translateY(-1px)} .btn:active{transform:translateY(0)} .btn:disabled{opacity:.55;cursor:not-allowed}
-    .note{color:var(--muted);font-size:12px}
-    .error{color:#ffb4b4;font-size:12px}
-    footer{margin:56px 0 20px;text-align:center;color:var(--muted);font-size:12px}
-    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+    html,body{height:100%;margin:0}
+    body{
+      color:var(--ink); background:var(--bg);
+      font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      font-size:var(--fs-16);
+    }
+    a{color:inherit;text-decoration:none}
+    :where(a,button,input){outline:0}
+    :where(a,button,input):focus-visible{
+      outline:3px solid rgba(197,162,100,.55); outline-offset:3px; border-radius:10px;
+    }
+
+    .scene{
+      min-height:100vh; position:relative; overflow:hidden;
+      display:grid; place-items:center;
+      background:
+        radial-gradient(1200px 800px at 70% 20%, rgba(255,255,255,.06) 0%, rgba(255,255,255,0) 60%),
+        linear-gradient(120deg, #0b0c10 0%, #0d0f14 40%, #0a0b0e 100%);
+    }
+    .scene.has-image{
+      background-image:var(--scene-url);
+      background-size:cover; background-position:center; background-repeat:no-repeat;
+    }
+    .scene::before{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:
+        radial-gradient(1200px 900px at 25% 15%, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 60%),
+        linear-gradient(0deg, rgba(0,0,0,.58), rgba(0,0,0,.58));
+    }
+    .vignette{
+      position:absolute; inset:0; pointer-events:none;
+      box-shadow:inset 0 0 220px rgba(0,0,0,.68);
+    }
+
+    .brand{
+      position:absolute; top:22px; left:22px; z-index:3; display:inline-block;
+    }
+    .brand img{
+      width:46px; height:auto; display:block;
+      filter:drop-shadow(0 2px 10px rgba(0,0,0,.55));
+      user-select:none; -webkit-user-drag:none;
+    }
+
+    .panel{
+      width:min(92vw, 720px); z-index:2;
+      background:linear-gradient(180deg, rgba(18,20,27,.85), rgba(16,18,24,.85));
+      backdrop-filter:blur(2px);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:18px;
+      padding:clamp(28px, 5vw, 48px);
+      box-shadow:0 8px 40px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .kicker{font-size:var(--fs-12); letter-spacing:.22em; text-transform:uppercase; color:var(--muted);}
+    h1{margin:.45rem 0 1.2rem; font-size:var(--fs-32); letter-spacing:.02em; font-weight:700; color:var(--ink);}
+
+    .form-row{margin-top:18px;}
+    label{display:block; font-size:var(--fs-14); color:var(--muted); margin:0 0 .5rem;}
+
+    .input-wrap{position:relative; display:flex; gap:12px; align-items:center;}
+    .input{
+      flex:1 1 auto; height:52px; border-radius:12px; border:1px solid var(--line);
+      padding:0 14px; font-size:var(--fs-18); color:var(--ink); background:#0c0f16;
+      box-shadow:inset 0 1px 2px rgba(0,0,0,.45);
+      transition:border-color .2s, box-shadow .2s; letter-spacing:.10em;
+    }
+    .input::placeholder{color:#7c8290;}
+    .input:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,162,100,.2);}
+    .input.is-invalid{border-color:#ff6b6b !important; box-shadow:0 0 0 3px rgba(255,107,107,.12) !important;}
+
+    .btn{
+      flex:0 0 auto; height:52px; padding:0 20px;
+      background:var(--gold); color:#0c0d10; border:0; border-radius:12px;
+      font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+      cursor:pointer; font-size:var(--fs-14);
+      box-shadow:0 8px 20px rgba(197,162,100,.22);
+      transition:transform .04s ease, background .2s ease, box-shadow .2s ease, opacity .2s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--gold-600); box-shadow:0 10px 24px rgba(197,162,100,.30);}
+    .btn:active{transform:translateY(1px);}
+    .btn[disabled]{opacity:.65; cursor:not-allowed; transform:none}
+
+    .hint{margin-top:10px; color:var(--muted); font-size:var(--fs-12);}
+    .error{margin-top:10px; color:#ff6b6b; font-size:var(--fs-12); display:none;}
+    .foot{margin-top:22px; color:var(--muted); font-size:var(--fs-12);}
+    .links{margin-top:18px; display:flex; gap:16px; flex-wrap:wrap;}
+    .links a{color:#cdd2da;}
+    .links a:hover{color:#fff; text-decoration:underline; text-underline-offset:3px;}
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <a class="brand" href="index.html" aria-label="Nighthawks — Home">
-        <img class="logo" src="assets/logo-white.jpg" alt="Nighthawks logo" width="28" height="28" decoding="async" fetchpriority="high" />
-        <span class="name">Nighthawks</span>
-      </a>
-      <span class="pill">Private Members</span>
-    </header>
+  <main class="scene" id="scene">
+    <a class="brand" href="./index.html" aria-label="Go to home">
+      <img src="./assets/logo-white.jpg" alt="Nighthawks logo">
+    </a>
 
-    <section class="hero" aria-labelledby="hero-title">
-      <p class="kicker">THE CIRCLE — ACCESS</p>
-      <h1 id="hero-title" class="title">Enter your invite code</h1>
-    </section>
+    <section class="panel" aria-labelledby="title">
+      <div class="kicker">The Circle — Access</div>
+      <h1 id="title">Inner Circle — Access</h1>
 
-    <section class="card" aria-labelledby="invite">
-      <div class="in">
-        <h2 id="invite" class="kicker">Invite</h2>
-
-        <form id="gate" novalidate autocomplete="off">
-          <!-- honeypot -->
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true" />
-
+      <form id="invite-form" novalidate>
+        <div class="form-row">
           <label for="code">Invite code</label>
-          <input id="code" name="code"
-                 inputmode="text" enterkeyhint="go" autocomplete="one-time-code"
-                 autocapitalize="characters" autocorrect="off" spellcheck="false"
-                 placeholder="IC-1234" aria-describedby="msg" aria-invalid="false" autofocus required />
-
-          <div class="actions">
-            <button class="btn" type="submit" id="submit">Continue</button>
-            <span id="msg" class="note" role="status" aria-live="assertive">Codes are case-insensitive.</span>
+          <div class="input-wrap">
+            <input
+              id="code" name="code" class="input" type="text"
+              inputmode="numeric" autocomplete="one-time-code"
+              placeholder="35296907" maxlength="8" pattern="[0-9]{8}"
+              aria-describedby="code-hint code-error" required
+            />
+            <button class="btn" type="submit" id="continue-btn">Continue</button>
           </div>
-        </form>
-      </div>
+          <p class="hint" id="code-hint">Enter your 8-digit membership code from the Inner Circle invitation.</p>
+          <p class="error" id="code-error" role="alert">Please enter a valid 8-digit code.</p>
+        </div>
+
+        <div class="links" aria-label="Auxiliary links">
+          <a href="./contact.html">Need help?</a>
+          <a href="./apply.html">Apply for membership</a>
+        </div>
+
+        <p class="foot">© <span id="year"></span> Nighthawks Concierge</p>
+      </form>
     </section>
 
-    <footer>© <span id="yr"></span> Nighthawks Concierge</footer>
-  </div>
+    <div class="vignette" aria-hidden="true"></div>
+  </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPA_URL = "https://iyhoqnxhfvphuufuekfc.supabase.co";
+    const SUPA_KEY = "sb_publishable_9bAHUIAzGbtBRE4cevJVtQ_uWuY07e6";
+    const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+    const NEXT_PAGE = "./RSVP-form.html";
+    const STORAGE_KEY = "nh_ic_member_code_v1";
+
     (function(){
-      const $ = (s,c=document)=>c.querySelector(s);
-      $("#yr").textContent = new Date().getFullYear();
+      const scene = document.getElementById("scene");
+      const testImg = new Image();
+      testImg.onload = () => scene.classList.add("has-image");
+      testImg.src = "./assets/invite-book.jpg";
+    })();
 
-      // Normalize like the server would
-      const normalize = (c)=> c.toString().trim().toUpperCase().replace(/\s+/g,"");
+    (function(){
+      const form = document.getElementById("invite-form");
+      const codeEl = document.getElementById("code");
+      const errorEl = document.getElementById("code-error");
+      const btn = document.getElementById("continue-btn");
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-      // Hash helper (only used if INVITE_HASHES configured)
-      async function sha256(s){
-        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
-        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+      function setError(msg){
+        errorEl.textContent = msg || "Please enter a valid 8-digit code.";
+        errorEl.style.display = "block";
+        codeEl.classList.add("is-invalid");
+        codeEl.setAttribute("aria-invalid", "true");
+      }
+      function clearError(){
+        errorEl.style.display = "none";
+        codeEl.classList.remove("is-invalid");
+        codeEl.removeAttribute("aria-invalid");
+      }
+      function normalize(raw){
+        return String(raw || "").replace(/\D+/g, "").slice(0, 8);
       }
 
-      async function isValid(code){
-        const cfg = window.NH || {};
-        // A) Plain codes
-        const plain = (cfg.INVITE_CODES || []).map(normalize);
-        if (plain.length && plain.includes(normalize(code))) return true;
-
-        // B) Hashes
-        const hashes = cfg.INVITE_HASHES || [];
-        if (hashes.length){
-          const h = await sha256(normalize(code));
-          return hashes.includes(h);
-        }
-
-        // C) Fallback (loose pattern so you can test without config)
-        return /^IC[-–—_ ]?\d{3,5}$/i.test(code);
-      }
-
-      // Prefill from e-card links: ?code=IC-1234&go=1
-      try{
-        const qs = new URLSearchParams(location.search);
-        const pre = qs.get("code");
-        if (pre) $("#code").value = pre.toUpperCase();
-        if (qs.get("go") === "1" && pre) $("#gate").dispatchEvent(new Event("submit",{cancelable:true}));
-      }catch{}
-
-      // Uppercase as you type; keep caret position
-      $("#code").addEventListener("input", (e)=>{
-        const el = e.currentTarget;
-        const pos = el.selectionStart;
-        el.value = el.value.toUpperCase();
-        el.setSelectionRange(pos, pos);
-        el.removeAttribute("aria-invalid");
+      codeEl.addEventListener("input", () => {
+        codeEl.value = normalize(codeEl.value);
+        if (codeEl.value.length === 8) clearError();
       });
 
-      // Modern paste cleanup (no execCommand)
-      $("#code").addEventListener("paste", (e)=>{
+      const seeded = new URLSearchParams(location.search).get("code");
+      if (seeded) codeEl.value = normalize(seeded);
+
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const el = e.currentTarget;
-        const text = (e.clipboardData || window.clipboardData).getData("text").toUpperCase().trim();
-        const start = el.selectionStart, end = el.selectionEnd;
-        el.setRangeText(text, start, end, "end");
-      });
+        clearError();
 
-      $("#gate").addEventListener("submit", async (e)=>{
-        e.preventDefault();
-        const form = e.currentTarget;
-        if (form.website && form.website.value) return; // bot trap
-
-        const input = $("#code");
-        const btn   = $("#submit");
-        const msg   = $("#msg");
-        const code  = input.value.trim();
-
-        if (!code){
-          msg.textContent = "Please enter your invite code.";
-          msg.className = "error";
-          input.setAttribute("aria-invalid","true");
-          input.focus();
+        const code = normalize(codeEl.value);
+        if (!/^\d{8}$/.test(code)) {
+          setError("Please enter your 8-digit code (numbers only).");
+          codeEl.focus();
           return;
         }
 
         btn.disabled = true;
-        msg.textContent = "Checking…";
-        msg.className = "note";
+        btn.textContent = "Checking…";
 
-        try{
-          if (await isValid(code)){
-            localStorage.setItem("nh_ic_gate", JSON.stringify({ ok:true, code: normalize(code), ts: Date.now() }));
-            if (window.dataLayer) window.dataLayer.push({ event:"ic_gate_ok" });
+        const { data, error } = await sb
+          .from("invite_codes")
+          .select("id, used_count, max_uses, active")
+          .eq("code", code)
+          .single();
 
-            const provider = (window.NH && window.NH.PAYMENT_PROVIDER) || "stripe";
-            const qs = provider === "tock" ? "?open=tock" : "";
-            location.href = "inner-circle.html" + qs;
-          } else {
-            msg.textContent = "That code isn’t recognized. Please try again or reply to your invite email.";
-            msg.className = "error";
-            input.setAttribute("aria-invalid","true");
-            btn.disabled = false;
-          }
-        }catch(err){
-          console.error(err);
-          msg.textContent = "Unable to verify right now. Please try again.";
-          msg.className = "error";
-          input.setAttribute("aria-invalid","true");
+        if (error || !data || !data.active || data.used_count >= data.max_uses) {
           btn.disabled = false;
+          btn.textContent = "Continue";
+          setError("That code isn't valid. Please check your invitation.");
+          codeEl.focus();
+          return;
         }
+
+        try { localStorage.setItem(STORAGE_KEY, code); } catch (_) {}
+        window.location.href = `${NEXT_PAGE}?code=${encodeURIComponent(code)}`;
       });
     })();
   </script>
