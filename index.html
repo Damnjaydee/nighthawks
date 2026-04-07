@@ -31,6 +31,7 @@
       --ring:rgba(255,255,255,.9);
       --gold:rgba(200,178,122,.9);
       --navH:60px;
+      --bg-img:none;
       --serif:"Cormorant Garamond",ui-serif,Georgia,serif;
       --sans:Inter,system-ui,-apple-system,sans-serif;
     }
@@ -488,7 +489,10 @@
       if(e.key === 'Escape' && html.classList.contains('drawer-open')) closeDrawer();
     });
 
-    /* ── IMAGE LOADING FIX ── */
+    /* ── IMAGE LOADING FIX ──
+       iOS Safari fix: declare --bg-img on :root first (done in CSS),
+       then use cssText += to set it per-element. Safari respects this
+       method reliably for custom properties on ::before pseudo-elements. */
     const panels = document.querySelectorAll('.panel[data-img]');
 
     function loadPanelImage(panel) {
@@ -496,7 +500,7 @@
       if (!src) return;
       const img = new Image();
       img.onload = () => {
-        panel.style.setProperty('--bg-img', `url('${src}')`);
+        panel.style.cssText += `--bg-img: url('${src}');`;
         panel.classList.add('img-loaded');
       };
       img.onerror = () => {
